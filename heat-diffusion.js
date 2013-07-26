@@ -108,33 +108,51 @@ function HeatSolver(startingTemps){
         }
     }
     
-    function sixty_graph_arrays(){
+    function sixty_graph_arrays(time_top_bottom){
         var grapharray = [];
         var graphlabels = [];
 		var count=0;
-        for(var i=0; i<600; i++){
-            var cnVector = make_crank_nicolson_vector();
-            calculate_next_cn(cnVector);
-			
-            if(i%10 ==0){
-                grapharray.push(tempArray[tempArray.length-1]);
-                graphlabels.push([count,1,180]);
-				count++;
+        
+        var lastTime = time_top_bottom[time_top_bottom.length-1][0];
+        
+        for(var j=0; j<time_top_bottom.length; j++){
+            var thisTime = time_top_bottom[j][0];
+            var nextTime;
+            if(j==time_top_bottom.length-1){
+                nextTime= lastTime;
             }
-			
+            else{
+                nextTime = time_top_bottom[j+1][0];
+            }
+            console.log(thisTime,nextTime);
+            change_temp(time_top_bottom[j][1], time_top_bottom[j][2])
+            
+            for(var i=thisTime; i<nextTime; i++){
+                var cnVector = make_crank_nicolson_vector();
+                calculate_next_cn(cnVector);
+                
+//                if(i%10 ==0){
+//                    grapharray.push(tempArray[tempArray.length-1]);
+//                    graphlabels.push([count,1,180]);
+//                    count++;
+//                }
+                
+            }
         }
-   
+        var arrays = tempArray.length;
+        var step = parseInt(arrays/60);
+        for(var i=0; i<arrays; i+=step){
+            grapharray.push(tempArray[i])
+            graphlabels.push([count,1,tempArray[i][0]]);
+            count++;
+        }
         return {temps: grapharray, points: graphlabels}
 
     }
     
-    function change_temp(top_and_or_bottom, temp){
-        if(top_and_or_bottom[0] == 1){
-            tempArray[tempArray.length-1][0] = temp;
-        }
-        if(top_and_or_bottom[1] == 1){
-            tempArray[tempArray.length-1][tempArray[0].length-1] = temp;
-        }
+    function change_temp(toptemp,bottomtemp){
+        tempArray[tempArray.length-1][0] = bottomtemp;
+        tempArray[tempArray.length-1][tempArray[0].length-1] = toptemp;
     }
     
     function flip(){
@@ -183,3 +201,5 @@ function HeatSolver(startingTemps){
 }
 
 var heatsolver = HeatSolver([180,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23]);
+
+console.log(heatsolver.sixty_graph_arrays([[0,23,180],[1000,23,180]]))
