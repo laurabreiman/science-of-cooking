@@ -26,53 +26,48 @@ var cooking=(function(){
     }
     //addOne()
     function Model(div){
-        var temp=0;
+        var temp=23;
         var Actions=[];
         var time=0;
-        var speed=1000;
+        var speed=1;
         var eventHandler=EventHandler();
-        var cookingType=0;
+        var cookingType='Stove';
 		var gradient=[];
         var process=function(command){
 			if(command[0]='temp'){
 				temp=command[1];
-				Actions.push({'time':time,'action':'Temperature changed to' + temp})
+				Actions.push({'time':time,'action':'Temperature changed to ' + temp +' degrees Celcius'});
 				eventHandler.trigger('update',{"temp":temp,"Actions":Actions});
 			}
 				if(command[0]='time'){
-				time+=
+				time+=speed*1000;
 				gradient=updategradient()	
 				eventHandler.trigger('update',{"time":time,'gradient':gradient});
 			}
 				if(command[0]='speed'){
-				
+					speed=command[1];
 			}
 				if(command[0]='cookingType'){
-				
+					cookingType=command[1];
+					Actions.push({'time':time,'action':'Cooking on ' + cookingType});
+					eventHandler.trigger('update',{"cookingType":cookingType,"Actions":Actions});
 			}
 				if(command[0]='flip'){
-				
+					gradient=flipGradient(gradient);
+				Actions.push({'time':time,'action':'Flip'});
+					eventHandler.trigger('update',{"gradient":gradient,"Actions":Actions});
 			}
-				if(command[0]='trash'){
 				
-			}
-        
-		eventHandler.trigger('update',{"time":time,'gradient':gradient});
-		eventHandler.trigger('update',{"speed":speed});
-		eventHandler.trigger('update',{"cookingType":cookingType});
 		eventHandler.trigger('update',{"Actions":Actions});
 		}
 		function updateGradient(){
 			
 		}
-        function getTemp(){
-            return temp;
-        }
-         function getThicness(){
-            return thickness;
-        }
+        function flipGradient(gradient){
+			gradient.reverse();
+		}
 		
-        return {process: process, getCost:getTemp,  getWeight: getThickness, on:eventHandler.on};
+        return {process: process, on:eventHandler.on};
     }
    
     function Controller(model){
@@ -117,7 +112,9 @@ var cooking=(function(){
         var model=Model();
         var controller=Controller(model);
         var view=View(div, model,controller);
-       
+       	var time=$('<div class=timer></div>');
+		$(div).append(time);
+		timer();
     }
     
     return {setup: setup};
