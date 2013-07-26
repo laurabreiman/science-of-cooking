@@ -112,11 +112,12 @@ function HeatSolver(startingTemps){
         var grapharray = [];
         var graphlabels = [];
 		var count=0;
-        for(var i=0; i<600; i++){
+		var time=600
+        for(var i=0; i<time; i++){
             var cnVector = make_crank_nicolson_vector();
             calculate_next_cn(cnVector);
 			
-            if(i%10 ==0){
+            if(i%(time/60) ==0){
                 grapharray.push(tempArray[tempArray.length-1]);
                 graphlabels.push([count,1,180]);
 				count++;
