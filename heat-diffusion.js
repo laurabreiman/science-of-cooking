@@ -2,9 +2,9 @@
 function HeatSolver(startingTemps){
     
     var tempArray = [startingTemps];
-    var D = 0.0803;
+    var D = .14; // in units of mm^2/sec
     
-    var timestep = 0.1;
+    var timestep = 1;
     var spacestep = 0.1;
     
     var alpha = (D*timestep);
@@ -14,6 +14,8 @@ function HeatSolver(startingTemps){
     
     var cnLaplacian = makecnLaplacian();
     var invcn = numeric.inv(cnLaplacian);
+    
+    var nonconductive = [0,1];
     
     function get_tempArray(){
         return tempArray;
@@ -106,6 +108,21 @@ function HeatSolver(startingTemps){
         }
     }
     
+    function sixty_graph_arrays(){
+        var grapharray = [];
+        var graphlabels = [];
+        for(var i=0; i<600; i++){
+            var cnVector = make_crank_nicolson_vector();
+            calculate_next_cn(cnVector);
+            if(i%10 ==0){
+                grapharray.push(tempArray[tempArray.length-1]);
+                graphlabels.push([i,0,180]);
+            }
+        }
+        console.log(grapharray);
+        console.log(graphlabels);
+    }
+    
     function change_temp(top_and_or_bottom, temp){
         if(top_and_or_bottom[0] == 1){
             tempArray[tempArray.length-1][0] = temp;
@@ -119,7 +136,8 @@ function HeatSolver(startingTemps){
         var top = tempArray[tempArray.length-1][tempArray[0].length-1];
         var bottom = tempArray[tempArray.length-1][0];
         tempArray[tempArray.length-1][0] = top;
-        tempArray[tempArray.length-1][tempArray[0].length-1] = bottom; 
+        tempArray[tempArray.length-1][tempArray[0].length-1] = bottom;
+        nonconductive.reverse();
     }
     
     function fifteen_flip_method(duration){
@@ -137,11 +155,17 @@ function HeatSolver(startingTemps){
         var cnVector = [];
         
         for(var i=0; i<currentTemps.length; i++){
-            if(i==0){
+            if(i==0 && nonconductive[0] == 0){
                 cnVector.push(currentTemps[0]);//((1+2*alpha)*currentTemps[i]-alpha*(currentTemps[i+1]));
             }
-            else if(i==currentTemps.length-1){
-                cnVector.push(currentTemps[i]);//(-alpha*currentTemps[i-1]+(1+2*alpha)*currentTemps[i]);
+            else if(i==0 && nonconductive[0] == 1){
+                cnVector.push(alphacn*currentTemps[i]+(1-2*alphacn)*currentTemps[i+1]+alphacn*(currentTemps[i+2]));//((1+2*alpha)*currentTemps[i]-alpha*(currentTemps[i+1]));
+            }
+            else if(i==currentTemps.length-1 && nonconductive[1] == 1){
+                cnVector.push(cnVector[i-1]);//(-alpha*currentTemps[i-1]+(1+2*alpha)*currentTemps[i]);
+            }
+            else if(i==currentTemps.length-1 && nonconductive[1] == 0){
+                cnVector.push(currentTemps[i]);
             }
             else{
                 cnVector.push(alphacn*currentTemps[i-1]+(1-2*alphacn)*currentTemps[i]+alphacn*(currentTemps[i+1]));
@@ -150,7 +174,7 @@ function HeatSolver(startingTemps){
         return cnVector;
     }
     
-    return {get_tempArray: get_tempArray, make_crank_nicolson_vector: make_crank_nicolson_vector, makecnLaplacian: makecnLaplacian, makeLaplacian: makeLaplacian, fifteen_flip_method: fifteen_flip_method, flip: flip, change_temp: change_temp, calculate_next_cn: calculate_next_cn, calculate_next_explicit: calculate_next_explicit, calculate_next_n_cn: calculate_next_n_cn}
+    return {get_tempArray: get_tempArray, make_crank_nicolson_vector: make_crank_nicolson_vector, makecnLaplacian: makecnLaplacian, makeLaplacian: makeLaplacian, fifteen_flip_method: fifteen_flip_method, flip: flip, change_temp: change_temp, calculate_next_cn: calculate_next_cn, calculate_next_explicit: calculate_next_explicit, calculate_next_n_cn: calculate_next_n_cn, sixty_graph_arrays: sixty_graph_arrays}
 }
 
 var heatsolver = HeatSolver([180,23,23,23,23,23,23]);
