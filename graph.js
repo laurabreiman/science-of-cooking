@@ -1,4 +1,4 @@
-
+var graphSteak=function(sampledata,flame){
 var graph=(function(){
 var setup=function(div,data,flame)	
 	{
@@ -277,3 +277,4 @@ function bumpLayer(layer,data) {
     $('.graph').each(function(){
         graph.setup($(this),sampledata,flame);});
 });
+}

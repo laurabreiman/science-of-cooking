@@ -133,14 +133,17 @@ var perfectSteak=function(div){
 				flipButtonFun(i);
 				counter++;
 			}
+			
 			addButtonFun();
 			subButtonFun();
 			buildData(n)
 			console.log(data);
 			//reset data
 		};
-		
+	
 		buildTable(1);
+		
+		displayDiv.append(GoButton);
 		displayDiv.append(inputTable);
 		div.append(displayDiv);
 		var steak=[data[0][1]];
@@ -148,8 +151,12 @@ var perfectSteak=function(div){
 		{
 			steak.push(meatTemp)
 		}
+		steak.push[data[0][2]]
 		console.log(steak);
-		return {data:data,steak:steak};
+		var GoButton=$("<button class='btn' id='GoButton'>Lets get Cooking!</button>");
+		GoButton.on("click",function(){calculate(data,steak)});
+		displayDiv.append(GoButton);
+		
 	};
 	return {setup:setup};
 }();
