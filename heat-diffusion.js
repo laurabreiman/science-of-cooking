@@ -118,12 +118,19 @@ function HeatSolver(startingTemps){
 			
             if(i%10 ==0){
                 grapharray.push(tempArray[tempArray.length-1]);
+<<<<<<< HEAD
                 graphlabels.push([count,1,180]);
 				count++;
             }
 			
         }
         return {'temps':grapharray,'points':graphlabels};
+=======
+            }
+            graphlabels.push([i,1,180]);
+        }
+        return {temps: grapharray, points: graphlabels}
+>>>>>>> 37fe330fc406cad71596a76e91733beea11bdfd0
     }
     
     function change_temp(top_and_or_bottom, temp){
@@ -180,4 +187,4 @@ function HeatSolver(startingTemps){
     return {get_tempArray: get_tempArray, make_crank_nicolson_vector: make_crank_nicolson_vector, makecnLaplacian: makecnLaplacian, makeLaplacian: makeLaplacian, fifteen_flip_method: fifteen_flip_method, flip: flip, change_temp: change_temp, calculate_next_cn: calculate_next_cn, calculate_next_explicit: calculate_next_explicit, calculate_next_n_cn: calculate_next_n_cn, sixty_graph_arrays: sixty_graph_arrays}
 }
 
-var heatsolver = HeatSolver([180,23,23,23,23,23,23]);
+var heatsolver = HeatSolver([180,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23]);
