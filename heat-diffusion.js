@@ -119,8 +119,7 @@ function HeatSolver(startingTemps){
                 graphlabels.push([i,0,180]);
             }
         }
-        console.log(grapharray);
-        console.log(graphlabels);
+        return {temps: grapharray, points: graphlabels}
     }
     
     function change_temp(top_and_or_bottom, temp){
