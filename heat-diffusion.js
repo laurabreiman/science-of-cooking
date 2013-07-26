@@ -123,9 +123,12 @@ function HeatSolver(startingTemps){
     }
     
     function fifteen_flip_method(duration){
-        for(var i=0; i<(duration)/150; i++){
-            calculate_next_n_cn(150);
-            flip();
+        for(var i=0; i<duration; i++){
+            var cnVector = make_crank_nicolson_vector();
+            calculate_next_cn(cnVector);
+            if(i%150 == 0){
+                flip();
+            }
         }
     }
     
