@@ -106,6 +106,40 @@ function calculate_next_cn(tempArray, cnVector, invlaplacian){
     tempArray.push(nextTemps);
 }
 
+function calculate_next_n_cn(tempArray, n){
+    var laplacian = makecnLaplacian(tempArray);
+    var invlaplacian = numeric.inv(laplacian);
+    
+    for(var i=0; i<n; i++){
+        var cnVector = make_crank_nicolson_vector(tempArray);
+        calculate_next_cn(tempArray, cnVector, invlaplacian);
+    }
+    
+}
+
+function change_temp(tempArray, top_and_or_bottom, temp){
+    if(top_and_or_bottom[0] == 1){
+        tempArray[tempArray.length-1][0] = temp;
+    }
+    if(top_and_or_bottom[1] == 1){
+        tempArray[tempArray.length-1][tempArray[0].length-1] = temp;
+    }
+}
+
+function flip(tempArray){
+    var top = tempArray[tempArray.length-1][tempArray[0].length-1];
+    var bottom = tempArray[tempArray.length-1][0];
+    tempArray[tempArray.length-1][0] = top;
+    tempArray[tempArray.length-1][tempArray[0].length-1] = bottom; 
+}
+
+function fifteen_flip_method(tempArray,duration){
+    for(var i=0; i<(duration*10)/150; i++){
+        calculate_next_n_cn(tempArray,150);
+        flip(tempArray)
+    }
+}
+
 function make_crank_nicolson_vector(tempArray){
     var currentTemps = tempArray[tempArray.length-1];
     var cnVector = [];
