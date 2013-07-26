@@ -2,8 +2,9 @@
 var graph=(function(){
 var setup=function(div,data,flame)	
 	{
+	
 //cm/block		
-var dy=.5		
+var dy=.1	
 var n = boundaries.length*2+1, // number of layers
     m = data.length; // number of samples per layer
 
@@ -102,6 +103,13 @@ var svg = d3.select("body").append("svg")
         .attr('x', 12)
         .attr('y', function(d, i){ return (-125+i *  15+8);})
         .text(function(d){ return d['info']; });	
+	svg.append("text")
+    .attr("class", "mylabel")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", -margin.top/2)
+	.style("font-size",'30px')
+    .text("Steak temperature is: ______°C");
 		
 var layer = svg.selectAll(".layer")
     .data(layers)
@@ -126,10 +134,18 @@ var rect = layer.selectAll("rect")
 		}
 		var leg=d3.selectAll('.legend')[0][boundaries.length-loc];
 		$(leg).css("fill","red");
-	
-			
+		
+		
         
 	})
+.on("mousemove",function(){
+var pos=6-parseInt((event.pageY-margin.top)/(height/yStackMax));
+var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-5.5);
+$(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ data[line][pos]+ "°C");
+})
+			
+        
+
 .on("mouseout", function() {
 		var rects = d3.select(this);
 		var loc=null;

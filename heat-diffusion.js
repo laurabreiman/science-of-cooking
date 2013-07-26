@@ -111,16 +111,19 @@ function HeatSolver(startingTemps){
     function sixty_graph_arrays(){
         var grapharray = [];
         var graphlabels = [];
+		var count=0;
         for(var i=0; i<600; i++){
             var cnVector = make_crank_nicolson_vector();
             calculate_next_cn(cnVector);
+			
             if(i%10 ==0){
                 grapharray.push(tempArray[tempArray.length-1]);
-                graphlabels.push([i,0,180]);
+                graphlabels.push([count,1,180]);
+				count++;
             }
+			
         }
-        console.log(grapharray);
-        console.log(graphlabels);
+        return {'temps':grapharray,'points':graphlabels};
     }
     
     function change_temp(top_and_or_bottom, temp){
