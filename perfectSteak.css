@@ -1,0 +1,18 @@
+.inputTable{
+	position: relative;
+	width: 40% !important;
+	text-align: center;
+	left: 30% !important;
+}
+
+#addButton{
+	position: relative;
+	top: 0%;
+	float: left;
+}
+
+#subButton{
+	position: relative;
+	top: 0%;
+	float: left;
+}
