@@ -6,8 +6,8 @@ var perfectSteak=function(div){
 		var inpTabHeader=$("<tr><th class='inpTabHeader'>Time (s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
 		var timeStep=15;
 
-		var meatTemp=25;
-		var thickness=8cm;
+		var meatTemp=23;
+		var thickness=8;
 		
 		var addButton;
 		var subButton;
@@ -40,27 +40,24 @@ var perfectSteak=function(div){
 		
 		var timeFun=function(j){
 			$("#row"+j+"time").change(function(){
-				console.log("kipper");
-				console.log("j is " +j);
-				console.log(timeStep);
+			
 				if (j==0){
 					timeStep=parseInt($("#row"+j+"time").value);
-					console.log(timeStep);
+				
 				}
 			})
 		};
 		
 		var flipButtonFun=function(k){
 			flipButton.on("click", function(){
-				console.log("k" +k);
+
 				side1data=0
 				side1data+=parseInt(parseFloat($('#inp1_'+k).val()))||0;
 				side2data=parseInt(parseFloat($('#inp2_'+k).val()));
 				$('#inp1_'+k).val(side2data);
 				$('#inp2_'+k).val(side1data);
 				
-				console.log("data "+side1data+side2data);
-				console.log("raw"+$('#row'+k+'side1').value);
+
 			})
 		};
 		
@@ -75,8 +72,8 @@ var perfectSteak=function(div){
 			for (var q=0; q<numRows; q++){
 				//var currentTime=$("#row"+q+"time").val();
 				var currentTime=timeStep*q;
-				var currentSide1=$("#inp1_"+q).val()||25;
-				var currentSide2=$("#inp2_"+q).val()||25;
+				var currentSide1=$("#inp1_"+q).val()||23;
+				var currentSide2=$("#inp2_"+q).val()||23;
 				data.push([currentTime, currentSide1, currentSide2])
 			}
 		};
@@ -103,19 +100,19 @@ var perfectSteak=function(div){
 					inputTable.append(addButton, subButton);
 				}
 				if (data.length==0){
-					console.log("zero")
+					
 					if (i == 0){
-						inp1.val(25);
-						inp2.val(25);
+						inp1.val(23);
+						inp2.val(23);
 						//data.push([timeStep, 25, 25])
 					} else{
 						var iminus = i-1;
-						inp1.val($("#inp1_"+iminus).val()||25);
-						inp2.val($("#inp2_"+iminus).val()||25);
+						inp1.val($("#inp1_"+iminus).val()||23);
+						inp2.val($("#inp2_"+iminus).val()||23);
 						//data.push([timeStep*i, $("#inp1_"+iminus).val(), $("#inp2_"+iminus).val()])
 					}
 				}else if (data.length<=n){
-					console.log("lessthan")
+				
 					for (var a=0; a<data.length; a++){
 						inp1.val(data[a][1]);
 						inp2.val(data[a][2]);
@@ -125,29 +122,41 @@ var perfectSteak=function(div){
 						inp2.val(data[n-1][2]);
 					}
 				}else if (data.length>n){
-					console.log("morethan")
+					
 					for (var b=0; b<n; b++){
 						inp1.val(data[b][1]);
 						inp2.val(data[b][2])
 					}
 				}
-				console.log(counter)
+			
 				timeFun(counter);
 				flipButtonFun(i);
 				counter++;
 			}
+			
 			addButtonFun();
 			subButtonFun();
 			buildData(n)
 			console.log(data);
 			//reset data
 		};
+	
+		buildTable(1);
 		
-		buildTable(5);
+		displayDiv.append(GoButton);
 		displayDiv.append(inputTable);
 		div.append(displayDiv);
+		var steak=[data[0][1]];
+		for(var i=0;i<thickness*10;i++)
+		{
+			steak.push(meatTemp)
+		}
+		steak.push[data[0][2]]
+		console.log(steak);
+		var GoButton=$("<button class='btn' id='GoButton'>Lets get Cooking!</button>");
+		GoButton.on("click",function(){calculate(data,steak)});
+		displayDiv.append(GoButton);
 		
-		return {data:data, meatTemp:meatTemp, thickness:thickness};
 	};
 	return {setup:setup};
 }();

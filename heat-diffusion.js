@@ -124,7 +124,6 @@ function HeatSolver(startingTemps){
             else{
                 nextTime = time_top_bottom[j+1][0];
             }
-            console.log(thisTime,nextTime);
             change_temp(time_top_bottom[j][1], time_top_bottom[j][2])
             
             for(var i=thisTime; i<nextTime; i++){
@@ -201,5 +200,3 @@ function HeatSolver(startingTemps){
 }
 
 var heatsolver = HeatSolver([180,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23]);
-
-console.log(heatsolver.sixty_graph_arrays([[0,23,180],[1000,23,180]]))

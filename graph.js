@@ -1,4 +1,4 @@
-
+var graphSteak=function(sampledata,flame){
 var graph=(function(){
 var setup=function(div,data,flame)	
 	{
@@ -139,9 +139,9 @@ var rect = layer.selectAll("rect")
         
 	})
 .on("mousemove",function(){
-var pos=6-parseInt((event.pageY-margin.top)/(height/yStackMax));
+var pos=parseInt(data[0].length-(event.pageY-margin.top)/(height/yStackMax));
 var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-5.5);
-$(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ data[line][pos]+ "°C");
+$(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ data[line][pos].toFixed(2)+ "°C");
 })
 			
         
@@ -277,3 +277,4 @@ function bumpLayer(layer,data) {
     $('.graph').each(function(){
         graph.setup($(this),sampledata,flame);});
 });
+}
