@@ -118,19 +118,14 @@ function HeatSolver(startingTemps){
 			
             if(i%10 ==0){
                 grapharray.push(tempArray[tempArray.length-1]);
-<<<<<<< HEAD
                 graphlabels.push([count,1,180]);
 				count++;
             }
 			
         }
-        return {'temps':grapharray,'points':graphlabels};
-=======
-            }
-            graphlabels.push([i,1,180]);
-        }
+   
         return {temps: grapharray, points: graphlabels}
->>>>>>> 37fe330fc406cad71596a76e91733beea11bdfd0
+
     }
     
     function change_temp(top_and_or_bottom, temp){
