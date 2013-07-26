@@ -116,8 +116,8 @@ function HeatSolver(startingTemps){
             calculate_next_cn(cnVector);
             if(i%10 ==0){
                 grapharray.push(tempArray[tempArray.length-1]);
-                graphlabels.push([i,0,180]);
             }
+            graphlabels.push([i,1,180]);
         }
         return {temps: grapharray, points: graphlabels}
     }
@@ -176,4 +176,4 @@ function HeatSolver(startingTemps){
     return {get_tempArray: get_tempArray, make_crank_nicolson_vector: make_crank_nicolson_vector, makecnLaplacian: makecnLaplacian, makeLaplacian: makeLaplacian, fifteen_flip_method: fifteen_flip_method, flip: flip, change_temp: change_temp, calculate_next_cn: calculate_next_cn, calculate_next_explicit: calculate_next_explicit, calculate_next_n_cn: calculate_next_n_cn, sixty_graph_arrays: sixty_graph_arrays}
 }
 
-var heatsolver = HeatSolver([180,23,23,23,23,23,23]);
+var heatsolver = HeatSolver([180,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23]);
