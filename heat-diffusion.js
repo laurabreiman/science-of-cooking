@@ -116,6 +116,7 @@ function HeatSolver(startingTemps){
     function sixty_graph_arrays(time_top_bottom){
         var grapharray = [];
         var graphlabels = [];
+        var temperatures = [];
 		var count=0;
         
         var lastTime = time_top_bottom[time_top_bottom.length-1][0];
@@ -145,8 +146,15 @@ function HeatSolver(startingTemps){
             }
 
             change_temp(time_top_bottom[j][1], time_top_bottom[j][2])
+           
             
             for(var i=thisTime; i<nextTime; i+=timestep){
+                if(i==thisTime){
+                    temperatures.push([time_top_bottom[j][1], time_top_bottom[j][2]])
+                }
+                else{
+                    temperatures.push(temperatures[temperatures.length-1]);
+                }
                 var cnVector = make_crank_nicolson_vector();
                 calculate_next_cn(cnVector);                
             }
@@ -158,14 +166,14 @@ function HeatSolver(startingTemps){
 
             grapharray.push(tempArray[parseInt(i)])
 			
-			if(tempArray[parseInt(i)][0] > 25 && tempArray[parseInt(i)][arrays-1] > 25){
+			if(temperatures[parseInt(i)][0] > 25 && temperatures[parseInt(i)][1] > 25){//if(tempArray[parseInt(i)][0] > 25 && tempArray[parseInt(i)][arrays-1] > 25){
                 graphlabels.push([count,0,tempArray[parseInt(i)][0]]);
-					count++;
+				count++;
 				graphlabels.push([count,1,tempArray[parseInt(i)][arrays-1]]);
 			
             }
-            else if(tempArray[parseInt(i)][0] > 25){
-                           graphlabels.push([count,1,tempArray[parseInt(i)][0]]);
+            else if(temperatures[parseInt(i)][0] > 25){
+                graphlabels.push([count,1,tempArray[parseInt(i)][0]]);
 			
             }
             else{
