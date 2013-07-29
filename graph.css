@@ -32,3 +32,9 @@ background-image:-webkit-linear-gradient(top, #693d34 10%, #e87c66 30%,#f52900 5
 background-image:-o-linear-gradient(top, #693d34 10%, #e87c66 30%,#f52900 50%,#e87c66 70%,#693d34 90%);
 background-image:-ms-linear-gradient(top, #693d34 10%, #e87c66 30%,#f52900 50%,#e87c66 70%,#693d34 90%);
  background-image:-webkit-gradient(linear, right top, right bottom, color-stop(10%,#693d34), color-stop(30%,#e87c66),color-stop(50%,#f52900),color-stop(70%,#e87c66),color-stop(90%,#693d34));}
+
+.line {
+  fill: none;
+  stroke: black;
+  stroke-width: 1.5px;
+}

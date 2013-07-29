@@ -17,18 +17,6 @@ function HeatSolver(startingTemps){
     
     var nonconductive = [0,1];
     
-    var outer_width = 300;
-    var outer_height = 300;
-    
-    var margin = { top: 20, right: 20, bottom: 20, left: 20 }
-    var chart_width = outer_width - margin.left - margin.right;
-    var chart_height = outer_height -margin.top - margin.bottom;
-    
-    var x_scale = d3.scale.ordinal().domain(d3.range(data[0].length)).rangeBands([0,chart_width]);
-    var y_scale = d3.scale.linear().domain([0,200]).range([chart_height,0]);
-    
-    var chart = d3.select(".chart-container").append("svg").attr("class","chart").attr("height", outer_height).attr("width",outer_width).append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")");
-    
     function get_tempArray(){
         return tempArray;
     }
@@ -117,6 +105,12 @@ function HeatSolver(startingTemps){
         for(var i=0; i<n; i++){
             var cnVector = make_crank_nicolson_vector();
             calculate_next_cn(cnVector);
+        }
+    }
+    
+    function calculate_next_n_exp(n){   
+        for(var i=0; i<n; i++){
+            calculate_next_explicit();
         }
     }
     
@@ -228,21 +222,58 @@ function HeatSolver(startingTemps){
         return cnVector;
     }
     
-    function setupChart(){
-    }
-    
-    function drawLine(){
-        var line = d3.svg.line()
-            .x(function(d,i) { return x_scale(i)+x_scale.rangeBand()/2; })
-            .y(function(d) { return y_scale(d.y + d.y0); });
-
-        chart.append("path")
-              .datum(tempArray)
-              .attr("class", "line")
-              .attr("d", line);
-    }
-    
-    return {get_tempArray: get_tempArray, make_crank_nicolson_vector: make_crank_nicolson_vector, makecnLaplacian: makecnLaplacian, makeLaplacian: makeLaplacian, fifteen_flip_method: fifteen_flip_method, flip: flip, change_temp: change_temp, calculate_next_cn: calculate_next_cn, calculate_next_explicit: calculate_next_explicit, calculate_next_n_cn: calculate_next_n_cn, sixty_graph_arrays: sixty_graph_arrays}
+    return {get_tempArray: get_tempArray, make_crank_nicolson_vector: make_crank_nicolson_vector, makecnLaplacian: makecnLaplacian, makeLaplacian: makeLaplacian, fifteen_flip_method: fifteen_flip_method, flip: flip, change_temp: change_temp, calculate_next_cn: calculate_next_cn, calculate_next_explicit: calculate_next_explicit, calculate_next_n_cn: calculate_next_n_cn, sixty_graph_arrays: sixty_graph_arrays, calculate_next_n_exp: calculate_next_n_exp}
 }
 
 var heatsolver = HeatSolver([180,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23]);
+
+var outer_width = 300;
+var outer_height = 300;
+
+var margin = { top: 20, right: 20, bottom: 20, left: 20 }
+var chart_width = outer_width - margin.left - margin.right;
+var chart_height = outer_height -margin.top - margin.bottom;
+
+var x_scale = d3.scale.linear().domain([0,200]).range([0,chart_width]);
+var y_scale = d3.scale.linear().domain([0,200]).range([chart_height,0]);
+var chart;
+
+function setupChart(){
+    
+    chart = d3.select(".chart-container").append("svg").attr("class","chart").attr("height", outer_height).attr("width",outer_width).append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")");
+}
+
+function drawLine(){
+    var line = d3.svg.line()
+        .x(function(d,i) { return x_scale(i)})
+        .y(function(d) { return y_scale(d); });
+    
+    var chartdata1 = [];
+    var chartdata2 = [];
+    
+    heatsolver1 = HeatSolver([180,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23]);
+
+    heatsolver2 = HeatSolver([180,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23]);
+    
+    heatsolver1.calculate_next_n_cn(1000);
+    heatsolver2.calculate_next_n_exp(1000);
+    var tempArray1 = heatsolver1.get_tempArray();
+    var tempArray2 = heatsolver2.get_tempArray();
+    console.log(heatsolver1.get_tempArray());
+    console.log(heatsolver2.get_tempArray());
+    for(var i=0; i<1000; i++){
+        chartdata1.push(tempArray1[i][5]);
+        chartdata2.push(tempArray2[i][5]);
+    }
+        
+    chart.append("path")
+          .datum(chartdata1)
+          .attr("class", "line line1")
+          .attr("d", line);
+    
+    chart.append("path")
+          .datum(chartdata2)
+          .attr("class", "line line2")
+          .attr("d", line);
+}
+
