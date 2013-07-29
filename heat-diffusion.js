@@ -166,20 +166,21 @@ function HeatSolver(startingTemps){
 
             grapharray.push(tempArray[parseInt(i)])
 			
-			if(temperatures[parseInt(i/60)][0] > 25 && temperatures[parseInt(i/60)][1] > 25){//if(tempArray[parseInt(i)][0] > 25 && tempArray[parseInt(i)][arrays-1] > 25){
-                console.log(temperatures[parseInt(i/60)][0], temperatures[parseInt(i/60)][1]);
-                graphlabels.push([count,0,temperatures[parseInt(i/60)][0]]);
+        }
+        console.log(temperatures)
+        for(var i=0; i<temperatures.length; i++){
+			if(temperatures[parseInt(i)][0] > 25 && temperatures[parseInt(i)][1] > 25){//if(tempArray[parseInt(i)][0] > 25 && tempArray[parseInt(i)][arrays-1] > 25){
+                graphlabels.push([count,0,temperatures[parseInt(i)][0]]);
 				count++;
-				graphlabels.push([count,1,temperatures[parseInt(i/60)][1]]);
+				graphlabels.push([count,1,temperatures[parseInt(i)][1]]);
 			
             }
-            else if(temperatures[parseInt(i/60)][0] > 25){
-                console.log(temperatures[parseInt(i/60)][0], temperatures[parseInt(i/60)][1]);
-                graphlabels.push([count,0,temperatures[parseInt(i/60)][0]]);
+            else if(temperatures[parseInt(i)][0] > 25){
+                graphlabels.push([count,0,temperatures[parseInt(i)][0]]);
 			
             }
-            else if(temperatures[parseInt(i/60)][1] > 25){
-                graphlabels.push([count,1,temperatures[parseInt(i/60)][1]]);
+            else if(temperatures[parseInt(i)][1] > 25){
+                graphlabels.push([count,1,temperatures[parseInt(i)][1]]);
 			
             }
             else{
