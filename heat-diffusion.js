@@ -16,18 +16,6 @@ function HeatSolver(startingTemps){
     
     var nonconductive = [0,1];
     
-    var outer_width = 300;
-    var outer_height = 300;
-    
-    var margin = { top: 20, right: 20, bottom: 20, left: 20 }
-    var chart_width = outer_width - margin.left - margin.right;
-    var chart_height = outer_height -margin.top - margin.bottom;
-    
-   // var x_scale = d3.scale.ordinal().domain(d3.range(data[0].length)).rangeBands([0,chart_width]);
-   // var y_scale = d3.scale.linear().domain([0,200]).range([chart_height,0]);
-    
-   // var chart = d3.select(".chart-container").append("svg").attr("class","chart").attr("height", outer_height).attr("width",outer_width).append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")");
-    
     function get_tempArray(){
         return tempArray;
     }
@@ -119,9 +107,16 @@ function HeatSolver(startingTemps){
         }
     }
     
+    function calculate_next_n_exp(n){   
+        for(var i=0; i<n; i++){
+            calculate_next_explicit();
+        }
+    }
+    
     function sixty_graph_arrays(time_top_bottom){
         var grapharray = [];
         var graphlabels = [];
+        var temperatures = [];
 		var count=0;
         
         var lastTime = time_top_bottom[time_top_bottom.length-1][0];
@@ -151,8 +146,15 @@ function HeatSolver(startingTemps){
             }
 
             change_temp(time_top_bottom[j][1], time_top_bottom[j][2])
+           
             
             for(var i=thisTime; i<nextTime; i+=timestep){
+                if(i==thisTime){
+                    temperatures.push([time_top_bottom[j][1], time_top_bottom[j][2]])
+                }
+                else{
+                    temperatures.push(temperatures[temperatures.length-1]);
+                }
                 var cnVector = make_crank_nicolson_vector();
                 calculate_next_cn(cnVector);                
             }
@@ -164,23 +166,32 @@ function HeatSolver(startingTemps){
 
             grapharray.push(tempArray[parseInt(i)])
 			
-			if(tempArray[parseInt(i)][0] > 25 && tempArray[parseInt(i)][arrays-1] > 25){
-                graphlabels.push([count,0,tempArray[parseInt(i)][0]]);
-					count++;
-				graphlabels.push([count,1,tempArray[parseInt(i)][arrays-1]]);
+        }
+        console.log(temperatures)
+        for(var i=0; i<temperatures.length; i++){
+			if(temperatures[parseInt(i)][0] > 25 && temperatures[parseInt(i)][1] > 25){//if(tempArray[parseInt(i)][0] > 25 && tempArray[parseInt(i)][arrays-1] > 25){
+                graphlabels.push([count,0,temperatures[parseInt(i)][0]]);
+				count++;
+				graphlabels.push([count,1,temperatures[parseInt(i)][1]]);
 			
             }
-            else if(tempArray[parseInt(i)][0] > 25){
-                           graphlabels.push([count,1,tempArray[parseInt(i)][0]]);
+            else if(temperatures[parseInt(i)][0] > 25){
+                graphlabels.push([count,0,temperatures[parseInt(i)][0]]);
+			
+            }
+            else if(temperatures[parseInt(i)][1] > 25){
+                graphlabels.push([count,1,temperatures[parseInt(i)][1]]);
 			
             }
             else{
-              	graphlabels.push([count,0,tempArray[parseInt(i)][tempArray[parseInt(i)].length-1]]);
+//              	graphlabels.push([count,0,temperatures[parseInt(i/60)][1]]);
             }
        
 
             count++;
         }
+        
+        console.log(graphlabels);
         return {temps: grapharray, points: graphlabels}
 
     }
@@ -232,22 +243,56 @@ function HeatSolver(startingTemps){
         }
         return cnVector;
     }
-    
-     /*function setupChart(){
-    }
-    
-   function drawLine(){
-        var line = d3.svg.line()
-            .x(function(d,i) { return x_scale(i)+x_scale.rangeBand()/2; })
-            .y(function(d) { return y_scale(d.y + d.y0); });
-
-        chart.append("path")
-              .datum(tempArray)
-              .attr("class", "line")
-              .attr("d", line);
-    }*/
-    
-    return {get_tempArray: get_tempArray, make_crank_nicolson_vector: make_crank_nicolson_vector, makecnLaplacian: makecnLaplacian, makeLaplacian: makeLaplacian, fifteen_flip_method: fifteen_flip_method, flip: flip, change_temp: change_temp, calculate_next_cn: calculate_next_cn, calculate_next_explicit: calculate_next_explicit, calculate_next_n_cn: calculate_next_n_cn, sixty_graph_arrays: sixty_graph_arrays}
+ 
+    return {get_tempArray: get_tempArray, make_crank_nicolson_vector: make_crank_nicolson_vector, makecnLaplacian: makecnLaplacian, makeLaplacian: makeLaplacian, fifteen_flip_method: fifteen_flip_method, flip: flip, change_temp: change_temp, calculate_next_cn: calculate_next_cn, calculate_next_explicit: calculate_next_explicit, calculate_next_n_cn: calculate_next_n_cn, sixty_graph_arrays: sixty_graph_arrays, calculate_next_n_exp: calculate_next_n_exp}
 }
 
+var heatsolver = HeatSolver([180,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23]);
 
+var outer_width = 300;
+var outer_height = 300;
+
+var margin = { top: 20, right: 20, bottom: 20, left: 20 }
+var chart_width = outer_width - margin.left - margin.right;
+var chart_height = outer_height -margin.top - margin.bottom;
+
+var x_scale = d3.scale.linear().domain([0,200]).range([0,chart_width]);
+var y_scale = d3.scale.linear().domain([0,200]).range([chart_height,0]);
+var chart;
+
+function setupChart(){
+    
+    chart = d3.select(".chart-container").append("svg").attr("class","chart").attr("height", outer_height).attr("width",outer_width).append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")");
+}
+
+function drawLine(){
+    var line = d3.svg.line()
+        .x(function(d,i) { return x_scale(i)})
+        .y(function(d) { return y_scale(d); });
+    
+    var chartdata1 = [];
+    var chartdata2 = [];
+    
+    heatsolver1 = HeatSolver([180,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23]);
+
+    heatsolver2 = HeatSolver([180,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23]);
+    
+    heatsolver1.calculate_next_n_cn(1000);
+    heatsolver2.calculate_next_n_exp(1000);
+    var tempArray1 = heatsolver1.get_tempArray();
+    var tempArray2 = heatsolver2.get_tempArray();
+    for(var i=0; i<1000; i++){
+        chartdata1.push(tempArray1[i][5]);
+        chartdata2.push(tempArray2[i][5]);
+    }
+        
+    chart.append("path")
+          .datum(chartdata1)
+          .attr("class", "line line1")
+          .attr("d", line);
+    
+    chart.append("path")
+          .datum(chartdata2)
+          .attr("class", "line line2")
+          .attr("d", line);
+}
