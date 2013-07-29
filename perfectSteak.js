@@ -1,164 +1,210 @@
 var perfectSteak=function(div){
+ 
+function Model(div){
+var meatTemp=23;
+var thickness=6;
+var data=[];
+var timeStep=15;
+var inputTable=$(".inputTable");
+ 
+var changeThickness=function(newVal){
+
+thickness=newVal;
+
+}
+ 
+var changeMeatTemp=function(newVal){
+meatTemp=newVal;
+}
+ 
+//OK THIS WORKS NOW
+var dataClear=function(){
+while(data.length>0){
+data.pop();
+}
+}
+ 
+//THIS ADDS AN ELEMENT TO THE DATA ARRAY
+var dataAdd=function(item){
+data.push(item);
+}
+ 
+//THIS IS FOR CHANGING THE ENTIRE DATA ARRAY
+var dataChange=function(array){
+data=array;
+for (var d=0; d<array.length; d++){
+data.push[array[d]]
+}
+}
+ 
+return {meatTemp:meatTemp, thickness:thickness, data:data, changeThickness:changeThickness, timeStep:timeStep, dataAdd:dataAdd,
+dataClear:dataClear, dataChange:dataChange, changeMeatTemp:changeMeatTemp}
+}
+ 
+ 
+ 
+ 
+function View(div, model){
+ 
+var inputTable = $("<table class='inputTable table table-striped'></table>");
+var displayDiv = $("<div class='displayDiv'></div>");
+displayDiv.append(inputTable);
+div.append(displayDiv);
+ 
+div.append
+var addButton;
+var subButton;
+var flipButton;
+var cookButton;
+ 
+var numRows=2;
+ 
+var buildTable=function(){
+var inpTabHeader=$("<tr><th class='inpTabHeader'>Time (s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
+inputTable.append(inpTabHeader);
+var timeStep=model.timeStep;
+
+var len=model.data.length;
+var newData=[]
+$("#cookButton").remove();
+ 
+for(var i=0; i<numRows; i++){
+var iminus=i-1;
+addButton=$("<button class='btn btn-mini' id='addButton'>+</button>");
+subButton=$("<button class='btn btn-mini' id='subButton'>-</button>");
+flipButton=$("<button class='btn btn-mini' id='flipButton"+i+"'><font size=4px>&harr;</font></button>");
+cookButton=$("<button class='btn' id='cookButton'>Cook!</button>");
 	
-	var setup=function(div){
-		var displayDiv = $("<div class='displayDiv'></div>");
-		var inputTable = $("<table class='inputTable table table-striped'></table>");
-		var inpTabHeader=$("<tr><th class='inpTabHeader'>Time (s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
-		var timeStep=15;
+var row=$("<tr></tr>");
+var timeCol=$("<td id='row"+i+"time'><input type='text' value="+i*model.timeStep+"></td>");
+var inp1=$("<input type='text' id='inp1_"+i+"'>");
+var inp2=$("<input type='text' id='inp2_"+i+"'>");
+var step1Col=$("<td id='row"+i+"side1'></input>");
+step1Col.append(inp1);
+var step2Col=$("<td id='row"+i+"side2' class='row"+i+"'></td>");
+step2Col.append(inp2);
+step1Col.append(flipButton);
+row.append(timeCol, step1Col, step2Col);
+inputTable.append(row);
+if (i == numRows-1){
+inputTable.append(addButton, subButton);
+displayDiv.append(cookButton);
+}
+if (len==0){
 
-		var meatTemp=23;
-		var thickness=8;
-		
-		var addButton;
-		var subButton;
-		var flipButton;
-		var numRows=5;
-		
-		var addButtonFun=function(){
-			addButton.on("click", function(){
-				numRows++;
-				inputTable.empty();
-				buildTable(numRows);
-				});
-		};
-		
-		var subButtonFun=function(){
-			subButton.on("click", function(){
-			numRows--;
-			inputTable.empty();
-			buildTable(numRows);
-			if (numRows == 1){
-				inputTable.empty();
-				buildTable(numRows);
-				subButton.remove();
-			}else{
-				inputTable.empty();
-				buildTable(numRows);
-			}
-			});
-		};
-		
-		var timeFun=function(j){
-			$("#row"+j+"time").change(function(){
-			
-				if (j==0){
-					timeStep=parseInt($("#row"+j+"time").value);
-				
-				}
-			})
-		};
-		
-		var flipButtonFun=function(k){
-			flipButton.on("click", function(){
+inp1.val(23);
+inp2.val(23);
+model.dataAdd([timeStep*i, $("#inp1_"+i).val(), $("#inp2_"+i).val()])
 
-				side1data=0
-				side1data+=parseInt(parseFloat($('#inp1_'+k).val()))||0;
-				side2data=parseInt(parseFloat($('#inp2_'+k).val()));
-				$('#inp1_'+k).val(side2data);
-				$('#inp2_'+k).val(side1data);
-				
+} else if (i<=len){
 
-			})
-		};
-		
-		
-		timeFun(0);
-		
-		var data=[];
-		
-		//THIS FUNCTION IS CALLED WITHIN TABLE AND MAKES US SOME SHINY NICE DATA
-		var buildData=function(numRows){
-			data = [];
-			for (var q=0; q<numRows; q++){
-				//var currentTime=$("#row"+q+"time").val();
-				var currentTime=timeStep*q;
-				var currentSide1=$("#inp1_"+q).val()||23;
-				var currentSide2=$("#inp2_"+q).val()||23;
-				data.push([currentTime, currentSide1, currentSide2])
-			}
-		};
-		
-		var buildTable=function(n){
-			var counter=0;
-			inputTable.append(inpTabHeader);
-			for(var i=0; i<n; i++){
-				addButton=$("<button class='btn btn-mini' id='addButton'>+</button>");
-				subButton=$("<button class='btn btn-mini' id='subButton'>-</button>");
-				flipButton=$("<button class='btn btn-mini' id='flipButton"+i+"'><font size=4px>&harr;</font></button>");
-				var row=$("<tr></tr>");
-				var timeCol=$("<td id='row"+counter+"time'><input type='text' value="+counter*timeStep+"></td>");
-				var inp1=$("<input type='text' id='inp1_"+counter+"'>");
-				var inp2=$("<input type='text' id='inp2_"+counter+"'>");
-				var step1Col=$("<td id='row"+counter+"side1'></input>");
-				step1Col.append(inp1);
-				var step2Col=$("<td id='row"+counter+"side2' class='row"+counter+"'></td>");
-				step2Col.append(inp2);
-				step1Col.append(flipButton);
-				row.append(timeCol, step1Col, step2Col);
-				inputTable.append(row);
-				if (counter == n-1){
-					inputTable.append(addButton, subButton);
-				}
-				if (data.length==0){
-					
-					if (i == 0){
-						inp1.val(23);
-						inp2.val(23);
-						//data.push([timeStep, 25, 25])
-					} else{
-						var iminus = i-1;
-						inp1.val($("#inp1_"+iminus).val()||23);
-						inp2.val($("#inp2_"+iminus).val()||23);
-						//data.push([timeStep*i, $("#inp1_"+iminus).val(), $("#inp2_"+iminus).val()])
-					}
-				}else if (data.length<=n){
-				
-					for (var a=0; a<data.length; a++){
-						inp1.val(data[a][1]);
-						inp2.val(data[a][2]);
-					}
-					if (i==n){
-						inp1.val(data[n-1][1]);
-						inp2.val(data[n-1][2]);
-					}
-				}else if (data.length>n){
-					
-					for (var b=0; b<n; b++){
-						inp1.val(data[b][1]);
-						inp2.val(data[b][2])
-					}
-				}
-			
-				timeFun(counter);
-				flipButtonFun(i);
-				counter++;
-			}
-			
-			addButtonFun();
-			subButtonFun();
-			buildData(n)
-			console.log(data);
-			//reset data
-		};
-	
-		buildTable(1);
-		
-		displayDiv.append(GoButton);
-		displayDiv.append(inputTable);
-		div.append(displayDiv);
-		var steak=[data[0][1]];
-		for(var i=0;i<thickness*10;i++)
-		{
-			steak.push(meatTemp)
-		}
-		steak.push[data[0][2]]
-		console.log(steak);
-		var GoButton=$("<button class='btn' id='GoButton'>Lets get Cooking!</button>");
-		GoButton.on("click",function(){calculate(data,steak)});
-		displayDiv.append(GoButton);
-		
-	};
-	return {setup:setup};
+
+inp1.val(model.data[i][1]);
+inp2.val(model.data[i][2]);
+model.dataAdd([timeStep*i, $("#inp1_"+i).val(), $("#inp2_"+i).val()])
+} else{
+
+inp1.val(model.data[i-1][1]);
+inp2.val(model.data[i-1][2]);
+model.dataAdd([timeStep*i, $("#inp1_"+iminus).val(), $("#inp2_"+iminus).val()])
+}
+timeFun(i);
+flipButtonFun(i);
+}
+model.dataClear();
+addButtonFun();
+subButtonFun();
+CookButtonFun(); 
+ 
+
+};
+ 
+var addButtonFun=function(){
+addButton.on("click", function(){
+numRows++;
+$(".inputTable").empty();
+buildTable(numRows);
+});
+};
+ 
+var subButtonFun=function(){
+subButton.on("click", function(){
+numRows--;
+//$(".inputTable").empty();
+//buildTable(numRows);
+if (numRows == 1){
+$(".inputTable").empty();
+buildTable(numRows);
+subButton.remove();
+}else{
+$(".inputTable").empty();
+buildTable(numRows);
+}
+});
+};
+ 
+var CookButtonFun=function(){
+	cookButton.on("click", function(){
+
+model.dataClear();
+for (var e=0; e<numRows; e++){
+var curTime=model.timeStep*e;
+var cur1=$("#inp1_"+e).val();
+var cur2=$("#inp2_"+e).val();
+model.dataAdd([curTime, cur1, cur2]);
+model.changeMeatTemp($("#steakTemp").val())
+model.changeThickness($("#thicknessInp").val())
+
+}
+var steak = [model.data[0][1]]
+for(var m=0;m<model.thickness*10;m++)
+{steak.push(model.meatTemp)
+}
+steak.push(model.data[0][2]);
+calculate(model.data, steak)
+});
+}
+ 
+var timeFun=function(j){
+$("#row"+j+"time").change(function(){
+if (j==0){
+timeStep=parseInt($("#row"+j+"time").value);
+}
+})
+};
+ 
+var flipButtonFun=function(k){
+flipButton.on("click", function(){
+side1data=0
+side1data+=parseInt(parseFloat($('#inp1_'+k).val()))||0;
+side2data=parseInt(parseFloat($('#inp2_'+k).val()));
+$('#inp1_'+k).val(side2data);
+$('#inp2_'+k).val(side1data);
+})
+};
+ 
+return {buildTable: buildTable, addButtonFun:addButtonFun, subButtonFun:subButtonFun, flipButtonFun:flipButtonFun, timeFun:timeFun}
+ 
+}
+ 
+
+var setup=function(div){
+var model=Model();
+var view=View(div, model);
+ 
+ 
+//timeFun(0);
+ 
+view.buildTable();
+var thicknessInp=($("<div><input type='text' id='thicknessInp'></input> Meat Thickness</div>"));
+var steakTemp=($("<div><input type='text' id='steakTemp'></input>Meat Temperature</div>"));
+// thicknessInp.change(function(){
+// model.changethickness(thicknessInp.val());
+// })
+ 
+div.append(thicknessInp, steakTemp);
+};
+return {setup:setup};
 }();
 
 //call setup when the document is ready

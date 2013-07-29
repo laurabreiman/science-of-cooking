@@ -1,10 +1,10 @@
 var calculate=function(data,steak){
-
 var myheatsolver = HeatSolver(steak);
-var Thedata=myheatsolver.sixty_graph_arrays();
-var sampledata=Thedata.temps;
-var flame=Thedata.points;
+	console.log(data);
+//var Thedata=myheatsolver.sixty_graph_arrays(data);
+//var sampledata=Thedata.temps;
+//var flame=Thedata.points;
 
-graphSteak(sampledata,flame)
+//graphSteak(sampledata,flame)
 	
 }
