@@ -16,6 +16,18 @@ function HeatSolver(startingTemps){
     
     var nonconductive = [0,1];
     
+    var outer_width = 300;
+    var outer_height = 300;
+    
+    var margin = { top: 20, right: 20, bottom: 20, left: 20 }
+    var chart_width = outer_width - margin.left - margin.right;
+    var chart_height = outer_height -margin.top - margin.bottom;
+    
+   // var x_scale = d3.scale.ordinal().domain(d3.range(data[0].length)).rangeBands([0,chart_width]);
+   // var y_scale = d3.scale.linear().domain([0,200]).range([chart_height,0]);
+    
+   // var chart = d3.select(".chart-container").append("svg").attr("class","chart").attr("height", outer_height).attr("width",outer_width).append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")");
+    
     function get_tempArray(){
         return tempArray;
     }
@@ -137,27 +149,19 @@ function HeatSolver(startingTemps){
             else{
                 nonconductive[0] = 0;
             }
-            
-            console.log(nonconductive);
-            
+
             change_temp(time_top_bottom[j][1], time_top_bottom[j][2])
             
             for(var i=thisTime; i<nextTime; i+=timestep){
                 var cnVector = make_crank_nicolson_vector();
-                calculate_next_cn(cnVector);
-                
-//                if(i%10 ==0){
-//                    grapharray.push(tempArray[tempArray.length-1]);
-//                    graphlabels.push([count,1,180]);
-//                    count++;
-//                }
-                
+                calculate_next_cn(cnVector);                
             }
         }
-        console.log(get_tempArray());
+
         var arrays = tempArray.length;
         var step = arrays/60.0;
         for(var i=0; i<arrays; i+=step){
+
             grapharray.push(tempArray[parseInt(i)])
 			
 			if(tempArray[parseInt(i)][0] > 25 && tempArray[parseInt(i)][arrays-1] > 25){
@@ -174,6 +178,7 @@ function HeatSolver(startingTemps){
               	graphlabels.push([count,0,tempArray[parseInt(i)][tempArray[parseInt(i)].length-1]]);
             }
        
+
             count++;
         }
         return {temps: grapharray, points: graphlabels}
@@ -227,6 +232,20 @@ function HeatSolver(startingTemps){
         }
         return cnVector;
     }
+    
+     /*function setupChart(){
+    }
+    
+   function drawLine(){
+        var line = d3.svg.line()
+            .x(function(d,i) { return x_scale(i)+x_scale.rangeBand()/2; })
+            .y(function(d) { return y_scale(d.y + d.y0); });
+
+        chart.append("path")
+              .datum(tempArray)
+              .attr("class", "line")
+              .attr("d", line);
+    }*/
     
     return {get_tempArray: get_tempArray, make_crank_nicolson_vector: make_crank_nicolson_vector, makecnLaplacian: makecnLaplacian, makeLaplacian: makeLaplacian, fifteen_flip_method: fifteen_flip_method, flip: flip, change_temp: change_temp, calculate_next_cn: calculate_next_cn, calculate_next_explicit: calculate_next_explicit, calculate_next_n_cn: calculate_next_n_cn, sixty_graph_arrays: sixty_graph_arrays}
 }

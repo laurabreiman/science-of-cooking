@@ -1,4 +1,5 @@
 var perfectSteak=function(div){
+
  
 function Model(div){
 var meatTemp=23;
@@ -206,6 +207,7 @@ var steakTemp=($("<div><input type='text' id='steakTemp'></input>Meat Temperatur
 div.append(thicknessInp, steakTemp);
 };
 return {setup:setup};
+
 }();
 
 //call setup when the document is ready
