@@ -127,17 +127,19 @@ function HeatSolver(startingTemps){
             
             //set the conductivity of air to zero
             if(time_top_bottom[j][1] == 23){
-                nonconductive[0] = 1;
-            }
-            else{
-                nonconductive[0] = 0;
-            }
-            if(time_top_bottom[j][2] == 23){
                 nonconductive[1] = 1;
             }
             else{
                 nonconductive[1] = 0;
             }
+            if(time_top_bottom[j][2] == 23){
+                nonconductive[0] = 1;
+            }
+            else{
+                nonconductive[0] = 0;
+            }
+            
+            console.log(nonconductive);
             
             change_temp(time_top_bottom[j][1], time_top_bottom[j][2])
             
