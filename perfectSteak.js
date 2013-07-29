@@ -26,6 +26,7 @@ data.pop();
  
 //THIS ADDS AN ELEMENT TO THE DATA ARRAY
 var dataAdd=function(item){
+	
 data.push(item);
 }
  
@@ -94,19 +95,19 @@ if (len==0){
 
 inp1.val(23);
 inp2.val(23);
-model.dataAdd([timeStep*i, $("#inp1_"+i).val(), $("#inp2_"+i).val()])
+model.dataAdd([timeStep*i,  parseFloat($("#inp1_"+i).val()),  parseFloat($("#inp2_"+i).val())])
 
 } else if (i<=len){
 
 
 inp1.val(model.data[i][1]);
 inp2.val(model.data[i][2]);
-model.dataAdd([timeStep*i, $("#inp1_"+i).val(), $("#inp2_"+i).val()])
+model.dataAdd([timeStep*i,  parseFloat($("#inp1_"+i).val()),  parseFloat($("#inp2_"+i).val())])
 } else{
 
 inp1.val(model.data[i-1][1]);
 inp2.val(model.data[i-1][2]);
-model.dataAdd([timeStep*i, $("#inp1_"+iminus).val(), $("#inp2_"+iminus).val()])
+model.dataAdd([timeStep*i,  parseFloat($("#inp1_"+iminus).val()),  parseFloat($("#inp2_"+iminus).val())])
 }
 timeFun(i);
 flipButtonFun(i);
@@ -149,16 +150,16 @@ var CookButtonFun=function(){
 model.dataClear();
 for (var e=0; e<numRows; e++){
 var curTime=model.timeStep*e;
-var cur1=$("#inp1_"+e).val();
-var cur2=$("#inp2_"+e).val();
+var cur1= parseFloat($("#inp1_"+e).val());
+var cur2= parseFloat($("#inp2_"+e).val());
 model.dataAdd([curTime, cur1, cur2]);
-model.changeMeatTemp($("#steakTemp").val())
-model.changeThickness($("#thicknessInp").val())
+model.changeMeatTemp( parseFloat($("#steakTemp").val()))
+model.changeThickness( parseFloat($("#thicknessInp").val()))
 
 }
-var steak = [model.data[0][1]]
+var steak = [model.data[0][1]];
 for(var m=0;m<model.thickness*10;m++)
-{steak.push(model.meatTemp)
+{steak.push(parseFloat($("#steakTemp").val()))
 }
 steak.push(model.data[0][2]);
 calculate(model.data, steak)
