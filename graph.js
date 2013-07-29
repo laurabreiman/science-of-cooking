@@ -66,12 +66,13 @@ var y = d3.scale.linear()
     .range([height, 0]);
 var yscaled = d3.scale.linear()
     .domain([0, dy*yStackMax])
-    .range([height, 0]);	
+    .range([height,-1.2*m*dy]);	
 
 
 
 var xAxis = d3.svg.axis()
     .scale(xscaled)
+ 	.ticks(10)
     .tickSize(1,0)
 	.tickSubdivide(5)
     .tickPadding(30,0)
@@ -82,6 +83,12 @@ var yAxis = d3.svg.axis()
     .tickSize(0)
     .tickPadding(6)
     .orient("left");
+var make_y_axis=function() {        
+    return d3.svg.axis()
+        .scale(yscaled)
+        .orient("left")
+        
+}		
 var svg = d3.select("body").append("svg")
 	.attr("class","container")
     .attr("width", width + margin.left + margin.right)
@@ -229,7 +236,14 @@ svg.append("text")
     .attr("y", 13)
     .attr("x",-height+margin.bottom/4)
     .attr("transform", "rotate(-90)")
-    .text("Side 2");			
+    .text("Side 2");	
+
+ svg.append("g")         
+        .attr("class", "grid")
+        .call(make_y_axis()
+            .tickSize(-width, 0, 0)
+            .tickFormat("")
+        )		
 var timeout = setTimeout(function() {
   d3.select("input[value=\"grouped\"]").property("checked", true).each(change);
 }, 2000);
