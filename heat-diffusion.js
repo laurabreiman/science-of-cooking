@@ -166,23 +166,31 @@ function HeatSolver(startingTemps){
 
             grapharray.push(tempArray[parseInt(i)])
 			
-			if(temperatures[parseInt(i)][0] > 25 && temperatures[parseInt(i)][1] > 25){//if(tempArray[parseInt(i)][0] > 25 && tempArray[parseInt(i)][arrays-1] > 25){
-                graphlabels.push([count,0,tempArray[parseInt(i)][0]]);
+			if(temperatures[parseInt(i/60)][0] > 25 && temperatures[parseInt(i/60)][1] > 25){//if(tempArray[parseInt(i)][0] > 25 && tempArray[parseInt(i)][arrays-1] > 25){
+                console.log(temperatures[parseInt(i/60)][0], temperatures[parseInt(i/60)][1]);
+                graphlabels.push([count,0,temperatures[parseInt(i/60)][0]]);
 				count++;
-				graphlabels.push([count,1,tempArray[parseInt(i)][arrays-1]]);
+				graphlabels.push([count,1,temperatures[parseInt(i/60)][1]]);
 			
             }
-            else if(temperatures[parseInt(i)][0] > 25){
-                graphlabels.push([count,1,tempArray[parseInt(i)][0]]);
+            else if(temperatures[parseInt(i/60)][0] > 25){
+                console.log(temperatures[parseInt(i/60)][0], temperatures[parseInt(i/60)][1]);
+                graphlabels.push([count,0,temperatures[parseInt(i/60)][0]]);
+			
+            }
+            else if(temperatures[parseInt(i/60)][1] > 25){
+                graphlabels.push([count,1,temperatures[parseInt(i/60)][1]]);
 			
             }
             else{
-              	graphlabels.push([count,0,tempArray[parseInt(i)][tempArray[parseInt(i)].length-1]]);
+//              	graphlabels.push([count,0,temperatures[parseInt(i/60)][1]]);
             }
        
 
             count++;
         }
+        
+        console.log(graphlabels);
         return {temps: grapharray, points: graphlabels}
 
     }
@@ -272,8 +280,6 @@ function drawLine(){
     heatsolver2.calculate_next_n_exp(1000);
     var tempArray1 = heatsolver1.get_tempArray();
     var tempArray2 = heatsolver2.get_tempArray();
-    console.log(heatsolver1.get_tempArray());
-    console.log(heatsolver2.get_tempArray());
     for(var i=0; i<1000; i++){
         chartdata1.push(tempArray1[i][5]);
         chartdata2.push(tempArray2[i][5]);
