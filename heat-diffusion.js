@@ -3,7 +3,7 @@ function HeatSolver(startingTemps){
     var tempArray = [startingTemps];
     var D = .14; // in units of mm^2/sec
     
-    var timestep = 1;
+    var timestep = .25;
     var spacestep = 0.1;
     
     var alpha = (D*timestep);

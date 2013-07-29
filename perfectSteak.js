@@ -159,7 +159,7 @@ model.changeThickness( parseFloat($("#thicknessInp").val()))
 
 }
 var steak = [model.data[0][1]];
-for(var m=0;m<model.thickness*10;m++)
+for(var m=0;m<parseFloat($("#thicknessInp").val())*10;m++)
 {steak.push(parseFloat($("#steakTemp").val()))
 }
 steak.push(model.data[0][2]);
