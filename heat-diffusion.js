@@ -124,6 +124,21 @@ function HeatSolver(startingTemps){
             else{
                 nextTime = time_top_bottom[j+1][0];
             }
+            
+            //set the conductivity of air to zero
+            if(time_top_bottom[j][1] == 23){
+                nonconductive[0] = 1;
+            }
+            else{
+                nonconductive[0] = 0;
+            }
+            if(time_top_bottom[j][2] == 23){
+                nonconductive[1] = 1;
+            }
+            else{
+                nonconductive[1] = 0;
+            }
+            
             change_temp(time_top_bottom[j][1], time_top_bottom[j][2])
             
             for(var i=thisTime; i<nextTime; i++){
@@ -138,6 +153,7 @@ function HeatSolver(startingTemps){
                 
             }
         }
+        console.log(get_tempArray());
         var arrays = tempArray.length;
         var step = parseInt(arrays/60);
         for(var i=0; i<arrays; i+=step){
@@ -155,10 +171,11 @@ function HeatSolver(startingTemps){
     }
     
     function flip(){
-        var top = tempArray[tempArray.length-1][tempArray[0].length-1];
-        var bottom = tempArray[tempArray.length-1][0];
-        tempArray[tempArray.length-1][0] = top;
-        tempArray[tempArray.length-1][tempArray[0].length-1] = bottom;
+        change_temp(tempArray[tempArray.length-1][0], tempArray[tempArray.length-1][tempArray[0].length-1]);
+//        var top = tempArray[tempArray.length-1][tempArray[0].length-1];
+//        var bottom = tempArray[tempArray.length-1][0];
+//        tempArray[tempArray.length-1][0] = top;
+//        tempArray[tempArray.length-1][tempArray[0].length-1] = bottom;
         nonconductive.reverse();
     }
     
