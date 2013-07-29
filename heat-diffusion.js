@@ -1,10 +1,9 @@
-    
 function HeatSolver(startingTemps){
     
     var tempArray = [startingTemps];
     var D = .14; // in units of mm^2/sec
     
-    var timestep = 1;
+    var timestep = .25;
     var spacestep = 0.1;
     
     var alpha = (D*timestep);
@@ -144,30 +143,36 @@ function HeatSolver(startingTemps){
             else{
                 nonconductive[0] = 0;
             }
-                        
+
             change_temp(time_top_bottom[j][1], time_top_bottom[j][2])
             
-            for(var i=thisTime; i<nextTime; i++){
+            for(var i=thisTime; i<nextTime; i+=timestep){
                 var cnVector = make_crank_nicolson_vector();
                 calculate_next_cn(cnVector);                
             }
         }
-        
+
         var arrays = tempArray.length;
-        var step = parseInt(arrays/60);
+        var step = arrays/60.0;
         for(var i=0; i<arrays; i+=step){
-            grapharray.push(tempArray[i])
-            var sideIndex;
-            if(tempArray[i][0] > 23 && tempArray[i][arrays-1] > 23){
-                sideIndex=2;
+
+            grapharray.push(tempArray[parseInt(i)])
+			
+			if(tempArray[parseInt(i)][0] > 25 && tempArray[parseInt(i)][arrays-1] > 25){
+                graphlabels.push([count,0,tempArray[parseInt(i)][0]]);
+					count++;
+				graphlabels.push([count,1,tempArray[parseInt(i)][arrays-1]]);
+			
             }
-            else if(tempArray[i][0] > 23){
-                sideIndex=0;
+            else if(tempArray[parseInt(i)][0] > 25){
+                           graphlabels.push([count,1,tempArray[parseInt(i)][0]]);
+			
             }
             else{
-                sideIndex=1;
+              	graphlabels.push([count,0,tempArray[parseInt(i)][tempArray[parseInt(i)].length-1]]);
             }
-            graphlabels.push([count,sideIndex,tempArray[i][0]]);
+       
+
             count++;
         }
         return {temps: grapharray, points: graphlabels}
@@ -221,7 +226,7 @@ function HeatSolver(startingTemps){
         }
         return cnVector;
     }
-    
+ 
     return {get_tempArray: get_tempArray, make_crank_nicolson_vector: make_crank_nicolson_vector, makecnLaplacian: makecnLaplacian, makeLaplacian: makeLaplacian, fifteen_flip_method: fifteen_flip_method, flip: flip, change_temp: change_temp, calculate_next_cn: calculate_next_cn, calculate_next_explicit: calculate_next_explicit, calculate_next_n_cn: calculate_next_n_cn, sixty_graph_arrays: sixty_graph_arrays, calculate_next_n_exp: calculate_next_n_exp}
 }
 
@@ -276,4 +281,3 @@ function drawLine(){
           .attr("class", "line line2")
           .attr("d", line);
 }
-
