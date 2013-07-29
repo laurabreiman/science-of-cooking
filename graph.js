@@ -1,10 +1,11 @@
-var graphSteak=function(sampledata,flame){
+var graphSteak=function(sampledata,flame,timeScale){
 var graph=(function(){
 var setup=function(div,data,flame)	
 	{
 	
-//cm/block		
-var dy=.1	
+	
+var dy=.1;	
+var dx=timeScale;
 var n = boundaries.length*2+1, // number of layers
     m = data.length; // number of samples per layer
 
@@ -56,7 +57,10 @@ var margin = {top: 150, right: 10, bottom: 100, left: 50},
 var x = d3.scale.ordinal()
     .domain(d3.range(m))
     .rangeRoundBands([0, width], .08);
-
+var xscaled = d3.scale.ordinal()
+    .domain(d3.range(m))
+    .rangeRoundBands([0, width], .08);	
+		
 var y = d3.scale.linear()
     .domain([0, yStackMax])
     .range([height, 0]);
@@ -67,7 +71,7 @@ var yscaled = d3.scale.linear()
 
 
 var xAxis = d3.svg.axis()
-    .scale(x)
+    .scale(xscaled)
     .tickSize(1,0)
 	.tickSubdivide(5)
     .tickPadding(30,0)
@@ -79,6 +83,7 @@ var yAxis = d3.svg.axis()
     .tickPadding(6)
     .orient("left");
 var svg = d3.select("body").append("svg")
+	.attr("class","container")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
@@ -90,6 +95,7 @@ var svg = d3.select("body").append("svg")
       .append('g')
         .attr('class', 'legend')
 		.style('fill', "black");
+
 
     legend.append('rect')
         .attr('x', 0)
@@ -106,7 +112,7 @@ var svg = d3.select("body").append("svg")
 	svg.append("text")
     .attr("class", "mylabel")
     .attr("text-anchor", "end")
-    .attr("x", width)
+    .attr("x", width/1.3)
     .attr("y", -margin.top/2)
 	.style("font-size",'30px')
     .text("Steak temperature is: ______°C");
@@ -139,11 +145,13 @@ var rect = layer.selectAll("rect")
         
 	})
 .on("mousemove",function(){
-var pos=parseInt(data[0].length-(event.pageY-margin.top-300)/(height/yStackMax));
-var line=parseInt(event.pageX-margin.left/(x.rangeBand()+1)-5.5);
+
+
+	var Offset = document.getElementById("graphSteak").offsetTop;
+	var pos=parseInt(data[0].length-(event.pageY-Offset-margin.top)/(height/yStackMax));
+var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-5.0);
 $(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ data[line][pos].toFixed(2)+ "°C");
 
-	//$(d3.select('.mylabel')[0][0]).text("Steak temperature is "+pos+" °C");
 })
 			
         
@@ -176,7 +184,7 @@ var linktext = svg.selectAll("g.linklabelholder").data(flame);
      .attr("dy", function(d){return -Math.min(x.rangeBand(),30)/1.2+(height+2*Math.min(x.rangeBand(),30))*d[1]})
      .attr("text-anchor", "right")
 		.style("font-size", "8px")
-     .text(function(d) { return d[2]});	
+     .text(function(d) { return d[2].toFixed(0)});	
 
 		
 rect.transition()
