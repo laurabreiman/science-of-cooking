@@ -208,6 +208,7 @@ var len= tempArray[0].length;
         var graphlabels = [];
         var temperatures = [];
 		var count=0;
+        var maxTemps = tempArray[0];
         
         for(var j=0; j<time_top_bottom.length; j++){
             //set the conductivity of air to zero
@@ -234,7 +235,12 @@ var len= tempArray[0].length;
                     temperatures.push(temperatures[temperatures.length-1]);
                 }
                 var cnVector = make_crank_nicolson_vector();
-                calculate_next_cn(cnVector);                
+                calculate_next_cn(cnVector);  
+                for(var n=0; n<maxTemps.length; n++){
+                    if(tempArray[tempArray.length-1][n] > maxTemps[n]){
+                        maxTemps[n] = tempArray[tempArray.length-1][n];
+                    }
+                }
             }
         }
         
@@ -271,7 +277,7 @@ var len= tempArray[0].length;
         }
         
         
-        return {temps: grapharray, points: graphlabels, step: step}
+        return {temps: grapharray, points: graphlabels, step: step, maxTemps: maxTemps}
 
     }
     
