@@ -223,7 +223,8 @@ var perfectSteak = function (div) {
 				};
 				
 				//add to on click and calculate(blah,blah,blah, meatType)
-				var meatType = $("input[type='radio'][name='rate']:checked").val();
+				var meatType = $("input[type='radio'][name='meat']:checked").attr('id');
+				console.log(meatType);
 				//THIS WILL COOK THE STEAK IF WE HAVE VALID INPUTS
 				if (OKtoCook==true){
 					var steak = [model.data[0][1]];
@@ -231,7 +232,7 @@ var perfectSteak = function (div) {
 						steak.push(parseFloat($("#steakTemp").val()))
 					}
 					steak.push(model.data[0][2]);
-					calculate(model.data, $("input[type='radio'][name='rate']:checked").val()||steak)
+					calculate(model.data, steak,meatType)
 				}
             });
         }
@@ -277,15 +278,12 @@ var perfectSteak = function (div) {
         var thicknessInp = ($("<div id=thickInpDiv><input type='text' id='thicknessInp' value='6'></input> Meat Thickness (cm) </div>"));
         var steakTemp = ($("<div id=tempInpDiv><input type='text' id='steakTemp' value='23'></input>Initial Meat Temperature (&#176;C)</div>"));
 		//Item to hold inputs of meat. Append meatInput to your display
-		var meatInput=$('<form id="meatInp">What color type of meat are you cooking?<br>'
+		var meatInput=$('<form id="meatInp">What type of meat are you cooking?<br>'
 		+'<input type="radio" name="meat" id="Steak">Steak<br>'
 		+'<input type="radio" name="meat" id="Tuna">Tuna<br>'
 		+'<input type="radio" name="meat" id="Turkey">Turkey<br>'
 		+'<input type="radio" name="meat" id="Tofu">Tofu</form>');
- 
-        // thicknessInp.change(function(){
-        // model.changethickness(thicknessInp.val());
-        // })
+
 
         div.append(thicknessInp, steakTemp, meatInput);
     };
