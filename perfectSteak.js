@@ -298,12 +298,12 @@ var perfectSteak = function (div) {
         var steakTemp = ($("<div id=tempInpDiv><input type='text' id='steakTemp' value='23'></input>Initial Meat Temperature (&#176;C)</div>"));
 		//Item to hold inputs of meat. Append meatInput to your display
 		var meatInput=$('<form id="meatInp">What type of meat are you cooking?<br>'
-		+'<input type="radio" name="meat" id="Steak">Steak<br>'
+		+'<input type="radio" name="meat" id="Steak" checked>Steak<br>'
 		+'<input type="radio" name="meat" id="Tuna">Tuna<br>'
 		+'<input type="radio" name="meat" id="Turkey">Turkey</form>');
 
 
-        div.append(thicknessInp, steakTemp, meatInput);
+        $('.displayDiv').prepend(thicknessInp, steakTemp, meatInput);
     };
     return {
         setup: setup

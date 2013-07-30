@@ -76,7 +76,7 @@ var yscaled = d3.scale.linear()
 
 
 var xAxis = d3.svg.axis()
-    .scale(xscaled)
+    .scale(x)
  	.ticks(10)
     .tickSize(1,0)
 	.tickSubdivide(5)
@@ -168,10 +168,10 @@ var rect = layer.selectAll("rect")
 
 
 	var Offset = document.getElementById("graphSteak").offsetTop;
-	var pos=parseInt(data[0].length-(event.pageY-Offset-margin.top)/(height/yStackMax));
-var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-4.0);
+	var pos=parseInt(data[0].length-(event.pageY-Offset-margin.top)/(height/yStackMax)+1);
+var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-2.0);
 $(d3.select('.mylabel')[0][0]).text( meatType+ " temperature is "+ data[line][pos].toFixed(2)+ "\xB0C");
-	//$(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ line.toFixed(2)+ "\xB0C");
+	//$(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ pos+ "\xB0C");
 })
 			
         
