@@ -21,9 +21,6 @@ var tempScale={"Steak":
                 {'info':'Myoglobin denatures 60-70\xB0 C','position':2},
                 {'info':'Actin denatures 70-120\xB0 C','position':1},
                 {'info':'Browning reactions occur 120+\xB0 C','position':0}]
-		
-			   
-
               };
 
 //color
@@ -40,8 +37,7 @@ var color = {
         "Turkey":
             d3.scale.linear()
             .domain([0,1,5,9,10])
-            .range(['#692901','#FAEEE6','#B56980','#FAEEE6','#692901']),
-       
+            .range(['#692901','#FAEEE6','#B56980','#FAEEE6','#692901'])
 };
 //boundaries where color change occurs
 var boundaries= {"Steak":[120,70,60,55,40], "Tuna": [90,70,60,50,40],"Turkey":[120,70,60,55,40]};
