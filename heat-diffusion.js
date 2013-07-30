@@ -159,27 +159,28 @@ function HeatSolver(startingTemps){
                 calculate_next_cn(cnVector);                
             }
         }
-
-        var arrays = tempArray.length;
+ var arrays = tempArray.length;
         var step = arrays/60.0;
-        for(var i=0; i<arrays; i+=step){
+        for(var i=0; i<arrays-1; i+=step){
 
             grapharray.push(tempArray[parseInt(i)])
 			
-        }
-        console.log(temperatures)
-        for(var i=0; i<temperatures.length; i++){
-			if(temperatures[parseInt(i)][0] > 25 && temperatures[parseInt(i)][1] > 25){//if(tempArray[parseInt(i)][0] > 25 && tempArray[parseInt(i)][arrays-1] > 25){
+
+		
+			
+			if(temperatures[parseInt(i)][0] > 25 && temperatures[parseInt(i)][1] > 25){
+				
                 graphlabels.push([count,0,temperatures[parseInt(i)][0]]);
-				count++;
 				graphlabels.push([count,1,temperatures[parseInt(i)][1]]);
 			
             }
             else if(temperatures[parseInt(i)][0] > 25){
+		
                 graphlabels.push([count,0,temperatures[parseInt(i)][0]]);
 			
             }
             else if(temperatures[parseInt(i)][1] > 25){
+			
                 graphlabels.push([count,1,temperatures[parseInt(i)][1]]);
 			
             }
@@ -191,7 +192,7 @@ function HeatSolver(startingTemps){
             count++;
         }
         
-        console.log(graphlabels);
+        
         return {temps: grapharray, points: graphlabels}
 
     }

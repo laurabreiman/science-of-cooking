@@ -66,7 +66,7 @@ var y = d3.scale.linear()
     .range([height, 0]);
 var yscaled = d3.scale.linear()
     .domain([0, dy*yStackMax])
-    .range([height,-1.2*m*dy]);	
+    .range([height,0]);	
 
 
 

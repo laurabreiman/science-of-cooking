@@ -78,7 +78,7 @@ flipButton=$("<button class='btn btn-mini' id='flipButton"+i+"'><font size=4px>&
 cookButton=$("<button class='btn' id='cookButton'>Cook!</button>");
 	
 var row=$("<tr></tr>");
-var timeCol=$("<td id='row"+i+"time'><input type='text' value="+i*model.timeStep+"></td>");
+var timeCol=$("<td ><input id='row"+i+"time' type='text' value="+i*model.timeStep+"></td>");
 var inp1=$("<input type='text' id='inp1_"+i+"'>");
 var inp2=$("<input type='text' id='inp2_"+i+"'>");
 var step1Col=$("<td id='row"+i+"side1'></input>");
@@ -96,19 +96,19 @@ if (len==0){
 
 inp1.val(23);
 inp2.val(23);
-model.dataAdd([timeStep*i,  parseFloat($("#inp1_"+i).val()),  parseFloat($("#inp2_"+i).val())])
+model.dataAdd([parseFloat($("#row"+i+"time").val()),  parseFloat($("#inp1_"+i).val()),  parseFloat($("#inp2_"+i).val())])
 
 } else if (i<=len){
 
-
 inp1.val(model.data[i][1]);
 inp2.val(model.data[i][2]);
-model.dataAdd([timeStep*i,  parseFloat($("#inp1_"+i).val()),  parseFloat($("#inp2_"+i).val())])
+
+model.dataAdd([parseFloat($("#row"+i+"time").val()),  parseFloat($("#inp1_"+i).val()),  parseFloat($("#inp2_"+i).val())])
 } else{
 
 inp1.val(model.data[i-1][1]);
 inp2.val(model.data[i-1][2]);
-model.dataAdd([timeStep*i,  parseFloat($("#inp1_"+iminus).val()),  parseFloat($("#inp2_"+iminus).val())])
+model.dataAdd([parseFloat($("#row"+i+"time").val()),  parseFloat($("#inp1_"+iminus).val()),  parseFloat($("#inp2_"+iminus).val())])
 }
 timeFun(i);
 flipButtonFun(i);
@@ -117,28 +117,51 @@ model.dataClear();
 addButtonFun();
 subButtonFun();
 CookButtonFun(); 
- 
-
 };
- 
+ var addRow=function(table)
+ {
+flipButton=$("<button class='btn btn-mini' id='flipButton"+i+"'><font size=4px>&harr;</font></button>");
+var row=$("<tr></tr>");
+var i=numRows-1;
+var timeCol=$("<td id='row"+i+"time'><input type='text' value="+i*model.timeStep+"></td>");
+var inp1=$("<input type='text' id='inp1_"+i+"'>");
+var inp2=$("<input type='text' id='inp2_"+i+"'>");
+var step1Col=$("<td id='row"+i+"side1'></input>");
+step1Col.append(inp1);
+var step2Col=$("<td id='row"+i+"side2' class='row"+i+"'></td>");
+step2Col.append(inp2);
+step1Col.append(flipButton);
+row.append(timeCol, step1Col, step2Col);
+timeFun(i);
+flipButtonFun(i);
+table.append(row);
+inp1.val(23);
+inp2.val(23);
+model.dataAdd([parseFloat($("#row"+i+"time").val()),  parseFloat($("#inp1_"+i).val()),  parseFloat($("#inp2_"+i).val())])
+ }
+ var delRow=function(table)
+ {
+	 
+	 $('.'+table.class+' tr:last').remove();
+ }
 var addButtonFun=function(){
 addButton.on("click", function(){
 numRows++;
-$(".inputTable").empty();
-buildTable(numRows);
+addRow($(".inputTable"));
 });
 };
  
 var subButtonFun=function(){
+	
 subButton.on("click", function(){
 numRows--;
-//$(".inputTable").empty();
-//buildTable(numRows);
+delRow($(".inputTable"));
 if (numRows == 1){
 $(".inputTable").empty();
 buildTable(numRows);
 subButton.remove();
 }else{
+	
 $(".inputTable").empty();
 buildTable(numRows);
 }
@@ -147,10 +170,11 @@ buildTable(numRows);
  
 var CookButtonFun=function(){
 	cookButton.on("click", function(){
-
+d3.select("svg")
+       .remove();
 model.dataClear();
 for (var e=0; e<numRows; e++){
-var curTime=model.timeStep*e;
+var curTime=parseFloat($("#row"+e+"time").val());
 var cur1= parseFloat($("#inp1_"+e).val());
 var cur2= parseFloat($("#inp2_"+e).val());
 model.dataAdd([curTime, cur1, cur2]);
