@@ -169,7 +169,7 @@ var rect = layer.selectAll("rect")
 
 	var Offset = document.getElementById("graphSteak").offsetTop;
 	var pos=parseInt(data[0].length-(event.pageY-Offset-margin.top)/(height/yStackMax)+1);
-var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-2.0);
+var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-5.0);
 $(d3.select('.mylabel')[0][0]).text( meatType+ " temperature is "+ data[line][pos].toFixed(2)+ "\xB0C");
 	//$(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ pos+ "\xB0C");
 })
