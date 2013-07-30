@@ -304,6 +304,7 @@ var perfectSteak = function (div) {
 
 
         $('.displayDiv').prepend(thicknessInp, steakTemp, meatInput);
+        $('.inputTable').offset({top:0});
     };
     return {
         setup: setup
