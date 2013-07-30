@@ -76,13 +76,34 @@ var perfectSteak = function (div) {
         var inputTable = $("<table class='inputTable table table-striped'></table>");
         var displayDiv = $("<div class='displayDiv'></div>");
         displayDiv.append(inputTable);
-        div.append(displayDiv);
+//        div.append(displayDiv);
 
-        div.append
+//        div.append
         var addButton;
         var subButton;
         var flipButton;
         var cookButton;
+        
+        var buildDisplay = function () {
+            div.append("<div class='row'><div class='span6'><div class='container optionBar'></div></div><div class='span6'><div class='container table-container'></div></div></div>")
+            $(".table-container").append(displayDiv);
+            cookButton = $("<button class='btn' id='cookButton'>Let's get cooking!</button>");
+            
+            var thicknessInp = ($("<div id=thickInpDiv><input type='text' id='thicknessInp' value='6'></input> Meat Thickness (cm) </div>"));
+            var steakTemp = ($("<div id=tempInpDiv><input type='text' id='steakTemp' value='23'></input>Initial Meat Temperature (&#176;C)</div>"));
+		//Item to hold inputs of meat. Append meatInput to your display
+		      var meatInput=$('<form id="meatInp">What type of meat are you cooking?<br>'
+		+'<input type="radio" name="meat" id="Steak" checked>Steak<br>'
+		+'<input type="radio" name="meat" id="Tuna">Tuna<br>'
+		+'<input type="radio" name="meat" id="Turkey">Turkey</form>');
+            
+            var cookbuttonrow = $("<div class='row'></div");
+            cookbuttonrow.append(cookButton);
+
+            $('.optionBar').append(thicknessInp, steakTemp, meatInput,cookbuttonrow);
+            
+            buildTable();
+        }
 
         var buildTable = function () {
             var inpTabHeader = $("<tr><th class='inpTabHeader'>Time (s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
@@ -90,14 +111,13 @@ var perfectSteak = function (div) {
             var timeStep = model.timeStep;
             var len = model.currentInfo["data"].length;
             var newData = []
-            $("#cookButton").remove();
+//            $("#cookButton").remove();
 
             for (var i = 0; i < model.currentInfo["numRows"]; i++) {
                 var iminus = i - 1;
                 addButton = $("<button class='btn btn-mini' id='addButton'>+</button>");
                 subButton = $("<button class='btn btn-mini' id='subButton'>-</button>");
                 flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
-                cookButton = $("<button class='btn' id='cookButton'>Let's get cooking!</button>");
 
                 var row = $("<tr></tr>");
                 var timeCol = $("<td ><input id='row" + i + "time' type='text' value=" + i * model.timeStep + "></td>");
@@ -112,7 +132,7 @@ var perfectSteak = function (div) {
                 inputTable.append(row);
                 if (i == model.currentInfo["numRows"] - 1) {
                     inputTable.append(addButton, subButton);
-                    displayDiv.append(cookButton);
+//                    displayDiv.append(cookButton);
                 }
                 if (len == 0) {
 
@@ -275,6 +295,7 @@ var perfectSteak = function (div) {
         };
 
         return {
+            buildDisplay: buildDisplay,
             buildTable: buildTable,
             addButtonFun: addButtonFun,
             subButtonFun: subButtonFun,
@@ -292,18 +313,7 @@ var perfectSteak = function (div) {
 
         //timeFun(0);
 
-        view.buildTable();
-		
-        var thicknessInp = ($("<div id=thickInpDiv><input type='text' id='thicknessInp' value='6'></input> Meat Thickness (cm) </div>"));
-        var steakTemp = ($("<div id=tempInpDiv><input type='text' id='steakTemp' value='23'></input>Initial Meat Temperature (&#176;C)</div>"));
-		//Item to hold inputs of meat. Append meatInput to your display
-		var meatInput=$('<form id="meatInp">What type of meat are you cooking?<br>'
-		+'<input type="radio" name="meat" id="Steak" checked>Steak<br>'
-		+'<input type="radio" name="meat" id="Tuna">Tuna<br>'
-		+'<input type="radio" name="meat" id="Turkey">Turkey</form>');
-
-
-        $('.displayDiv').prepend(thicknessInp, steakTemp, meatInput);
+        view.buildDisplay();
         $('.inputTable').offset({top:0});
     };
     return {
