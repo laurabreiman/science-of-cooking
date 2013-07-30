@@ -134,7 +134,10 @@ var perfectSteak = function (div) {
             flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
             var row = $("<tr></tr>");
             var i = numRows - 1;
-            var timeCol = $("<td ><input id='row" + i + "time' type='text' value=" + i * model.timeStep + "></td>");
+
+			var val=parseFloat($("#row" + (i-1) + "time").val())+model.timeStep;
+			
+            var timeCol = $("<td ><input id='row" + i + "time' type='text' value=" +(val)+ "></td>");
             var inp1 = $("<input type='text' id='inp1_" + i + "'>");
             var inp2 = $("<input type='text' id='inp2_" + i + "'>");
             var step1Col = $("<td id='row" + i + "side1'></input>");
@@ -146,8 +149,8 @@ var perfectSteak = function (div) {
             timeFun(i);
             flipButtonFun(i);
             table.append(row);
-            inp1.val(23);
-            inp2.val(23);
+            inp1.val($("#inp1_" + (i-1)).val());
+            inp2.val($("#inp2_" + (i-1)).val());
 			if (numRows==2){
 				subButton = $("<button class='btn btn-mini' id='subButton'>-</button>");
 				table.append(subButton);
@@ -157,8 +160,8 @@ var perfectSteak = function (div) {
         }
 		
 		
-        var delRow = function (table) {
-            $('.' + table.class + ' tr:last').remove();
+        var delRow = function () {
+            $('.inputTable tr:last').remove();
         }
 		
         var addButtonFun = function () {
@@ -171,7 +174,7 @@ var perfectSteak = function (div) {
         var subButtonFun = function () {
             subButton.on("click", function () {
                 numRows--;
-                delRow($(".inputTable"));
+                delRow();
                 if (numRows == 1) {
                     $(".inputTable").empty();
                     buildTable(numRows);
@@ -281,8 +284,7 @@ var perfectSteak = function (div) {
 		var meatInput=$('<form id="meatInp">What type of meat are you cooking?<br>'
 		+'<input type="radio" name="meat" id="Steak">Steak<br>'
 		+'<input type="radio" name="meat" id="Tuna">Tuna<br>'
-		+'<input type="radio" name="meat" id="Turkey">Turkey<br>'
-		+'<input type="radio" name="meat" id="Tofu">Tofu</form>');
+		+'<input type="radio" name="meat" id="Turkey">Turkey</form>');
 
 
         div.append(thicknessInp, steakTemp, meatInput);
