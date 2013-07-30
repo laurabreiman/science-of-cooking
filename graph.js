@@ -1,11 +1,10 @@
-var graphSteak=function(sampledata,flame,timeScale){
+var graphSteak=function(sampledata,flame){
 var graph=(function(){
 var setup=function(div,data,flame)	
 	{
 	
 	
 var dy=.1;	
-var dx=timeScale;
 var n = boundaries.length*2+1, // number of layers
     m = data.length; // number of samples per layer
 
@@ -156,7 +155,7 @@ var rect = layer.selectAll("rect")
 
 	var Offset = document.getElementById("graphSteak").offsetTop;
 	var pos=parseInt(data[0].length-(event.pageY-Offset-margin.top)/(height/yStackMax));
-var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-5.0);
+var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-7.0);
 $(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ data[line][pos].toFixed(2)+ "°C");
 
 })

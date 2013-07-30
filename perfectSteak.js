@@ -123,7 +123,7 @@ CookButtonFun();
 flipButton=$("<button class='btn btn-mini' id='flipButton"+i+"'><font size=4px>&harr;</font></button>");
 var row=$("<tr></tr>");
 var i=numRows-1;
-var timeCol=$("<td id='row"+i+"time'><input type='text' value="+i*model.timeStep+"></td>");
+var timeCol=$("<td ><input id='row"+i+"time' type='text' value="+i*model.timeStep+"></td>");
 var inp1=$("<input type='text' id='inp1_"+i+"'>");
 var inp2=$("<input type='text' id='inp2_"+i+"'>");
 var step1Col=$("<td id='row"+i+"side1'></input>");
