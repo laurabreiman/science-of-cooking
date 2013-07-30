@@ -122,11 +122,14 @@ var perfectSteak = function (div) {
                 timeFun(i);
                 flipButtonFun(i);
             }
+			
             model.dataClear();
             addButtonFun();
             subButtonFun();
             CookButtonFun();
         };
+		
+		
         var addRow = function (table) {
             flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
             var row = $("<tr></tr>");
@@ -145,12 +148,19 @@ var perfectSteak = function (div) {
             table.append(row);
             inp1.val(23);
             inp2.val(23);
+			if (numRows==2){
+				subButton = $("<button class='btn btn-mini' id='subButton'>-</button>");
+				table.append(subButton);
+				subButtonFun();
+			}
             model.dataAdd([parseFloat($("#row" + i + "time").val()), parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())])
         }
+		
+		
         var delRow = function (table) {
-
             $('.' + table.class + ' tr:last').remove();
         }
+		
         var addButtonFun = function () {
             addButton.on("click", function () {
                 numRows++;
@@ -159,7 +169,6 @@ var perfectSteak = function (div) {
         };
 
         var subButtonFun = function () {
-
             subButton.on("click", function () {
                 numRows--;
                 delRow($(".inputTable"));
@@ -168,7 +177,6 @@ var perfectSteak = function (div) {
                     buildTable(numRows);
                     subButton.remove();
                 } else {
-
                     $(".inputTable").empty();
                     buildTable(numRows);
                 }
@@ -214,7 +222,8 @@ var perfectSteak = function (div) {
 					model.changeThickness(parseFloat($("#thicknessInp").val()))
 				};
 				
-				
+				//add to on click and calculate(blah,blah,blah, meatType)
+				var meatType = $("input[type='radio'][name='rate']:checked").val();
 				//THIS WILL COOK THE STEAK IF WE HAVE VALID INPUTS
 				if (OKtoCook==true){
 					var steak = [model.data[0][1]];
@@ -222,7 +231,7 @@ var perfectSteak = function (div) {
 						steak.push(parseFloat($("#steakTemp").val()))
 					}
 					steak.push(model.data[0][2]);
-					calculate(model.data, steak)
+					calculate(model.data, $("input[type='radio'][name='rate']:checked").val()||steak)
 				}
             });
         }
@@ -264,13 +273,21 @@ var perfectSteak = function (div) {
         //timeFun(0);
 
         view.buildTable();
+		
         var thicknessInp = ($("<div id=thickInpDiv><input type='text' id='thicknessInp' value='6'></input> Meat Thickness (cm) </div>"));
         var steakTemp = ($("<div id=tempInpDiv><input type='text' id='steakTemp' value='23'></input>Initial Meat Temperature (&#176;C)</div>"));
+		//Item to hold inputs of meat. Append meatInput to your display
+		var meatInput=$('<form id="meatInp">What color type of meat are you cooking?<br>'
+		+'<input type="radio" name="meat" id="Steak">Steak<br>'
+		+'<input type="radio" name="meat" id="Tuna">Tuna<br>'
+		+'<input type="radio" name="meat" id="Turkey">Turkey<br>'
+		+'<input type="radio" name="meat" id="Tofu">Tofu</form>');
+ 
         // thicknessInp.change(function(){
         // model.changethickness(thicknessInp.val());
         // })
 
-        div.append(thicknessInp, steakTemp);
+        div.append(thicknessInp, steakTemp, meatInput);
     };
     return {
         setup: setup
