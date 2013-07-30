@@ -5,14 +5,14 @@ var setup=function(div,data,flame)
 	
 	
 var dy=.1;	
-var n = boundaries.length*2+1, // number of layers
+var n = boundaries.steak.length*2+1, // number of layers
     m = data.length; // number of samples per layer
 
 	var getState=function(temp)
 	{
-		for(var i=0;i<boundaries.length;i++)
+		for(var i=0;i<boundaries.steak.length;i++)
 		{
-			if(temp>=boundaries[i])return i;
+			if(temp>=boundaries.steak[i])return i;
 			
 		}
 		return 5;
@@ -33,7 +33,7 @@ var n = boundaries.length*2+1, // number of layers
 				
 				if(state==nextState){moves[Math.abs(offset-nextState)]+=1}
 				else{
-					if(Math.abs(offset-state)>Math.abs(offset-nextState)){offset=boundaries.length*2;}
+					if(Math.abs(offset-state)>Math.abs(offset-nextState)){offset=boundaries.steak.length*2;}
 					moves[Math.abs(offset-nextState)]+=1;
 				
 					state=nextState;
@@ -96,7 +96,7 @@ var svg = d3.select("body").append("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 		var legend = svg.selectAll('g')
-        .data(tempScale)
+        .data(tempScale.steak)
         .enter()
       .append('g')
         .attr('class', 'legend')
@@ -108,7 +108,7 @@ var svg = d3.select("body").append("svg")
         .attr('y', function(d, i){ return -125+i *  15;})
         .attr('width', 8)
         .attr('height', 8)
-        .style('fill', function(d) { return color(d['position'])
+        .style('fill', function(d) { return color.steak(d['position'])
         });
 
     legend.append('text')
@@ -127,7 +127,7 @@ var layer = svg.selectAll(".layer")
     .data(layers)
   .enter().append("g")
     .attr("class", "layer")
-    .style("fill", function(d, i) { return color(i); });
+    .style("fill", function(d, i) { return color.steak(i); });
 	
 
 var rect = layer.selectAll("rect")
@@ -144,7 +144,7 @@ var rect = layer.selectAll("rect")
 		{
 			if(color(i)==rects.style("fill")){loc=i;}	
 		}
-		var leg=d3.selectAll('.legend')[0][boundaries.length-loc];
+		var leg=d3.selectAll('.legend')[0][boundaries.steak.length-loc];
 		$(leg).css("fill","red");
 		
 		
@@ -167,9 +167,9 @@ $(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ data[line][pos].toF
 		var loc=null;
 		for(var i=n-1;i>=0;i--)
 		{
-			if(color(i)==rects.style("fill")){loc=i;}	
+			if(color.steak(i)==rects.style("fill")){loc=i;}	
 		}
-		var leg=d3.selectAll('.legend')[0][boundaries.length-loc];
+		var leg=d3.selectAll('.legend')[0][boundaries.steak.length-loc];
 		$(leg).css("fill","black");
         
 	});	
