@@ -1,11 +1,10 @@
-var graphSteak=function(sampledata,flame,timeScale){
+var graphSteak=function(sampledata,flame){
 var graph=(function(){
 var setup=function(div,data,flame)	
 	{
 	
 	
 var dy=.1;	
-var dx=timeScale;
 var n = boundaries.length*2+1, // number of layers
     m = data.length; // number of samples per layer
 
@@ -65,8 +64,8 @@ var y = d3.scale.linear()
     .domain([0, yStackMax])
     .range([height, 0]);
 var yscaled = d3.scale.linear()
-    .domain([0, dy*yStackMax])
-    .range([height,-1.2*m*dy]);	
+    .domain([0, yStackMax*dy])
+    .range([height,0]);	
 
 
 
@@ -122,7 +121,7 @@ var svg = d3.select("body").append("svg")
     .attr("x", width/1.3)
     .attr("y", -margin.top/2)
 	.style("font-size",'30px')
-    .text("Steak temperature is: ______°C");
+    .text("Steak temperature is: ______\xB0C");
 		
 var layer = svg.selectAll(".layer")
     .data(layers)
@@ -156,8 +155,8 @@ var rect = layer.selectAll("rect")
 
 	var Offset = document.getElementById("graphSteak").offsetTop;
 	var pos=parseInt(data[0].length-(event.pageY-Offset-margin.top)/(height/yStackMax));
-var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-5.0);
-$(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ data[line][pos].toFixed(2)+ "°C");
+var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-7.0);
+$(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ data[line][pos].toFixed(2)+ "\xB0C");
 
 })
 			
