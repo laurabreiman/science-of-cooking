@@ -1,9 +1,9 @@
-var tempScale=[{'info':'lack of protein denaturization below 50°C','position':5},
-			   {'info':'Myosin breaks down 50°-55°C','position':4},
-			  {'info':'Glycogen breaks down 55°-60°C','position':3},
-			  {'info':'Myoglobin denatures 60°-70°C','position':2},
-			  {'info':'Actin denatures 70-120°C','position':1},
-			  {'info':'Browning reactions occur 120°C+','position':0}];
+var tempScale=[{'info':'lack of protein denaturization below 50\xB0 C','position':5},
+			   {'info':'Myosin breaks down 50-55\xB0 C','position':4},
+			  {'info':'Glycogen breaks down 55-60\xB0 C','position':3},
+			  {'info':'Myoglobin denatures 60-70\xB0 C','position':2},
+			  {'info':'Actin denatures 70-120\xB0 C','position':1},
+			  {'info':'Browning reactions occur 120\xB0 C+','position':0}];
 
 //color
 var color = d3.scale.linear()

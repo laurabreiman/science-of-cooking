@@ -75,7 +75,7 @@ var iminus=i-1;
 addButton=$("<button class='btn btn-mini' id='addButton'>+</button>");
 subButton=$("<button class='btn btn-mini' id='subButton'>-</button>");
 flipButton=$("<button class='btn btn-mini' id='flipButton"+i+"'><font size=4px>&harr;</font></button>");
-cookButton=$("<button class='btn' id='cookButton'>Cook!</button>");
+cookButton=$("<button class='btn' id='cookButton'>Let's get cooking!</button>");
 	
 var row=$("<tr></tr>");
 var timeCol=$("<td ><input id='row"+i+"time' type='text' value="+i*model.timeStep+"></td>");
@@ -222,8 +222,8 @@ var view=View(div, model);
 //timeFun(0);
  
 view.buildTable();
-var thicknessInp=($("<div><input type='text' id='thicknessInp'></input> Meat Thickness</div>"));
-var steakTemp=($("<div><input type='text' id='steakTemp'></input>Meat Temperature</div>"));
+var thicknessInp=($("<div><input type='text' id='thicknessInp'></input> Meat Thickness (cm) </div>"));
+var steakTemp=($("<div><input type='text' id='steakTemp'></input>Meat Temperature (&#176;C)</div>"));
 // thicknessInp.change(function(){
 // model.changethickness(thicknessInp.val());
 // })

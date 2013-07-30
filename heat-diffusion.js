@@ -3,7 +3,7 @@ function HeatSolver(startingTemps){
     var tempArray = [startingTemps];
     var D = .14; // in units of mm^2/sec
     
-    var timestep = .25;
+    var timestep = 1;
     var spacestep = 0.1;
     
     var alpha = (D*timestep);
@@ -160,10 +160,11 @@ function HeatSolver(startingTemps){
             }
         }
  var arrays = tempArray.length-1;
+var len= tempArray[0].length;
         var step = arrays/60.0;
         for(var i=0; i<60*step; i+=step){
 
-            grapharray.push(tempArray[parseInt(i)]);
+            grapharray.push(tempArray[parseInt(i)].slice(1,len-2));
 			
 			if(temperatures[parseInt(i)][0] > 25 && temperatures[parseInt(i)][1] > 25){
 				
