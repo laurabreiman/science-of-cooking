@@ -2,53 +2,69 @@ var perfectSteak = function (div) {
 
 
     function Model(div) {
-        var meatTemp = 23;
-        var thickness = 6;
-        var data = [];
+		var currentInfo={'meatTemp':23, 'thickness':6, 'data':[], 'numRows':2}
         var timeStep = 15;
         var inputTable = $(".inputTable");
 
         var changeThickness = function (newVal) {
 
-            thickness = newVal;
+            currentInfo["thickness"] = newVal;
 
         }
+		
+		var numRowsPlus=function(){
+			currentInfo["numRows"]++;
+		}
+		
+		var numRowsMinus=function(){
+			currentInfo["numRows"]--;
+		}
 
         var changeMeatTemp = function (newVal) {
-            meatTemp = newVal;
+            currentInfo["meatTemp"] = newVal;
         }
 
         //OK THIS WORKS NOW
         var dataClear = function () {
-            while (data.length > 0) {
-                data.pop();
-            }
+            currentInfo["data"]=[];
         }
 
         //THIS ADDS AN ELEMENT TO THE DATA ARRAY
         var dataAdd = function (item) {
 
-            data.push(item);
+            currentInfo["data"].push(item);
         }
 
         //THIS IS FOR CHANGING THE ENTIRE DATA ARRAY
         var dataChange = function (array) {
-            data = array;
-            for (var d = 0; d < array.length; d++) {
-                data.push[array[d]]
-            }
+            currentInfo["data"]=array;
+			console.log(currentInfo["data"])
         }
+		
+		var buildData=function(){
+			var newData=[];
+			console.log(currentInfo["numRows"]);
+				for (var g=0; g<currentInfo["numRows"]; g++){
+					var side1data=$("#inp1_"+g).val();
+					var side2data=$("#inp2_"+g).val();
+					var timedata=$("#row"+g+"time").val();
+					newData.push([timedata, side1data, side2data]);
+				}
+			console.log(newData)
+			dataChange(newData);
+		}
 
         return {
-            meatTemp: meatTemp,
-            thickness: thickness,
-            data: data,
+            currentInfo:currentInfo,
             changeThickness: changeThickness,
             timeStep: timeStep,
             dataAdd: dataAdd,
             dataClear: dataClear,
             dataChange: dataChange,
-            changeMeatTemp: changeMeatTemp
+            changeMeatTemp: changeMeatTemp,
+			buildData:buildData,
+			numRowsPlus:numRowsPlus,
+			numRowsMinus:numRowsMinus
         }
     }
 
@@ -68,18 +84,15 @@ var perfectSteak = function (div) {
         var flipButton;
         var cookButton;
 
-        var numRows = 2;
-
         var buildTable = function () {
             var inpTabHeader = $("<tr><th class='inpTabHeader'>Time (s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
             inputTable.append(inpTabHeader);
             var timeStep = model.timeStep;
-
-            var len = model.data.length;
+            var len = model.currentInfo["data"].length;
             var newData = []
             $("#cookButton").remove();
 
-            for (var i = 0; i < numRows; i++) {
+            for (var i = 0; i < model.currentInfo["numRows"]; i++) {
                 var iminus = i - 1;
                 addButton = $("<button class='btn btn-mini' id='addButton'>+</button>");
                 subButton = $("<button class='btn btn-mini' id='subButton'>-</button>");
@@ -97,7 +110,7 @@ var perfectSteak = function (div) {
                 step1Col.append(flipButton);
                 row.append(timeCol, step1Col, step2Col);
                 inputTable.append(row);
-                if (i == numRows - 1) {
+                if (i == model.currentInfo["numRows"] - 1) {
                     inputTable.append(addButton, subButton);
                     displayDiv.append(cookButton);
                 }
@@ -109,14 +122,14 @@ var perfectSteak = function (div) {
 
                 } else if (i <= len) {
 
-                    inp1.val(model.data[i][1]);
-                    inp2.val(model.data[i][2]);
+                    inp1.val(model.currentInfo["data"][i][1]);
+                    inp2.val(model.currentInfo["data"][i][2]);
 
                     model.dataAdd([parseFloat($("#row" + i + "time").val()), parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())])
                 } else {
 
-                    inp1.val(model.data[i - 1][1]);
-                    inp2.val(model.data[i - 1][2]);
+                    inp1.val(model.currentInfo["data"][i - 1][1]);
+                    inp2.val(model.currentInfo["data"][i - 1][2]);
                     model.dataAdd([parseFloat($("#row" + i + "time").val()), parseFloat($("#inp1_" + iminus).val()), parseFloat($("#inp2_" + iminus).val())])
                 }
                 timeFun(i);
@@ -133,7 +146,7 @@ var perfectSteak = function (div) {
         var addRow = function (table) {
             flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
             var row = $("<tr></tr>");
-            var i = numRows - 1;
+            var i = model.currentInfo["numRows"] - 1;
 
 			var val=parseFloat($("#row" + (i-1) + "time").val())+model.timeStep;
 			
@@ -151,7 +164,7 @@ var perfectSteak = function (div) {
             table.append(row);
             inp1.val($("#inp1_" + (i-1)).val());
             inp2.val($("#inp2_" + (i-1)).val());
-			if (numRows==2){
+			if (model.currentInfo["numRows"]==2){
 				subButton = $("<button class='btn btn-mini' id='subButton'>-</button>");
 				table.append(subButton);
 				subButtonFun();
@@ -166,22 +179,25 @@ var perfectSteak = function (div) {
 		
         var addButtonFun = function () {
             addButton.on("click", function () {
-                numRows++;
+				model.buildData();
+				model.numRowsPlus();
                 addRow($(".inputTable"));
             });
         };
 
         var subButtonFun = function () {
             subButton.on("click", function () {
-                numRows--;
+				console.log(model.currentInfo["data"]);
+                model.numRowsMinus();
+				model.buildData();
                 delRow();
-                if (numRows == 1) {
+                if (model.currentInfo["numRows"] == 1) {
                     $(".inputTable").empty();
-                    buildTable(numRows);
+                    buildTable(model.currentInfo["numRows"]);
                     subButton.remove();
                 } else {
                     $(".inputTable").empty();
-                    buildTable(numRows);
+                    buildTable(model.currentInfo["numRows"]);
                 }
             });
         };
@@ -191,7 +207,7 @@ var perfectSteak = function (div) {
                 d3.select("svg")
                     .remove();
                 model.dataClear();
-                for (var e = 0; e < numRows; e++) {
+                for (var e = 0; e < model.currentInfo["numRows"]; e++) {
                     var curTime = parseFloat($("#row" + e + "time").val());
                     var cur1 = parseFloat($("#inp1_" + e).val());
                     var cur2 = parseFloat($("#inp2_" + e).val());
@@ -230,12 +246,12 @@ var perfectSteak = function (div) {
 				console.log(meatType);
 				//THIS WILL COOK THE STEAK IF WE HAVE VALID INPUTS
 				if (OKtoCook==true){
-					var steak = [model.data[0][1]];
+					var steak = [model.currentInfo["data"][0][1]];
 					for (var m = 0; m < parseFloat($("#thicknessInp").val()) * 10; m++) {
 						steak.push(parseFloat($("#steakTemp").val()))
 					}
-					steak.push(model.data[0][2]);
-					calculate(model.data, steak,meatType)
+					steak.push(model.currentInfo["data"][0][2]);
+					calculate(model.currentInfo["data"], steak,meatType)
 				}
             });
         }
