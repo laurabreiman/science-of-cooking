@@ -118,6 +118,7 @@ function HeatSolver(startingTemps){
         var graphlabels = [];
         var temperatures = [];
 		var count=0;
+        var maxTemps = tempArray[0];
         
         var lastTime = time_top_bottom[time_top_bottom.length-1][0];
         
@@ -156,7 +157,12 @@ function HeatSolver(startingTemps){
                     temperatures.push(temperatures[temperatures.length-1]);
                 }
                 var cnVector = make_crank_nicolson_vector();
-                calculate_next_cn(cnVector);                
+                calculate_next_cn(cnVector);
+                for(var n=0; n<maxTemps.length; n++){
+                    if(tempArray[tempArray.length-1][n] > maxTemps[n]){
+                        maxTemps[n] = tempArray[tempArray.length-1][n];
+                    }
+                }                
             }
         }
  var arrays = tempArray.length-1 ;
@@ -192,7 +198,7 @@ var len= tempArray[0].length;
         }
         
         
-        return {temps: grapharray, points: graphlabels, step: step}
+        return {temps: grapharray, points: graphlabels, step: step, maxTemps: maxTemps}
 
     }
     
