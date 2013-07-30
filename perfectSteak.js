@@ -179,11 +179,11 @@ var cur1= parseFloat($("#inp1_"+e).val());
 var cur2= parseFloat($("#inp2_"+e).val());
 model.dataAdd([curTime, cur1, cur2]);
 model.changeMeatTemp( parseFloat($("#steakTemp").val()))
-model.changeThickness( parseFloat($("#thicknessInp").val()))
+model.changeThickness( Math.min(parseFloat($("#thicknessInp").val()),100));
 
 }
 var steak = [model.data[0][1]];
-for(var m=0;m<parseFloat($("#thicknessInp").val())*10;m++)
+for(var m=0;m<Math.min(parseFloat($("#thicknessInp").val()),100)*10;m++)
 {steak.push(parseFloat($("#steakTemp").val()))
 }
 steak.push(model.data[0][2]);
@@ -222,8 +222,10 @@ var view=View(div, model);
 //timeFun(0);
  
 view.buildTable();
-var thicknessInp=($("<div><input type='text' id='thicknessInp'></input> Meat Thickness (cm) </div>"));
-var steakTemp=($("<div><input type='text' id='steakTemp'></input>Meat Temperature (&#176;C)</div>"));
+var thicknessInp=($("<div><input type='text' id='thicknessInp' ></input> Meat Thickness (cm) </div>"));
+$("#thicknessInp").val("6");	
+var steakTemp=($("<div><input type='text' id='steakTemp' ></input>Meat Temperature (&#176;C)</div>"));
+
 // thicknessInp.change(function(){
 // model.changethickness(thicknessInp.val());
 // })

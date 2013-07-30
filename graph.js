@@ -1,18 +1,18 @@
-var graphSteak=function(sampledata,flame){
+var graphSteak=function(sampledata,flame,timestep,meatType){
 var graph=(function(){
-var setup=function(div,data,flame)	
+var setup=function(div,data,flame,timestep)	
 	{
 	
 	
 var dy=.1;	
-var n = boundaries.length*2+1, // number of layers
+var n = boundaries[meatType].length*2+1, // number of layers
     m = data.length; // number of samples per layer
 
 	var getState=function(temp)
 	{
-		for(var i=0;i<boundaries.length;i++)
+		for(var i=0;i<boundaries[meatType].length;i++)
 		{
-			if(temp>=boundaries[i])return i;
+			if(temp>=boundaries[meatType][i])return i;
 			
 		}
 		return 5;
@@ -33,7 +33,7 @@ var n = boundaries.length*2+1, // number of layers
 				
 				if(state==nextState){moves[Math.abs(offset-nextState)]+=1}
 				else{
-					if(Math.abs(offset-state)>Math.abs(offset-nextState)){offset=boundaries.length*2;}
+					if(Math.abs(offset-state)>Math.abs(offset-nextState)){offset=boundaries[meatType].length*2;}
 					moves[Math.abs(offset-nextState)]+=1;
 				
 					state=nextState;
@@ -56,9 +56,10 @@ var margin = {top: 150, right: 10, bottom: 100, left: 50},
 var x = d3.scale.ordinal()
     .domain(d3.range(m))
     .rangeRoundBands([0, width], .08);
-var xscaled = d3.scale.ordinal()
-    .domain(d3.range(m))
-    .rangeRoundBands([0, width], .08);	
+		
+var xscaled = d3.scale.linear()
+    .domain([0,m/timestep])
+    .range([width/30, width*31/30]);	
 		
 var y = d3.scale.linear()
     .domain([0, yStackMax])
@@ -96,7 +97,7 @@ var svg = d3.select("body").append("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 		var legend = svg.selectAll('g')
-        .data(tempScale)
+        .data(tempScale[meatType])
         .enter()
       .append('g')
         .attr('class', 'legend')
@@ -108,7 +109,7 @@ var svg = d3.select("body").append("svg")
         .attr('y', function(d, i){ return -125+i *  15;})
         .attr('width', 8)
         .attr('height', 8)
-        .style('fill', function(d) { return color(d['position'])
+        .style('fill', function(d) { return color[meatType](d['position'])
         });
 
     legend.append('text')
@@ -127,7 +128,7 @@ var layer = svg.selectAll(".layer")
     .data(layers)
   .enter().append("g")
     .attr("class", "layer")
-    .style("fill", function(d, i) { return color(i); });
+    .style("fill", function(d, i) { return color[meatType](i); });
 	
 
 var rect = layer.selectAll("rect")
@@ -142,9 +143,9 @@ var rect = layer.selectAll("rect")
 		var loc=null;
 		for(var i=n-1;i>=0;i--)
 		{
-			if(color(i)==rects.style("fill")){loc=i;}	
+			if(color[meatType](i)==rects.style("fill")){loc=i;}	
 		}
-		var leg=d3.selectAll('.legend')[0][boundaries.length-loc];
+		var leg=d3.selectAll('.legend')[0][boundaries[meatType].length-loc];
 		$(leg).css("fill","red");
 		
 		
@@ -155,9 +156,9 @@ var rect = layer.selectAll("rect")
 
 	var Offset = document.getElementById("graphSteak").offsetTop;
 	var pos=parseInt(data[0].length-(event.pageY-Offset-margin.top)/(height/yStackMax));
-var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-7.0);
+var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-4.0);
 $(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ data[line][pos].toFixed(2)+ "\xB0C");
-
+	
 })
 			
         
@@ -167,9 +168,9 @@ $(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ data[line][pos].toF
 		var loc=null;
 		for(var i=n-1;i>=0;i--)
 		{
-			if(color(i)==rects.style("fill")){loc=i;}	
+			if(color[meatType](i)==rects.style("fill")){loc=i;}	
 		}
-		var leg=d3.selectAll('.legend')[0][boundaries.length-loc];
+		var leg=d3.selectAll('.legend')[0][boundaries[meatType].length-loc];
 		$(leg).css("fill","black");
         
 	});	
@@ -233,7 +234,7 @@ svg.append("text")
     .attr("class", "y label2")
     .attr("text-anchor", "end")
     .attr("y", 13)
-    .attr("x",-height+margin.bottom/4)
+    .attr("x",-height+margin.bottom/3)
     .attr("transform", "rotate(-90)")
     .text("Side 2");	
 
@@ -298,6 +299,6 @@ function bumpLayer(layer,data) {
 
 	$(document).ready(function(){
     $('.graph').each(function(){
-        graph.setup($(this),sampledata,flame);});
+        graph.setup($(this),sampledata,flame,timestep,meatType);});
 });
 }
