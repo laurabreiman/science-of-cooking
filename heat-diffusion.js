@@ -196,6 +196,79 @@ var len= tempArray[0].length;
 
     }
     
+
+    function sixty_graph_arrays_duration(time_top_bottom){
+        var grapharray = [];
+        var graphlabels = [];
+        var temperatures = [];
+		var count=0;
+        
+        for(var j=0; j<time_top_bottom.length; j++){
+            //set the conductivity of air to zero
+            if(time_top_bottom[j][1] == 23){
+                nonconductive[1] = 1;
+            }
+            else{
+                nonconductive[1] = 0;
+            }
+            if(time_top_bottom[j][2] == 23){
+                nonconductive[0] = 1;
+            }
+            else{
+                nonconductive[0] = 0;
+            }
+
+            change_temp(time_top_bottom[j][1], time_top_bottom[j][2])
+            
+            for(var i=0; i<time_top_bottom[j][0]; i+=timestep){
+                if(i==0){
+                    temperatures.push([time_top_bottom[j][1], time_top_bottom[j][2]])
+                }
+                else{
+                    temperatures.push(temperatures[temperatures.length-1]);
+                }
+                var cnVector = make_crank_nicolson_vector();
+                calculate_next_cn(cnVector);                
+            }
+        }
+        
+        var arrays = tempArray.length-1 ;
+        var len= tempArray[0].length;
+        var step = arrays/60.0;
+        for(var i=0; i<60*step; i+=step){
+
+            grapharray.push(tempArray[parseInt(i)].slice(1,len-1));
+			
+			if(temperatures[parseInt(i)][0] > 25 && temperatures[parseInt(i)][1] > 25){
+				
+                graphlabels.push([count,0,temperatures[parseInt(i)][0]]);
+				graphlabels.push([count,1,temperatures[parseInt(i)][1]]);
+			
+            }
+            else if(temperatures[parseInt(i)][0] > 25){
+		
+                graphlabels.push([count,0,temperatures[parseInt(i)][0]]);
+			
+            }
+            else if(temperatures[parseInt(i)][1] > 25){
+			
+                graphlabels.push([count,1,temperatures[parseInt(i)][1]]);
+			
+            }
+            else{
+//              	graphlabels.push([count,0,temperatures[parseInt(i/60)][1]]);
+            }
+       
+
+            count++;
+			
+        }
+        
+        
+        return {temps: grapharray, points: graphlabels, step: step}
+
+    }
+    
     function change_temp(toptemp,bottomtemp){
         tempArray[tempArray.length-1][0] = bottomtemp;
         tempArray[tempArray.length-1][tempArray[0].length-1] = toptemp;
