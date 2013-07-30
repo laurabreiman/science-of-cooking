@@ -1,6 +1,6 @@
-var graphSteak=function(sampledata,flame,timestep,meatType){
+var graphSteak=function(sampledata,flame,timestep,meatType,maxTemps){
 var graph=(function(){
-var setup=function(div,data,flame,timestep)	
+var setup=function(div,data,flame,timestep,meatType,maxTemps)	
 	{
 	
 	
@@ -263,11 +263,11 @@ svg.append("text")
 
 //Draw the Rectangle
 var rectangle = svgContainer.selectAll("rect")
-    .data([10,20,30,40,50,60,70,80,90,100,110,120,130])
+    .data(maxTemps)
   .enter().append("rect")
            .attr("x", 10)
            .attr("y", function(d,i){return 10+i})
-           .attr("width", 500)
+           .attr("width", '70%')
            .attr("height", 1)
 		   .style('fill', function(d,i) {console.log(color[meatType](getState(d))); return color[meatType](getState(d))});
 /*
@@ -334,6 +334,6 @@ function bumpLayer(layer,data) {
 
 	$(document).ready(function(){
     $('.graph').each(function(){
-        graph.setup($(this),sampledata,flame,timestep,meatType);});
+        graph.setup($(this),sampledata,flame,timestep,meatType,maxTemps);});
 });
 }
