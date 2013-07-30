@@ -1,8 +1,13 @@
 .inputTable{
 	position: relative;
 	width: 40% !important;
+	max-height:300px !important;
+	overflow:scroll !important;
 	text-align: center;
-	left: 30% !important;
+	left: 10% !important;
+	
+
+	
 }
 
 #addButton{
@@ -16,16 +21,31 @@
 	top: 0%;
 	float: left;
 }
-
+#cookButton{
+	position: relative;
+	left:10%;
+	top:50%;
+	
+}
 #meatInp{
 	position:relative;
 	float:left;
+	padding: 20px;
+	margin:5px;
 }
 
 input[type="text"] {
-    border: 1px solid #FFFFFF;
+    border: 1px solid black;
     font-size: 16px;
     padding: 5px;
 	margin:5px;
     width: 50px;
+}
+#thickInpDiv{
+	padding: 5px;
+	margin:5px;
+}
+#tempInpDiv{
+	padding: 5px;
+	margin:5px;
 }
