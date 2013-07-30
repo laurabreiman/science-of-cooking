@@ -164,7 +164,7 @@ var len= tempArray[0].length;
         var step = arrays/60.0;
         for(var i=0; i<60*step; i+=step){
 
-            grapharray.push(tempArray[parseInt(i)].slice(1,len-2));
+            grapharray.push(tempArray[parseInt(i)].slice(1,len-1));
 			
 			if(temperatures[parseInt(i)][0] > 25 && temperatures[parseInt(i)][1] > 25){
 				
