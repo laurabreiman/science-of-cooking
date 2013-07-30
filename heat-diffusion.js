@@ -159,7 +159,7 @@ function HeatSolver(startingTemps){
                 calculate_next_cn(cnVector);                
             }
         }
- var arrays = tempArray.length-1;
+ var arrays = tempArray.length-1 ;
 var len= tempArray[0].length;
         var step = arrays/60.0;
         for(var i=0; i<60*step; i+=step){
@@ -192,7 +192,7 @@ var len= tempArray[0].length;
         }
         
         
-        return {temps: grapharray, points: graphlabels}
+        return {temps: grapharray, points: graphlabels, step: step}
 
     }
     
