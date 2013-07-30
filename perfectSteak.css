@@ -1,11 +1,20 @@
 .inputTable{
 	position: relative;
+/*
 	width: 40% !important;
 	max-height:300px !important;
 	overflow:scroll !important;
+*/
 	text-align: center;
-	left: 10% !important;
+/*	left: 10% !important;*/
 }
+
+.table-container{
+    overflow-x: hidden;
+    overflow-y: auto;
+    width:100%;
+    height:300px;
+   }
 
 #addButton{
 	position: relative;

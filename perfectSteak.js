@@ -94,7 +94,6 @@ var perfectSteak = function (div) {
 
 
     function View(div, model) {
-
         var inputTable = $("<table class='inputTable table table-striped'></table>");
         var displayDiv = $("<div class='displayDiv'></div>");
         displayDiv.append(inputTable);
