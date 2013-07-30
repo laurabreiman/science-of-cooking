@@ -1,7 +1,7 @@
 var calculate=function(data,steak,meatType){
 
 var myheatsolver = HeatSolver(steak);
-var Thedata=myheatsolver.sixty_graph_arrays(data);
+var Thedata=myheatsolver.sixty_graph_arrays_duration(data);
 
 var sampledata=Thedata.temps;
 var flame=Thedata.points;
