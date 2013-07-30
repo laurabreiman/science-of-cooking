@@ -257,19 +257,25 @@ svg.append("text")
     .attr("x",-height+margin.bottom/3)
     .attr("transform", "rotate(-90)")
     .text("Side 2");	
-		var svgContainer = d3.select("body").append("svg")
-                                   .attr("width", 200)
-                                    .attr("height", 200);
-
+var svgContainer = d3.select("body").append("svg")
+                                   .attr("width", '100%')
+                                    .attr("height", 1000);
+var texts=svgContainer.selectAll("text")
+.data([0])
+ .enter().append("text")
+ .attr("text-anchor", "left")
+    .attr("x", '10%')
+    .attr("y", 10)
+.text("Maximum internal temperature reached");
 //Draw the Rectangle
 var rectangle = svgContainer.selectAll("rect")
     .data(maxTemps)
   .enter().append("rect")
-           .attr("x", 10)
-           .attr("y", function(d,i){return 10+i})
-           .attr("width", '70%')
-           .attr("height", 1)
-		   .style('fill', function(d,i) {console.log(color[meatType](getState(d))); return color[meatType](getState(d))});
+           .attr("x", '10%')
+           .attr("y", function(d,i){return 20+i*2})
+           .attr("width", '60%')
+           .attr("height", 2)
+		   .style('fill', function(d,i) {return color[meatType](getState(d))});
 /*
  svg.append("g")         
         .attr("class", "grid")
