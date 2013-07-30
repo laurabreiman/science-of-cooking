@@ -1,5 +1,5 @@
-var calculate=function(data,steak,meatType){
-
+var calculate=function(data,steak){
+var meatType="fish";
 var myheatsolver = HeatSolver(steak);
 console.log(data);
 

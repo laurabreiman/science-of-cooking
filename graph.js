@@ -131,7 +131,7 @@ var svg = d3.select("body").append("svg")
     .attr("x", width/1.3)
     .attr("y", -margin.top/2)
 	.style("font-size",'30px')
-    .text("Steak temperature is: ______\xB0C");
+    .text(meatType+ " temperature is: ______\xB0C");
 		
 var layer = svg.selectAll(".layer")
     .data(layers)
@@ -170,8 +170,8 @@ var rect = layer.selectAll("rect")
 	var Offset = document.getElementById("graphSteak").offsetTop;
 	var pos=parseInt(data[0].length-(event.pageY-Offset-margin.top)/(height/yStackMax));
 var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-4.0);
-$(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ data[line][pos].toFixed(2)+ "\xB0C");
-	
+$(d3.select('.mylabel')[0][0]).text( meatType+ " temperature is "+ data[line][pos].toFixed(2)+ "\xB0C");
+	//$(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ line.toFixed(2)+ "\xB0C");
 })
 			
         
@@ -236,7 +236,7 @@ svg.append("text")
     .attr("x", -height/3)
     .attr("y",-30)
  	.attr("transform", "rotate(-90)")
-    .text("Steak Thickness (cm)");
+    .text(meatType+" Thickness (cm)");
 		
 svg.append("text")
     .attr("class", "y label1")

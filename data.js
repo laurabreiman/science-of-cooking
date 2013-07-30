@@ -5,7 +5,9 @@ var tempScale={"Steak":
                 {'info':'Myoglobin denatures 60-70\xB0 C','position':2},
                 {'info':'Actin denatures 70-120\xB0 C','position':1},
                 {'info':'Browning reactions occur 120+\xB0 C','position':0}],
+
               "Tuna":
+
                 [{'info':'lack of protein denaturization below 40\xB0 C','position':5},
                 {'info':'Myosin breaks down 40-50\xB0 C','position':4},
                 {'info':'Myocommata begins to rupture 50\xB0 C','position':3},
@@ -27,6 +29,7 @@ var tempScale={"Steak":
                 {'info':'Actin denatures 70-120\xB0 C','position':1},
                 {'info':'Browning reactions occur 120+\xB0 C','position':0}],
 			   
+
               };
 
 //color
@@ -39,6 +42,7 @@ var color = {
             d3.scale.linear()
             .domain([0,1,5,9,10])
             .range(['#692901','#FAEEE6','#FA3491', '#FAEEE6','#692901']),
+
         "Turkey":
             d3.scale.linear()
             .domain([0,1,5,9,10])
@@ -46,6 +50,8 @@ var color = {
         "Tofu":
             d3.scale.linear()
             .domain([0,1,5,9,10])
+
+
             .range(['#DE843A','#F7DEC8','#F5F2F0','#F7DEC8','#DE843A'])
 };
 //boundaries where color change occurs
