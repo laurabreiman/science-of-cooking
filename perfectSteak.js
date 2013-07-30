@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 var perfectSteak = function (div) {
 
 
@@ -276,7 +275,6 @@ var perfectSteak = function (div) {
     return {
         setup: setup
     };
-=======
 var perfectSteak=function(div){
 
  
@@ -512,7 +510,7 @@ var steakTemp=($("<div><input type='text' id='steakTemp' ></input>Meat Temperatu
 div.append(thicknessInp, steakTemp);
 };
 return {setup:setup};
->>>>>>> 36f4a64f8694cbe7014659297afb4cbd59e773ed
+
 
 }();
 
