@@ -6,13 +6,16 @@ var setup=function(div,data,flame,timestep)
 	
 var dy=.1;	
 var n = boundaries[meatType].length*2+1, // number of layers
+
     m = data.length; // number of samples per layer
 
 	var getState=function(temp)
 	{
+
 		for(var i=0;i<boundaries[meatType].length;i++)
 		{
 			if(temp>=boundaries[meatType][i])return i;
+
 			
 		}
 		return 5;
@@ -33,7 +36,9 @@ var n = boundaries[meatType].length*2+1, // number of layers
 				
 				if(state==nextState){moves[Math.abs(offset-nextState)]+=1}
 				else{
+
 					if(Math.abs(offset-state)>Math.abs(offset-nextState)){offset=boundaries[meatType].length*2;}
+
 					moves[Math.abs(offset-nextState)]+=1;
 				
 					state=nextState;
@@ -97,7 +102,9 @@ var svg = d3.select("body").append("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 		var legend = svg.selectAll('g')
+
         .data(tempScale[meatType])
+
         .enter()
       .append('g')
         .attr('class', 'legend')
@@ -109,7 +116,9 @@ var svg = d3.select("body").append("svg")
         .attr('y', function(d, i){ return -125+i *  15;})
         .attr('width', 8)
         .attr('height', 8)
+
         .style('fill', function(d) { return color[meatType](d['position'])
+
         });
 
     legend.append('text')
@@ -128,7 +137,9 @@ var layer = svg.selectAll(".layer")
     .data(layers)
   .enter().append("g")
     .attr("class", "layer")
+
     .style("fill", function(d, i) { return color[meatType](i); });
+
 	
 
 var rect = layer.selectAll("rect")
@@ -145,7 +156,9 @@ var rect = layer.selectAll("rect")
 		{
 			if(color[meatType](i)==rects.style("fill")){loc=i;}	
 		}
+
 		var leg=d3.selectAll('.legend')[0][boundaries[meatType].length-loc];
+
 		$(leg).css("fill","red");
 		
 		
@@ -168,9 +181,11 @@ $(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ data[line][pos].toF
 		var loc=null;
 		for(var i=n-1;i>=0;i--)
 		{
+
 			if(color[meatType](i)==rects.style("fill")){loc=i;}	
 		}
 		var leg=d3.selectAll('.legend')[0][boundaries[meatType].length-loc];
+
 		$(leg).css("fill","black");
         
 	});	
