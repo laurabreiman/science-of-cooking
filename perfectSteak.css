@@ -21,3 +21,11 @@
 	position:relative;
 	float:left;
 }
+
+input[type="text"] {
+    border: 1px solid #FFFFFF;
+    font-size: 16px;
+    padding: 5px;
+	margin:5px;
+    width: 50px;
+}

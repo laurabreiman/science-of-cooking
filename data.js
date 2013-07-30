@@ -21,7 +21,6 @@ var tempScale={"Steak":
                 {'info':'Myoglobin denatures 60-70\xB0 C','position':2},
                 {'info':'Actin denatures 70-120\xB0 C','position':1},
                 {'info':'Browning reactions occur 120+\xB0 C','position':0}]
-
               };
 
 //color
