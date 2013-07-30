@@ -18,7 +18,7 @@ var n = boundaries[meatType].length*2+1, // number of layers
 
 			
 		}
-		return boundaries[meatType].length;
+		return 5;
 
 	};
 		var dat=[]
@@ -257,6 +257,19 @@ svg.append("text")
     .attr("x",-height+margin.bottom/3)
     .attr("transform", "rotate(-90)")
     .text("Side 2");	
+		var svgContainer = d3.select("body").append("svg")
+                                   .attr("width", 200)
+                                    .attr("height", 200);
+
+//Draw the Rectangle
+var rectangle = svgContainer.selectAll("rect")
+    .data([10,20,30,40,50,60,70,80,90,100,110,120,130])
+  .enter().append("rect")
+           .attr("x", 10)
+           .attr("y", function(d,i){return 10+i})
+           .attr("width", 500)
+           .attr("height", 1)
+		   .style('fill', function(d,i) {console.log(color[meatType](getState(d))); return color[meatType](getState(d))});
 /*
  svg.append("g")         
         .attr("class", "grid")
