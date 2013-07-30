@@ -28,7 +28,7 @@ var color = {
         "Steak":
             d3.scale.linear()
             .domain([0,1,5,9,10])
-            .range(['#693d34' ,"#F58282","#f52900","#F58282",'#693d34']),
+            .range(['#693d34' ,"#FFC4C5","#8B0000","#FFC4C5",'#693d34']),
         "Tuna":
             d3.scale.linear()
             .domain([0,1,5,9,10])

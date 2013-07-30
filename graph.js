@@ -18,7 +18,7 @@ var n = boundaries[meatType].length*2+1, // number of layers
 
 			
 		}
-		return 5;
+		return boundaries[meatType].length;
 
 	};
 		var dat=[]
@@ -64,7 +64,7 @@ var x = d3.scale.ordinal()
 		
 var xscaled = d3.scale.linear()
     .domain([0,m/timestep])
-    .range([width/30, width*31/30]);	
+    .range([width/30, width]);	
 		
 var y = d3.scale.linear()
     .domain([0, yStackMax])
@@ -76,11 +76,9 @@ var yscaled = d3.scale.linear()
 
 
 var xAxis = d3.svg.axis()
-    .scale(x)
- 	.ticks(10)
-    .tickSize(1,0)
-	.tickSubdivide(5)
-    .tickPadding(30,0)
+    .scale(xscaled)
+    .tickSize(0)
+    .tickPadding(30)
     .orient("bottom");
 		
 var yAxis = d3.svg.axis()
@@ -161,7 +159,7 @@ var rect = layer.selectAll("rect")
 
 		$(leg).css("fill","red");
 		
-		
+
         
 	})
 .on("mousemove",function(){
@@ -169,9 +167,16 @@ var rect = layer.selectAll("rect")
 
 	var Offset = document.getElementById("graphSteak").offsetTop;
 	var pos=parseInt(data[0].length-(event.pageY-Offset-margin.top)/(height/yStackMax)+1);
-var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-2.0);
+var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-5.0);
 $(d3.select('.mylabel')[0][0]).text( meatType+ " temperature is "+ data[line][pos].toFixed(2)+ "\xB0C");
 	//$(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ pos+ "\xB0C");
+	$("line").remove();
+	var myLine = d3.select("svg").append("svg:line")
+    .attr("x1", margin.left)
+    .attr("y1", event.pageY-Offset-5)
+    .attr("x2", width*31/30)
+    .attr("y2", event.pageY-Offset-5)
+    .style("stroke", "grey");
 })
 			
         
@@ -252,13 +257,15 @@ svg.append("text")
     .attr("x",-height+margin.bottom/3)
     .attr("transform", "rotate(-90)")
     .text("Side 2");	
-
+/*
  svg.append("g")         
         .attr("class", "grid")
         .call(make_y_axis()
             .tickSize(-width, 0, 0)
             .tickFormat("")
-        )		
+			
+        )	
+	*/	
 var timeout = setTimeout(function() {
   d3.select("input[value=\"grouped\"]").property("checked", true).each(change);
 }, 2000);
