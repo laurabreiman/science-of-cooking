@@ -6,3 +6,11 @@
     height: 200px;
     border: 1px solid black;
 }
+
+#startModal .modal-footer{
+    text-align:center;
+}
+
+/*.dropdown{
+    float: right;
+}*/
