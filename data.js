@@ -32,16 +32,16 @@ var color = {
      
 	"Steak":
             d3.scale.linear()
-            .domain([0,2,3,6,9,10,12])
+            .domain([0,1,3,6,9,11,12])
             .range(['black','#693d34' ,"#FFC4C5","#8B0000","#FFC4C5",'#693d34','black']),
         "Tuna":
             d3.scale.linear()
-            .domain([0,2,3,6,9,10,12])
+            .domain([0,1,3,6,9,11,12])
             .range(['black','#692901','#FAEEE6','#FA3491', '#FAEEE6','#692901','black']),
 
         "Turkey":
             d3.scale.linear()
-            .domain([0,2,3,6,9,10,12])
+            .domain([0,1,3,6,9,11,12])
             .range(['black','#692901','#FAEEE6','#B56980','#FAEEE6','#692901'],'black')
 };
 //boundaries where color change occurs
