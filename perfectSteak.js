@@ -189,7 +189,7 @@ var perfectSteak = function (div) {
 				console.log("isOK");
 				console.log("click");
 				
-				div.append("<div class='row'><div class='span6'><div class='container optionBar'></div></div><div class='span6'><div class='container table-container'></div></div></div>")
+				div.append("<div class='row'><div class='span4'><div class='container optionBar'></div></div><div class='span4'><div class='container table-container'></div></div></div>")
 				$(".table-container").append(displayDiv);
 				cookButton = $("<button class='btn' id='cookButton'>Let's get cooking!</button>");
 				
