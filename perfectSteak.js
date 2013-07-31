@@ -11,15 +11,15 @@ var perfectSteak = function (div) {
             currentInfo["thickness"] = newVal;
 
         }
-		
+
 		var addTime=function(value){
 			currentInfo['time']+=value;
 		}
-		
+
 		var changeTime=function(value){
 			currentInfo['time']=value;
 		}
-		
+
 		//CHANGES X SECONDS INTO Y:X WHERE Y IS MINUTES X IS SECONDS
 		var convertTime=function(secs){
 			var minutes=Math.floor(parseInt(secs)/60);
@@ -30,11 +30,11 @@ var perfectSteak = function (div) {
 				return String(minutes)+':'+String(seconds);
 			}
 		}
-		
+
 		var numRowsPlus=function(){
 			currentInfo["numRows"]++;
 		}
-		
+
 		var numRowsMinus=function(){
 			currentInfo["numRows"]--;
 		}
@@ -57,19 +57,19 @@ var perfectSteak = function (div) {
         //THIS IS FOR CHANGING THE ENTIRE DATA ARRAY
         var dataChange = function (array) {
             currentInfo["data"]=array;
-			
+
         }
-		
+
 		var buildData=function(){
 			var newData=[];
-			
+
 				for (var g=0; g<currentInfo["numRows"]; g++){
 					var side1data=parseFloat($("#inp1_"+g).val());
 					var side2data=parseFloat($("#inp2_"+g).val());
 					var timedata=parseFloat($("#row"+g+"time").val());
 					newData.push([timedata, side1data, side2data]);
 				}
-		
+
 			dataChange(newData);
 		}
 
@@ -99,7 +99,7 @@ var perfectSteak = function (div) {
 		var clicked=false;
 		//inputTable.change(function(){console.log("click"); model.buildData(); updateTime(); if(clicked){graph()}});
         var displayDiv = $("<div class='displayDiv'></div>");
-		
+
         displayDiv.append(inputTable);
      displayDiv.change(function(){console.log("click"); model.buildData(); updateTime(); if(clicked){graph()}})
 
@@ -114,7 +114,7 @@ var perfectSteak = function (div) {
 				console.log("change");
 				if(i>0){
 				var vals=parseFloat($("#row" + (i-1) + "time").val());
-			
+
 				var info=$("#timeCol"+(i-1)).html();
 					info = info.replace(":", ".").split('.');
 					console.log(info);
@@ -125,7 +125,7 @@ var perfectSteak = function (div) {
 					var minSecs=model.convertTime(0);
 				}
 				$("#timeCol"+(i)).html(" "+ minSecs);
-				
+
 			}
 		}
         var buildDisplay = function () {
@@ -168,10 +168,10 @@ var perfectSteak = function (div) {
                 var row = $("<tr></tr>");
 				if(i>0){
 				var vals=parseFloat($("#row" + (i-1) + "time").val());
-			
+
 				var info=$("#timeCol"+(i-1)).html();
 					info = info.replace(":", ".").split('.');
-					
+
 				vals=vals+60*parseFloat(info[0])+parseFloat(info[1]);
 				var minSecs=model.convertTime(vals);
 				}
@@ -194,52 +194,52 @@ var perfectSteak = function (div) {
 //                    displayDiv.append(cookButton);
                 }
                 if (len == 0) {
-					
+
                     inp1.val(23);
                     inp2.val(23);
                     model.dataAdd([parseFloat($("#row" + i + "time").val()), parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())]);
-				
+
                 } else if (i <= len) {
-					
+
                     inp1.val(model.currentInfo["data"][i][1]);
                     inp2.val(model.currentInfo["data"][i][2]);
-					
+
                     model.dataAdd([parseFloat($("#row" + i + "time").val()), parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())])
                 } else {
 
                     inp1.val(model.currentInfo["data"][i - 1][1]);
                     inp2.val(model.currentInfo["data"][i - 1][2]);
-			
+
                     model.dataAdd([parseFloat($("#row" + i + "time").val()), parseFloat($("#inp1_" + iminus).val()), parseFloat($("#inp2_" + iminus).val())])
                 }
                 timeFun(i);
                 flipButtonFun(i);
             }
-			
+
             model.dataClear();
             addButtonFun();
             subButtonFun();
             CookButtonFun();
         };
-		
-		
+
+
         var addRow = function (table) {
             flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
             var row = $("<tr></tr>");
             var i = model.currentInfo["numRows"] - 1;
 			if(i>0){
 			var vals=parseFloat($("#row" + (i-1) + "time").val());
-			
+
 				var info=$("#timeCol"+(i-1)).html();
 					info = info.replace(":", ".").split('.');
-				
+
 				vals=vals+60*parseFloat(info[0])+parseFloat(info[1]);
 				var minSecs=model.convertTime(vals);
 				}
 				else{
 					var minSecs=model.convertTime(i*timeStep);
 				}
-			
+
 			var timeCol=$("<td id='timeCol"+i+"'>"+minSecs+"</td>");
             var duration = $("<td ><input id='row" + i + "time' type='text' value='15'></td>");
             var inp1 = $("<input type='text' id='inp1_" + i + "'>");
@@ -262,12 +262,12 @@ var perfectSteak = function (div) {
 			}
             model.dataAdd([parseFloat($("#row" + i + "time").val()), parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())])
         }
-		
-		
+
+
         var delRow = function () {
             $('.inputTable tr:last').remove();
         }
-		
+
         var addButtonFun = function () {
             addButton.on("click", function () {
 				model.buildData();
@@ -278,7 +278,7 @@ var perfectSteak = function (div) {
 
         var subButtonFun = function () {
             subButton.on("click", function () {
-				
+
                 model.numRowsMinus();
 				model.buildData();
                 delRow();
@@ -298,16 +298,16 @@ var graph=function(){
 				 d3.select("svg")
                     .remove();
                 model.dataClear();
-				
+
                 for (var e = 0; e < model.currentInfo["numRows"]; e++) {
                     var curTime = parseFloat($("#row" + e + "time").val());
                     var cur1 = parseFloat($("#inp1_" + e).val());
                     var cur2 = parseFloat($("#inp2_" + e).val());
                     model.dataAdd([curTime, cur1, cur2]);
                 }
-				
+
 				var OKtoCook=true; //IF WE HAVE INVALID INPUTS, IT WILL BE CHANGED TO FALSE
-				
+
 				//THIS BIT IS CHECKING WHETHER THE THICKNESS AND INITIAL TEMP INPUTS ARE VALID
 				$("#tempAlert").remove();
 				$("#thickAlert").remove();
@@ -322,7 +322,7 @@ var graph=function(){
 				}else{
 					model.changeMeatTemp(parseFloat($("#steakTemp").val()))
 				};
-					
+
 				if (String(parseInt($("#thicknessInp").val()))=='NaN'){
 					$("#thickInpDiv").append(thicknessAlert);
 					OKtoCook=false;
@@ -332,10 +332,10 @@ var graph=function(){
 				}else{
 					model.changeThickness(parseFloat($("#thicknessInp").val()))
 				};
-				
+
 				//add to on click and calculate(blah,blah,blah, meatType)
 				var meatType = $("input[type='radio'][name='meat']:checked").attr('id');
-				
+
 				//THIS WILL COOK THE STEAK IF WE HAVE VALID INPUTS
 				if (OKtoCook==true){
 					var steak = [model.currentInfo["data"][0][1]];
@@ -389,9 +389,11 @@ var graph=function(){
         var view = View(div, model);
 
 
+
         
         view.buildDisplay();
         $('.inputTable').offset({top:10});
+        view.buildDisplay();
 
     };
     return {

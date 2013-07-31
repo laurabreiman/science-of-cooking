@@ -14,12 +14,51 @@
 		<script src="graph.js"></script>
 		<script src="perfectSteak.js"></script>
 		 
+        <link href="home-screen.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="graph.css" rel="stylesheet">
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
 
     </head>
     <body>
+        <div class = "navbar">
+        <div class = "navbar-inner">
+            <a class = "brand" id = "title">Cooking Visualization</a>
+            <div class = "nav-collapse collapse">
+                <a class = "brand rules" href="#rulesModal" data-toggle = "modal">Instructions</a>
+            </div>
+            <div class = "nav-collapse collapse">
+                <a class = "brand about" href="#aboutModal" data-toggle = "modal">About</a>
+            </div>
+        </div>
+    </div>
+    
+    <div id="rulesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">How to Use the Cooking Visualizer</h3>
+        </div>
+        <div class="modal-body">
+            <p></p>
+        </div>
+        <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div>
+    </div>
+        
+    <div id="aboutModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">About this Applet</h3>
+        </div>
+        <div class="modal-body">
+            <p></p>
+        </div>
+        <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div>
+    </div>
+        
 	<link href="perfectSteak.css" rel="stylesheet">
     <div class="perfectSteak"></div>
     <div class='graph' id='graphSteak'></div>
