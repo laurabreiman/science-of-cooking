@@ -52,9 +52,9 @@ var n = boundaries[meatType].length*2+1, // number of layers
     yGroupMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); }),
     yStackMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y0 + d.y; }); });
 
-var margin = {top: 150, right: 10, bottom: 100, left: 50},
+var margin = {top: 10, right: 10, bottom: 100, left: 50},
     width = 960 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    height = 300 - margin.top - margin.bottom;
 
 var x = d3.scale.ordinal()
     .domain(d3.range(m))
@@ -96,8 +96,13 @@ var svg = d3.select("body").append("svg")
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-		var legend = svg.selectAll('g')
+var svg3= d3.select(".span3").append("svg")
+	.attr("class","container")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", 180)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + 150 + ")");
+		var legend = svg3.selectAll('g')
 
         .data(tempScale[meatType])
 
@@ -108,7 +113,7 @@ var svg = d3.select("body").append("svg")
 
 
     legend.append('rect')
-        .attr('x', 0)
+        .attr('x', -30)
         .attr('y', function(d, i){ return -125+i *  15;})
         .attr('width', 8)
         .attr('height', 8)
@@ -118,16 +123,10 @@ var svg = d3.select("body").append("svg")
         });
 
     legend.append('text')
-        .attr('x', 12)
+        .attr('x', -18)
         .attr('y', function(d, i){ return (-125+i *  15+8);})
         .text(function(d){ return d['info']; });	
-	svg.append("text")
-    .attr("class", "mylabel")
-    .attr("text-anchor", "end")
-    .attr("x", width/1.3)
-    .attr("y", -margin.top/2)
-	.style("font-size",'30px')
-    .text(meatType+ " temperature is: ______\xB0C");
+
 var ttip = d3.select("body").append("div")   
     .attr("class", "tooltip")               
     .style("opacity", 1);	
@@ -262,7 +261,7 @@ svg.append("text")
     .attr("x",-height+margin.bottom/3)
     .attr("transform", "rotate(-90)")
     .text("Side 2");	
-var svgContainer = d3.select(".span6").append("svg")
+var svgContainer = d3.select(".span5").append("svg")
                                    .attr("width", '50%')
                                     .attr("height", '20%');
 var texts=svgContainer.selectAll("text")
