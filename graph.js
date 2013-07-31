@@ -54,7 +54,7 @@ var n = boundaries[meatType].length*2+1, // number of layers
 
 var margin = {top: 150, right: 10, bottom: 100, left: 50},
     width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    height = 400 - margin.top - margin.bottom;
 
 var x = d3.scale.ordinal()
     .domain(d3.range(m))
@@ -128,7 +128,9 @@ var svg = d3.select("body").append("svg")
     .attr("y", -margin.top/2)
 	.style("font-size",'30px')
     .text(meatType+ " temperature is: ______\xB0C");
-		
+var ttip = d3.select("body").append("div")   
+    .attr("class", "tooltip")               
+    .style("opacity", 1);	
 var layer = svg.selectAll(".layer")
     .data(layers)
   .enter().append("g")
@@ -166,7 +168,7 @@ var rect = layer.selectAll("rect")
 	var Offset = document.getElementById("graphSteak").offsetTop;
 	var pos=parseInt(data[0].length-(event.pageY-Offset-margin.top)/(height/yStackMax)+1);
 var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-5.0);
-$(d3.select('.mylabel')[0][0]).text( meatType+ " temperature is "+ data[line][pos].toFixed(2)+ "\xB0C");
+//$(d3.select('.mylabel')[0][0]).text( meatType+ " temperature is "+ data[line][pos].toFixed(2)+ "\xB0C");
 	//$(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ pos+ "\xB0C");
 	$("line").remove();
 	var myLine = d3.select("svg").append("svg:line")
@@ -175,6 +177,11 @@ $(d3.select('.mylabel')[0][0]).text( meatType+ " temperature is "+ data[line][po
     .attr("x2", width*31/30)
     .attr("y2", event.pageY-Offset-5)
     .style("stroke", "grey");
+	var ttip=d3.select('.tooltip');
+	   ttip.html(data[line][pos].toFixed(2)+ "\xB0C")  
+	   			.style("opacity", 1)
+                .style("left", (d3.event.pageX) + "px")     
+                .style("top", (d3.event.pageY) + "px");   
 })
 			
         
@@ -255,24 +262,24 @@ svg.append("text")
     .attr("x",-height+margin.bottom/3)
     .attr("transform", "rotate(-90)")
     .text("Side 2");	
-var svgContainer = d3.select("body").append("svg")
-                                   .attr("width", '100%')
-                                    .attr("height", '80%');
+var svgContainer = d3.select(".span6").append("svg")
+                                   .attr("width", '50%')
+                                    .attr("height", '20%');
 var texts=svgContainer.selectAll("text")
 .data([0])
  .enter().append("text")
  .attr("text-anchor", "left")
     .attr("x", '10%')
     .attr("y", 10)
-.text("Maximum internal temperature reached");
+.text("Final Protein State Reached");
 //Draw the Rectangle
 var rectangle = svgContainer.selectAll("rect")
     .data(maxTemps.reverse())
   .enter().append("rect")
            .attr("x", '10%')
-           .attr("y", function(d,i){return 20+i*5})
+           .attr("y", function(d,i){return 20+i*1})
            .attr("width", '60%')
-           .attr("height", 5)
+           .attr("height", 1)
 		   .style('fill', function(d,i) {return color[meatType](getState(d))});
 /*
  svg.append("g")         

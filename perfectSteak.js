@@ -2,7 +2,7 @@ var perfectSteak = function (div) {
 
 
     function Model(div) {
-		var currentInfo={'meatTemp':23, 'thickness':6, 'data':[], 'numRows':2, 'time':0}
+		var currentInfo={'meatTemp':23, 'thickness':3, 'data':[], 'numRows':2, 'time':0, 'OKToGraph':true}
         var timeStep = 15;
         var inputTable = $(".inputTable");
 
@@ -12,6 +12,28 @@ var perfectSteak = function (div) {
 
         }
 
+		
+		var checkDiv=function(){
+			currentInfo["OKToGraph"]=true;
+			$(".alert").remove();
+			for (var h=0; h<currentInfo["numRows"]; h++){
+				console.log(h)
+				console.log($("#inp1_"+h).val())
+				if (parseFloat($("#inp1_"+h).val())>300||parseFloat($("#inp1_"+h).val())<0){
+					console.log("ohno")
+					var side1Alert=$("<div class='alert alert-danger' id='row"+h+"side1alert'>!</div>");
+					$("#row"+h+"side1").append(side1Alert)
+					currentInfo["OKToGraph"]=false;
+					}
+				if(parseFloat($("#inp2_"+h).val())>300||parseFloat($("#inp2_"+h).val())<0){
+					console.log("ohno2")
+					var side2Alert=$("<div class='alert alert-danger' id='row"+h+"side2alert'>!</div>");
+					$("#row"+h+"side2").append(side2Alert);
+					currentInfo["OKToGraph"]=false;
+				}
+			}
+		}
+		
 		var addTime=function(value){
 			currentInfo['time']+=value;
 		}
@@ -87,7 +109,8 @@ var perfectSteak = function (div) {
 			convertTime:convertTime,
 			changeTime:changeTime,
 			addTime:addTime,
-			buildData:buildData
+			buildData:buildData,
+			checkDiv:checkDiv
         }
     }
 
@@ -101,7 +124,18 @@ var perfectSteak = function (div) {
         var displayDiv = $("<div class='displayDiv'></div>");
 
         displayDiv.append(inputTable);
-     displayDiv.change(function(){console.log("click"); model.buildData(); updateTime(); if(clicked){graph()}})
+		displayDiv.change(function(){
+				model.checkDiv()
+				console.log("display_div changed")
+				model.buildData();
+				updateTime();
+				if(clicked&&model.currentInfo["OKToGraph"]){graph()}
+				else{d3.select("svg")
+                    .remove();
+				 d3.select("svg")
+                    .remove();
+                model.dataClear();}
+		})
 
 //        div.append
         var addButton;
@@ -128,29 +162,51 @@ var perfectSteak = function (div) {
 
 			}
 		}
+
         var buildDisplay = function () {
-            div.append("<div class='row'><div class='span6'><div class='container optionBar'></div></div><div class='span6'><div class='container table-container'></div></div></div>")
-            $(".table-container").append(displayDiv);
-            cookButton = $("<button class='btn' id='cookButton'>Let's get cooking!</button>");
-            
-            var thicknessInp = ($("<div id=thickInpDiv><input type='text' id='thicknessInp' value='6'></input> Meat Thickness (cm) </div>"));
-			thicknessInp.change(function(){if(clicked){graph()}});
-            var steakTemp = ($("<div id=tempInpDiv><input type='text' id='steakTemp' value='23'></input>Initial Meat Temperature (&#176;C)</div>"));
-			steakTemp.change(function(){if(clicked){graph()}});
-		//Item to hold inputs of meat. Append meatInput to your display
-		      var meatInput=$('<form id="meatInp">What type of meat are you cooking?<br>'
-		+'<input type="radio" name="meat" id="Steak" checked>Steak<br>'
-		+'<input type="radio" name="meat" id="Tuna">Tuna<br>'
-		+'<input type="radio" name="meat" id="Turkey">Turkey</form>');
-            meatInput.change(function(){if(clicked){graph()}});
-            var cookbuttonrow = $("<div class='row'></div");
-            cookbuttonrow.append(cookButton);
+			console.log("isOK"+model.checkDiv())
+			console.log("OK"+model.currentInfo["OKToGraph"])
+			if (model.currentInfo["OKToGraph"]){
+				console.log("isOK");
+				console.log("click");
+				
+				div.append("<div class='row'><div class='span6'><div class='container optionBar'></div></div><div class='span6'><div class='container table-container'></div></div></div>")
+				$(".table-container").append(displayDiv);
+				cookButton = $("<button class='btn' id='cookButton'>Let's get cooking!</button>");
+				
+				var thicknessInp = ($("<div id=thickInpDiv><input type='text' id='thicknessInp' value='6'></input> Meat Thickness (cm) </div>"));
+				thicknessInp.change(function(){
+						model.checkDiv();
+						if(clicked&&model.currentInfo["OKToGraph"]){graph()}});
+				var steakTemp = ($("<div id=tempInpDiv><input type='text' id='steakTemp' value='23'></input>Initial Meat Temperature (&#176;C)</div>"));
+				steakTemp.change(function(){
+							model.checkDiv();
+							if(clicked&&model.currentInfo["OKToGraph"]){graph()}});
+			//Item to hold inputs of meat. Append meatInput to your display
+				var meatInput=$('<form id="meatInp">What type of meat are you cooking?<br>'
+					+'<input type="radio" name="meat" id="Steak" checked>Steak<br>'
+					+'<input type="radio" name="meat" id="Tuna">Tuna<br>'
+					+'<input type="radio" name="meat" id="Turkey">Turkey</form>');
+				meatInput.change(function(){
+							model.checkDiv();
+							if(clicked&&model.currentInfo["OKToGraph"]){graph()}});
+				
+						
+				var cookbuttonrow = $("<div class='row'></div");
+				cookbuttonrow.append(cookButton);
 
-            $('.optionBar').append(thicknessInp, steakTemp, meatInput,cookbuttonrow);
-            
-            buildTable();
+				$('.optionBar').append(thicknessInp, steakTemp, meatInput,cookbuttonrow);
+				
+				buildTable();
+				}
+				else{
+					(".")
+				}
         }
-
+var toF=function(C)
+{
+	return (C*(5/9)+32 + "&#176;F");
+}
         var buildTable = function () {
             var inpTabHeader = $("<tr><th class='inpTabHeader'>Total Time(m:s)<th class='inpTabHeader'>Duration (s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
             inputTable.append(inpTabHeader);
@@ -349,8 +405,11 @@ var graph=function(){
         var CookButtonFun = function () {
             cookButton.on("click", function () {
 				clicked=true;
-				graph();
-  
+				model.checkDiv();
+				console.log("isOKtograph"+model.currentInfo["OKToGraph"]);
+				if (model.currentInfo["OKToGraph"]){
+					graph();
+				};
             });
         }
 
@@ -394,6 +453,7 @@ var graph=function(){
         view.buildDisplay();
         $('.inputTable').offset({top:60});
      
+
 
     };
     return {
