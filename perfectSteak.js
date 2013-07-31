@@ -406,7 +406,6 @@ var graph=function(){
         //div.append(thicknessInp, steakTemp, meatInput);
 //=======
         view.buildDisplay();
-        $('.inputTable').offset({top:0});
 //>>>>>>> 50eb7737dbc72b2b84d127e25d0ec934f012f49d
     };
     return {
