@@ -1,6 +1,6 @@
 var tempScale={
 			   "Steak":
-                [{'info':'lack of protein denaturization below 40\xB0 C Raw','position':6},
+                [{'info':'No protein denaturization below 40\xB0 C Raw','position':6},
                 {'info':'Myosin breaks down 40-55\xB0 C Rare','position':5},
                 {'info':'Glycogen breaks down 55-60\xB0 C Medium Rare','position':4},
                 {'info':'Myoglobin denatures 60-70\xB0 C Medium','position':3},
@@ -10,7 +10,7 @@ var tempScale={
 
               "Tuna":
 
-                [{'info':'Lack of protein denaturization below 40\xB0 C','position':6},
+                [{'info':'No protein denaturization below 40\xB0 C','position':6},
                 {'info':'Myosin breaks down 40-50\xB0 C','position':5},
                 {'info':'Myocommata begins to rupture 50\xB0 C','position':4},
                 {'info':'Myoglobin denatures 60-70\xB0 C','position':3},
@@ -18,7 +18,7 @@ var tempScale={
                 {'info':'Fibers begin to disintegrate 90+\xB0 C+','position':1},
 				{'info':'Charring at 180+\xB0 C+','position':0}],
 			   "Turkey":
-                 [{'info':'lack of protein denaturization below 40\xB0 C Raw','position':6},
+                 [{'info':'No protein denaturization below 40\xB0 C Raw','position':6},
                 {'info':'Myosin breaks down 40-55\xB0 C Rare','position':5},
                 {'info':'Glycogen breaks down 55-60\xB0 C Medium Rare','position':4},
                 {'info':'Myoglobin denatures 60-70\xB0 C Medium','position':3},
