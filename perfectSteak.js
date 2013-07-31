@@ -392,8 +392,8 @@ var graph=function(){
 
         
         view.buildDisplay();
-        $('.inputTable').offset({top:10});
-        view.buildDisplay();
+        $('.inputTable').offset({top:60});
+     
 
     };
     return {
