@@ -248,9 +248,7 @@ var len= tempArray[0].length;
                     }
                 }
             }
-        }
-        console.log(maxTemps);
-	
+        }	
         var arrays = tempArray.length-1 ;
         var len= tempArray[0].length;
         var step = arrays/60.0;
