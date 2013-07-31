@@ -97,30 +97,52 @@ var perfectSteak = function (div) {
     function View(div, model) {
         var inputTable = $("<table class='inputTable table table-striped'></table>");
 		var clicked=false;
-		inputTable.change(function(){console.log("click"); model.buildData(); if(clicked){graph()}})
+		//inputTable.change(function(){console.log("click"); model.buildData(); updateTime(); if(clicked){graph()}});
         var displayDiv = $("<div class='displayDiv'></div>");
+		
         displayDiv.append(inputTable);
-//        div.append(displayDiv);
+     displayDiv.change(function(){console.log("click"); model.buildData(); updateTime(); if(clicked){graph()}})
 
 //        div.append
         var addButton;
         var subButton;
         var flipButton;
         var cookButton;
-        
+        var updateTime=function(){
+			for(var i=0;i<model.currentInfo["numRows"];i++)
+			{
+				console.log("change");
+				if(i>0){
+				var vals=parseFloat($("#row" + (i-1) + "time").val());
+			
+				var info=$("#timeCol"+(i-1)).html();
+					info = info.replace(":", ".").split('.');
+					console.log(info);
+				vals=vals+60*parseFloat(info[0])+parseFloat(info[1]);
+				var minSecs=model.convertTime(vals);
+				}
+				else{
+					var minSecs=model.convertTime(0);
+				}
+				$("#timeCol"+(i)).html(" "+ minSecs);
+				
+			}
+		}
         var buildDisplay = function () {
             div.append("<div class='row'><div class='span6'><div class='container optionBar'></div></div><div class='span6'><div class='container table-container'></div></div></div>")
             $(".table-container").append(displayDiv);
             cookButton = $("<button class='btn' id='cookButton'>Let's get cooking!</button>");
             
             var thicknessInp = ($("<div id=thickInpDiv><input type='text' id='thicknessInp' value='6'></input> Meat Thickness (cm) </div>"));
+			thicknessInp.change(function(){if(clicked){graph()}});
             var steakTemp = ($("<div id=tempInpDiv><input type='text' id='steakTemp' value='23'></input>Initial Meat Temperature (&#176;C)</div>"));
+			steakTemp.change(function(){if(clicked){graph()}});
 		//Item to hold inputs of meat. Append meatInput to your display
 		      var meatInput=$('<form id="meatInp">What type of meat are you cooking?<br>'
 		+'<input type="radio" name="meat" id="Steak" checked>Steak<br>'
 		+'<input type="radio" name="meat" id="Tuna">Tuna<br>'
 		+'<input type="radio" name="meat" id="Turkey">Turkey</form>');
-            
+            meatInput.change(function(){if(clicked){graph()}});
             var cookbuttonrow = $("<div class='row'></div");
             cookbuttonrow.append(cookButton);
 
@@ -149,7 +171,7 @@ var perfectSteak = function (div) {
 			
 				var info=$("#timeCol"+(i-1)).html();
 					info = info.replace(":", ".").split('.');
-					console.log(info);
+					
 				vals=vals+60*parseFloat(info[0])+parseFloat(info[1]);
 				var minSecs=model.convertTime(vals);
 				}
@@ -210,7 +232,7 @@ var perfectSteak = function (div) {
 			
 				var info=$("#timeCol"+(i-1)).html();
 					info = info.replace(":", ".").split('.');
-					console.log(info);
+				
 				vals=vals+60*parseFloat(info[0])+parseFloat(info[1]);
 				var minSecs=model.convertTime(vals);
 				}
