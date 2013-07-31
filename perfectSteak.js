@@ -19,21 +19,11 @@ var perfectSteak = function (div) {
 			for (var h=0; h<currentInfo["numRows"]; h++){
 				console.log(h)
 				console.log($("#inp1_"+h).val())
-				// if (parseFloat($("#inp1_"+h).val())>300){
-					// var side1Alert=$("<div class='alert alert-danger' id='row"+h+"side1alert'>Too high!</div>");
-					// $("#row"+h+"side1").append(side1Alert);
-					// currentInfo["OKToGraph"]=false;
-					// }
 				if(parseFloat($("#inp1_"+h).val())<0){
 					var side1Alert=$("<div class='alert alert-danger' id='row"+h+"side1alert'>Too low!</div>");
 					$("#row"+h+"side1").append(side1Alert);
 					currentInfo["OKToGraph"]=false;
 					}
-				// if(parseFloat($("#inp2_"+h).val())>300){
-					// var side2Alert=$("<div class='alert alert-danger' id='row"+h+"side2alert'>Too high!</div>");
-					// $("#row"+h+"side2").append(side2Alert);
-					// currentInfo["OKToGraph"]=false;
-				// }
 				if(parseFloat($("#inp2_"+h).val())<0){
 					var side2Alert=$("<div class='alert alert-danger' id='row"+h+"side2alert'>Too low!</div>");
 					$("#row"+h+"side2").append(side2Alert);
@@ -44,11 +34,6 @@ var perfectSteak = function (div) {
 					$("#duration"+h).append(timeAlert);
 					currentInfo["OKToGraph"]=false;
 				}
-				// if(parseFloat($("#row"+h+"time").val())>7200){
-					// var timeAlert=$("<div class='alert alert-danger' id='row"+h+"timeAlert'>Max 2 hours</div>");
-					// $("#duration"+h).append(timeAlert);
-					// currentInfo["OKToGraph"]=false;
-				// }
 			}
 		}
 		
@@ -145,9 +130,14 @@ var perfectSteak = function (div) {
         displayDiv.append(inputTable);
 		displayDiv.change(function(){
 				model.checkDiv()
-				console.log("display_div changed")
 				model.buildData();
 				updateTime();
+				for (var j=0; j<model.currentInfo["numRows"]; j++){
+					var timeInSecs=parseFloat($("#row"+j+"time").val());
+					if (timeInSecs>60){
+						$("#row"+j+"time").val(model.convertTime(timeInSecs))
+					}
+				}
 				if(clicked&&model.currentInfo["OKToGraph"]){graph()}
 				else{d3.select("svg")
                     .remove();
@@ -168,16 +158,16 @@ var perfectSteak = function (div) {
 				if(i>0){
 				var vals=parseFloat($("#row" + (i-1) + "time").val());
 
-				var info=$("#timeCol"+(i-1)).html();
-					info = info.replace(":", ".").split('.');
-					console.log(info);
-				vals=vals+60*parseFloat(info[0])+parseFloat(info[1]);
+				//var info=$("#timeCol"+(i-1)).html();
+					//info = info.replace(":", ".").split('.');
+					//console.log(info);
+				//vals=vals+60*parseFloat(info[0])+parseFloat(info[1]);
 				var minSecs=model.convertTime(vals);
 				}
 				else{
 					var minSecs=model.convertTime(0);
 				}
-				$("#timeCol"+(i)).html(" "+ minSecs);
+				//$("#timeCol"+(i)).html(" "+ minSecs);
 
 			}
 		}
@@ -221,7 +211,7 @@ var perfectSteak = function (div) {
         }
 
         var buildTable = function () {
-            var inpTabHeader = $("<tr><th class='inpTabHeader'>Total Time(m:s)<th class='inpTabHeader'>Duration (s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
+            var inpTabHeader = $("<tr><th class='inpTabHeader'>Duration (s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
             inputTable.append(inpTabHeader);
             var timeStep = model.timeStep;
             var len = model.currentInfo["data"].length;
@@ -238,16 +228,16 @@ var perfectSteak = function (div) {
 				if(i>0){
 				var vals=parseFloat($("#row" + (i-1) + "time").val());
 
-				var info=$("#timeCol"+(i-1)).html();
-					info = info.replace(":", ".").split('.');
+				//var info=$("#timeCol"+(i-1)).html();
+					//info = info.replace(":", ".").split('.');
 
-				vals=vals+60*parseFloat(info[0])+parseFloat(info[1]);
-				var minSecs=model.convertTime(vals);
-				}
-				else{
-					var minSecs=model.convertTime(i*timeStep);
-				}
-				var timeCol=$("<td id='timeCol"+i+"'>"+minSecs+"</td>");
+				// vals=vals+60*parseFloat(info[0])+parseFloat(info[1]);
+				// var minSecs=model.convertTime(vals);
+				 }
+				// else{
+					// var minSecs=model.convertTime(i*timeStep);
+				// }
+				//var timeCol=$("<td id='timeCol"+i+"'>"+minSecs+"</td>");
                 var duration = $("<td id='duration"+i+"'><input id='row" + i + "time' type='text' value='15'></td>");
                 var inp1 = $("<input type='text' id='inp1_" + i + "'>");
                 var inp2 = $("<input type='text' id='inp2_" + i + "'>");
@@ -256,7 +246,7 @@ var perfectSteak = function (div) {
                 var step2Col = $("<td id='row" + i + "side2' class='row" + i + "'></td>");
                 step2Col.append(inp2);
                 step1Col.append(flipButton);
-                row.append( timeCol,duration, step1Col, step2Col);
+                row.append(duration, step1Col, step2Col);
                 inputTable.append(row);
                 if (i == model.currentInfo["numRows"] - 1) {
                     inputTable.append(addButton, subButton);
@@ -296,20 +286,20 @@ var perfectSteak = function (div) {
             flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
             var row = $("<tr></tr>");
             var i = model.currentInfo["numRows"] - 1;
-			if(i>0){
-			var vals=parseFloat($("#row" + (i-1) + "time").val());
+				if(i>0){
+					var vals=parseFloat($("#row" + (i-1) + "time").val());
 
-				var info=$("#timeCol"+(i-1)).html();
-					info = info.replace(":", ".").split('.');
+				//var info=$("#timeCol"+(i-1)).html();
+					//info = info.replace(":", ".").split('.');
 
-				vals=vals+60*parseFloat(info[0])+parseFloat(info[1]);
-				var minSecs=model.convertTime(vals);
-				}
-				else{
-					var minSecs=model.convertTime(i*timeStep);
-				}
+				//vals=vals+60*parseFloat(info[0])+parseFloat(info[1]);
+				//var minSecs=model.convertTime(vals);
+					}
+				//else{
+					//var minSecs=model.convertTime(i*timeStep);
+				//}
 
-			var timeCol=$("<td id='timeCol"+i+"'>"+minSecs+"</td>");
+			//var timeCol=$("<td id='timeCol"+i+"'>"+minSecs+"</td>");
             var duration = $("<td ><input id='row" + i + "time' type='text' value='15'></td>");
             var inp1 = $("<input type='text' id='inp1_" + i + "'>");
             var inp2 = $("<input type='text' id='inp2_" + i + "'>");
@@ -318,7 +308,7 @@ var perfectSteak = function (div) {
             var step2Col = $("<td id='row" + i + "side2' class='row" + i + "'></td>");
             step2Col.append(inp2);
             step1Col.append(flipButton);
-            row.append(timeCol, duration, step1Col, step2Col);
+            row.append(duration, step1Col, step2Col);
             timeFun(i);
             flipButtonFun(i);
             table.append(row);
@@ -428,9 +418,15 @@ var graph=function(){
 
         var timeFun = function (j) {
             $("#row" + j + "time").change(function () {
+				console.log("timeFun")
                 if (j == 0) {
                     timeStep = parseInt($("#row" + j + "time").value);
                 }
+				// var timeInSecs=parseFloat($("#row"+j+"time").val());
+				// if (timeInSecs>60){
+					// console.log("greaterthan60")
+					// $("#row"+j+"time").val(convertTime(timeInSecs))
+				// }
             })
         };
 
