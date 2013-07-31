@@ -2,7 +2,7 @@ var perfectSteak = function (div) {
 
 
     function Model(div) {
-		var currentInfo={'meatTemp':23, 'thickness':6, 'data':[], 'numRows':2, 'time':0}
+		var currentInfo={'meatTemp':23, 'thickness':6, 'data':[], 'numRows':2}
         var timeStep = 15;
         var inputTable = $(".inputTable");
 
@@ -11,25 +11,6 @@ var perfectSteak = function (div) {
             currentInfo["thickness"] = newVal;
 
         }
-		
-		var addTime=function(value){
-			currentInfo['time']+=value;
-		}
-		
-		var changeTime=function(value){
-			currentInfo['time']=value;
-		}
-		
-		//CHANGES X SECONDS INTO Y:X WHERE Y IS MINUTES X IS SECONDS
-		var convertTime=function(secs){
-			var minutes=Math.floor(parseInt(secs)/60);
-			var seconds=parseInt(secs)%60;
-			if (seconds==0){
-				return String(minutes)+':'+String(seconds)+'0';
-			}else{
-				return String(minutes)+':'+String(seconds);
-			}
-		}
 		
 		var numRowsPlus=function(){
 			currentInfo["numRows"]++;
@@ -83,10 +64,7 @@ var perfectSteak = function (div) {
             changeMeatTemp: changeMeatTemp,
 			buildData:buildData,
 			numRowsPlus:numRowsPlus,
-			numRowsMinus:numRowsMinus,
-			convertTime:convertTime,
-			changeTime:changeTime,
-			addTime:addTime
+			numRowsMinus:numRowsMinus
         }
     }
 
@@ -127,7 +105,7 @@ var perfectSteak = function (div) {
         }
 
         var buildTable = function () {
-            var inpTabHeader = $("<tr><th class='inpTabHeader'>Total Time(m:s)<th class='inpTabHeader'>Duration (s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
+            var inpTabHeader = $("<tr><th class='inpTabHeader'>Time (s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
             inputTable.append(inpTabHeader);
             var timeStep = model.timeStep;
             var len = model.currentInfo["data"].length;
@@ -141,10 +119,7 @@ var perfectSteak = function (div) {
                 flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
 
                 var row = $("<tr></tr>");
-				var minSecs=model.convertTime(i*model.timeStep);
-				console.log("minSecs"+minSecs)
-				var timeCol=$("<td id='timeCol"+i+"'>"+minSecs+"</td>")
-                var duration = $("<td ><input id='row" + i + "time' type='text' value='15'></td>");
+                var timeCol = $("<td ><input id='row" + i + "time' type='text' value=" + i * model.timeStep + "></td>");
                 var inp1 = $("<input type='text' id='inp1_" + i + "'>");
                 var inp2 = $("<input type='text' id='inp2_" + i + "'>");
                 var step1Col = $("<td id='row" + i + "side1'></input>");
@@ -152,10 +127,10 @@ var perfectSteak = function (div) {
                 var step2Col = $("<td id='row" + i + "side2' class='row" + i + "'></td>");
                 step2Col.append(inp2);
                 step1Col.append(flipButton);
-                row.append(timeCol, duration, step1Col, step2Col);
+                row.append(timeCol, step1Col, step2Col);
                 inputTable.append(row);
                 if (i == model.currentInfo["numRows"] - 1) {
-                    inputTable.append(addButton, subButton);
+                    $(".displayDiv").append(addButton, subButton);
 //                    displayDiv.append(cookButton);
                 }
                 if (len == 0) {
@@ -194,9 +169,7 @@ var perfectSteak = function (div) {
 
 			var val=parseFloat($("#row" + (i-1) + "time").val())+model.timeStep;
 			
-			var minSecs=model.convertTime(i*model.timeStep);
-			var timeCol=$("<td id='timeCol"+i+"'>"+minSecs+"</td>");
-            var duration = $("<td ><input id='row" + i + "time' type='text' value='15'></td>");
+            var timeCol = $("<td ><input id='row" + i + "time' type='text' value=" +(val)+ "></td>");
             var inp1 = $("<input type='text' id='inp1_" + i + "'>");
             var inp2 = $("<input type='text' id='inp2_" + i + "'>");
             var step1Col = $("<td id='row" + i + "side1'></input>");
@@ -204,7 +177,7 @@ var perfectSteak = function (div) {
             var step2Col = $("<td id='row" + i + "side2' class='row" + i + "'></td>");
             step2Col.append(inp2);
             step1Col.append(flipButton);
-            row.append(timeCol, duration, step1Col, step2Col);
+            row.append(timeCol, step1Col, step2Col);
             timeFun(i);
             flipButtonFun(i);
             table.append(row);
@@ -339,23 +312,8 @@ var perfectSteak = function (div) {
 
         //timeFun(0);
 
-//<<<<<<< HEAD
-        //view.buildTable();
-		
-        // var thicknessInp = ($("<div id=thickInpDiv><input type='text' id='thicknessInp' value='6'></input> Meat Thickness (cm) </div>"));
-        // var steakTemp = ($("<div id=tempInpDiv><input type='text' id='steakTemp' value='23'></input>Initial Meat Temperature (&#176;C)</div>"));
-		//Item to hold inputs of meat. Append meatInput to your display
-		// var meatInput=$('<form id="meatInp">What type of meat are you cooking?<br>'
-		// +'<input type="radio" name="meat" id="Steak">Steak<br>'
-		// +'<input type="radio" name="meat" id="Tuna">Tuna<br>'
-		// +'<input type="radio" name="meat" id="Turkey">Turkey</form>');
-
-
-        //div.append(thicknessInp, steakTemp, meatInput);
-//=======
         view.buildDisplay();
         $('.inputTable').offset({top:0});
-//>>>>>>> 50eb7737dbc72b2b84d127e25d0ec934f012f49d
     };
     return {
         setup: setup
