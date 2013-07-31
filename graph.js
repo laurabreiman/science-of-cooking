@@ -1,6 +1,6 @@
-var graphSteak=function(sampledata,flame,timestep,meatType){
+var graphSteak=function(sampledata,flame,timestep,meatType,maxTemps){
 var graph=(function(){
-var setup=function(div,data,flame,timestep)	
+var setup=function(div,data,flame,timestep,meatType,maxTemps)	
 	{
 	
 	
@@ -15,10 +15,8 @@ var n = boundaries[meatType].length*2+1, // number of layers
 		for(var i=0;i<boundaries[meatType].length;i++)
 		{
 			if(temp>=boundaries[meatType][i])return i;
-
-			
 		}
-		return 5;
+		return 6;
 
 	};
 		var dat=[]
@@ -257,19 +255,25 @@ svg.append("text")
     .attr("x",-height+margin.bottom/3)
     .attr("transform", "rotate(-90)")
     .text("Side 2");	
-		var svgContainer = d3.select("body").append("svg")
-                                   .attr("width", 200)
-                                    .attr("height", 200);
-
+var svgContainer = d3.select("body").append("svg")
+                                   .attr("width", '100%')
+                                    .attr("height", 1000);
+var texts=svgContainer.selectAll("text")
+.data([0])
+ .enter().append("text")
+ .attr("text-anchor", "left")
+    .attr("x", '10%')
+    .attr("y", 10)
+.text("Maximum internal temperature reached");
 //Draw the Rectangle
 var rectangle = svgContainer.selectAll("rect")
-    .data([10,20,30,40,50,60,70,80,90,100,110,120,130])
+    .data(maxTemps)
   .enter().append("rect")
-           .attr("x", 10)
-           .attr("y", function(d,i){return 10+i})
-           .attr("width", 500)
-           .attr("height", 1)
-		   .style('fill', function(d,i) {console.log(color[meatType](getState(d))); return color[meatType](getState(d))});
+           .attr("x", '10%')
+           .attr("y", function(d,i){return 20+i*2})
+           .attr("width", '60%')
+           .attr("height", 2)
+		   .style('fill', function(d,i) {return color[meatType](getState(d))});
 /*
  svg.append("g")         
         .attr("class", "grid")
@@ -334,6 +338,6 @@ function bumpLayer(layer,data) {
 
 	$(document).ready(function(){
     $('.graph').each(function(){
-        graph.setup($(this),sampledata,flame,timestep,meatType);});
+        graph.setup($(this),sampledata,flame,timestep,meatType,maxTemps);});
 });
 }
