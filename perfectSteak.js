@@ -19,18 +19,36 @@ var perfectSteak = function (div) {
 			for (var h=0; h<currentInfo["numRows"]; h++){
 				console.log(h)
 				console.log($("#inp1_"+h).val())
-				if (parseFloat($("#inp1_"+h).val())>300||parseFloat($("#inp1_"+h).val())<0){
-					console.log("ohno")
-					var side1Alert=$("<div class='alert alert-danger' id='row"+h+"side1alert'>!</div>");
-					$("#row"+h+"side1").append(side1Alert)
+				// if (parseFloat($("#inp1_"+h).val())>300){
+					// var side1Alert=$("<div class='alert alert-danger' id='row"+h+"side1alert'>Too high!</div>");
+					// $("#row"+h+"side1").append(side1Alert);
+					// currentInfo["OKToGraph"]=false;
+					// }
+				if(parseFloat($("#inp1_"+h).val())<0){
+					var side1Alert=$("<div class='alert alert-danger' id='row"+h+"side1alert'>Too low!</div>");
+					$("#row"+h+"side1").append(side1Alert);
 					currentInfo["OKToGraph"]=false;
 					}
-				if(parseFloat($("#inp2_"+h).val())>300||parseFloat($("#inp2_"+h).val())<0){
-					console.log("ohno2")
-					var side2Alert=$("<div class='alert alert-danger' id='row"+h+"side2alert'>!</div>");
+				// if(parseFloat($("#inp2_"+h).val())>300){
+					// var side2Alert=$("<div class='alert alert-danger' id='row"+h+"side2alert'>Too high!</div>");
+					// $("#row"+h+"side2").append(side2Alert);
+					// currentInfo["OKToGraph"]=false;
+				// }
+				if(parseFloat($("#inp2_"+h).val())<0){
+					var side2Alert=$("<div class='alert alert-danger' id='row"+h+"side2alert'>Too low!</div>");
 					$("#row"+h+"side2").append(side2Alert);
 					currentInfo["OKToGraph"]=false;
 				}
+				if(parseFloat($("#row"+h+"time").val())<0){
+					var timeAlert=$("<div class='alert alert-danger' id='row"+h+"timeAlert'>Negative time</div>");
+					$("#duration"+h).append(timeAlert);
+					currentInfo["OKToGraph"]=false;
+				}
+				// if(parseFloat($("#row"+h+"time").val())>7200){
+					// var timeAlert=$("<div class='alert alert-danger' id='row"+h+"timeAlert'>Max 2 hours</div>");
+					// $("#duration"+h).append(timeAlert);
+					// currentInfo["OKToGraph"]=false;
+				// }
 			}
 		}
 		
@@ -93,6 +111,7 @@ var perfectSteak = function (div) {
 				}
 
 			dataChange(newData);
+
 		}
 
         return {
@@ -235,7 +254,7 @@ var toF=function(C)
 					var minSecs=model.convertTime(i*timeStep);
 				}
 				var timeCol=$("<td id='timeCol"+i+"'>"+minSecs+"</td>");
-                var duration = $("<td ><input id='row" + i + "time' type='text' value='15'></td>");
+                var duration = $("<td id='duration"+i+"'><input id='row" + i + "time' type='text' value='15'></td>");
                 var inp1 = $("<input type='text' id='inp1_" + i + "'>");
                 var inp2 = $("<input type='text' id='inp2_" + i + "'>");
                 var step1Col = $("<td id='row" + i + "side1'></input>");

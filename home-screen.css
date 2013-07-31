@@ -1,3 +1,8 @@
 .rules:hover, .about:hover{
     color: black !important;
 }
+
+.modal-body img{
+    height: 200px;
+    border: 1px solid black;
+}
