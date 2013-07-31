@@ -33,12 +33,14 @@
     bottom: 0;
 */
 }
+/*
 #cookButton{
 	position: relative;
 	left:10%;
 	top:50%;
 	
 }
+*/
 #meatInp{
 	position:relative;
 	padding: 20px;
@@ -52,11 +54,7 @@ input[type="text"] {
 	margin:5px;
     width: 50px;
 }
-#thickInpDiv{
-	padding: 5px;
-	margin:5px;
-}
-#tempInpDiv{
+#thickInpDiv, #tempInpDiv, #meatTypeDiv{
 	padding: 5px;
 	margin:5px;
 }

@@ -171,28 +171,31 @@ var perfectSteak = function (div) {
 				
 				div.append("<div class='row'><div class='span6'><div class='container optionBar'></div></div><div class='span6'><div class='container table-container'></div></div></div>")
 				$(".table-container").append(displayDiv);
-				cookButton = $("<button class='btn' id='cookButton'>Let's get cooking!</button>");
-				
-				var thicknessInp = ($("<div id=thickInpDiv><input type='text' id='thicknessInp' value='6'></input> Meat Thickness (cm) </div>"));
-				thicknessInp.change(function(){
-						model.checkDiv();
-						if(clicked&&model.currentInfo["OKToGraph"]){graph()}});
-				var steakTemp = ($("<div id=tempInpDiv><input type='text' id='steakTemp' value='23'></input>Initial Meat Temperature (&#176;C)</div>"));
-				steakTemp.change(function(){
-							model.checkDiv();
-							if(clicked&&model.currentInfo["OKToGraph"]){graph()}});
-			//Item to hold inputs of meat. Append meatInput to your display
-				var meatInput=$('<form id="meatInp">What type of meat are you cooking?<br>'
-					+'<input type="radio" name="meat" id="Steak" checked>Steak<br>'
-					+'<input type="radio" name="meat" id="Tuna">Tuna<br>'
-					+'<input type="radio" name="meat" id="Turkey">Turkey</form>');
-				meatInput.change(function(){
-							model.checkDiv();
-							if(clicked&&model.currentInfo["OKToGraph"]){graph()}});
-				var cookbuttonrow = $("<div class='row'></div");
-				cookbuttonrow.append(cookButton);
+                
+                $("#startModal").modal("show");
+                
+				cookButton = $("#cookButton");
+//				
+//				var thicknessInp = ($("<div id=thickInpDiv><input type='text' id='thicknessInp' value='6'></input> Meat Thickness (cm) </div>"));
+//				thicknessInp.change(function(){
+//						model.checkDiv();
+//						if(clicked&&model.currentInfo["OKToGraph"]){graph()}});
+//				var steakTemp = ($("<div id=tempInpDiv><input type='text' id='steakTemp' value='23'></input>Initial Meat Temperature (&#176;C)</div>"));
+//				steakTemp.change(function(){
+//							model.checkDiv();
+//							if(clicked&&model.currentInfo["OKToGraph"]){graph()}});
+//			//Item to hold inputs of meat. Append meatInput to your display
+//				var meatInput=$('<form id="meatInp">What type of meat are you cooking?<br>'
+//					+'<input type="radio" name="meat" id="Steak" checked>Steak<br>'
+//					+'<input type="radio" name="meat" id="Tuna">Tuna<br>'
+//					+'<input type="radio" name="meat" id="Turkey">Turkey</form>');
+//				meatInput.change(function(){
+//							model.checkDiv();
+//							if(clicked&&model.currentInfo["OKToGraph"]){graph()}});
+//				var cookbuttonrow = $("<div class='row'></div");
+//				cookbuttonrow.append(cookButton);
 
-				$('.optionBar').append(thicknessInp, steakTemp, meatInput,cookbuttonrow);
+//				$('.optionBar').append(thicknessInp, steakTemp, meatInput,cookbuttonrow);
 				
 				buildTable();
 				}
@@ -397,7 +400,7 @@ var graph=function(){
 				}
 }
         var CookButtonFun = function () {
-            cookButton.on("click", function () {
+            $(".cookButton").on("click", function () {
 				clicked=true;
 				model.checkDiv();
 				console.log("isOKtograph"+model.currentInfo["OKToGraph"]);
