@@ -1,6 +1,7 @@
 function HeatSolver(startingTemps){
     
     var tempArray = [startingTemps];
+
     var D = .14; // in units of mm^2/sec
     
     var timestep = 1;
@@ -208,7 +209,12 @@ var len= tempArray[0].length;
         var graphlabels = [];
         var temperatures = [];
 		var count=0;
-        var maxTemps = tempArray[0];
+		var maxTemps=[];
+		for(var i=0;i<tempArray[0].length;i++)
+		{
+			maxTemps.push(0)
+		}
+       
         
         for(var j=0; j<time_top_bottom.length; j++){
             //set the conductivity of air to zero
@@ -243,7 +249,8 @@ var len= tempArray[0].length;
                 }
             }
         }
-        
+        console.log(maxTemps);
+	
         var arrays = tempArray.length-1 ;
         var len= tempArray[0].length;
         var step = arrays/60.0;

@@ -15,8 +15,6 @@ var n = boundaries[meatType].length*2+1, // number of layers
 		for(var i=0;i<boundaries[meatType].length;i++)
 		{
 			if(temp>=boundaries[meatType][i])return i;
-
-			
 		}
 		return 5;
 
