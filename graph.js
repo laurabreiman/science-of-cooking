@@ -257,7 +257,7 @@ svg.append("text")
     .text("Side 2");	
 var svgContainer = d3.select("body").append("svg")
                                    .attr("width", '100%')
-                                    .attr("height", 1000);
+                                    .attr("height", '80%');
 var texts=svgContainer.selectAll("text")
 .data([0])
  .enter().append("text")
@@ -267,12 +267,12 @@ var texts=svgContainer.selectAll("text")
 .text("Maximum internal temperature reached");
 //Draw the Rectangle
 var rectangle = svgContainer.selectAll("rect")
-    .data(maxTemps)
+    .data(maxTemps.reverse())
   .enter().append("rect")
            .attr("x", '10%')
-           .attr("y", function(d,i){return 20+i*2})
+           .attr("y", function(d,i){return 20+i*5})
            .attr("width", '60%')
-           .attr("height", 2)
+           .attr("height", 5)
 		   .style('fill', function(d,i) {return color[meatType](getState(d))});
 /*
  svg.append("g")         

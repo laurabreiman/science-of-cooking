@@ -389,25 +389,10 @@ var graph=function(){
         var view = View(div, model);
 
 
-        //timeFun(0);
-
-//<<<<<<< HEAD
-        //view.buildTable();
-		
-        // var thicknessInp = ($("<div id=thickInpDiv><input type='text' id='thicknessInp' value='6'></input> Meat Thickness (cm) </div>"));
-        // var steakTemp = ($("<div id=tempInpDiv><input type='text' id='steakTemp' value='23'></input>Initial Meat Temperature (&#176;C)</div>"));
-		//Item to hold inputs of meat. Append meatInput to your display
-		// var meatInput=$('<form id="meatInp">What type of meat are you cooking?<br>'
-		// +'<input type="radio" name="meat" id="Steak">Steak<br>'
-		// +'<input type="radio" name="meat" id="Tuna">Tuna<br>'
-		// +'<input type="radio" name="meat" id="Turkey">Turkey</form>');
-
-
-        //div.append(thicknessInp, steakTemp, meatInput);
-//=======
+        
         view.buildDisplay();
-        $('.inputTable').offset({top:0});
-//>>>>>>> 50eb7737dbc72b2b84d127e25d0ec934f012f49d
+        $('.inputTable').offset({top:10});
+
     };
     return {
         setup: setup
