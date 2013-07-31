@@ -12,7 +12,7 @@ var perfectSteak = function (div) {
 
         }
 
-		
+
 		var checkDiv=function(){
 			currentInfo["OKToGraph"]=true;
 			$(".alert").remove();
@@ -36,7 +36,7 @@ var perfectSteak = function (div) {
 				}
 			}
 		}
-		
+
 		var addTime=function(value){
 			currentInfo['time']+=value;
 		}
@@ -178,7 +178,7 @@ var perfectSteak = function (div) {
 			if (model.currentInfo["OKToGraph"]){
 				console.log("isOK");
 				console.log("click");
-				
+
 				div.append("<div class='row'><div class='span6'><div class='container optionBar'></div></div><div class='span6'><div class='container table-container'></div></div></div>")
 				$(".table-container").append(displayDiv);
                 
@@ -232,7 +232,7 @@ var perfectSteak = function (div) {
 //				cookbuttonrow.append(cookButton);
 //
 //				$('.optionBar').append(thicknessInp, steakTemp, meatInput,cookbuttonrow);
-				
+
 				buildTable();
 				}
 				else{
