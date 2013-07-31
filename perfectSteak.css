@@ -33,12 +33,14 @@
     bottom: 0;
 */
 }
+/*
 #cookButton{
 	position: relative;
 	left:10%;
 	top:50%;
 	
 }
+*/
 #meatInp{
 	position:relative;
 	padding: 20px;
@@ -52,11 +54,25 @@ input[type="text"] {
 	margin:5px;
     width: 50px;
 }
-#thickInpDiv{
+#thickInpDiv, #tempInpDiv, #meatTypeDiv{
 	padding: 5px;
 	margin:5px;
 }
-#tempInpDiv{
-	padding: 5px;
-	margin:5px;
+.toggleSwitch {
+    width: ...;
+    height: ...;
+    /* add other styling as appropriate to position element */
+    position: relative;
+}
+.slider {
+    background-image: url(...);
+    position: absolute;
+    width: ...;
+    height: ...;
+}
+.slider.on {
+    right: 0;
+}
+.slider.off {
+    left: 0;
 }

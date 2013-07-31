@@ -5,7 +5,6 @@
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js'></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-	
 		<script src="data.js"></script>
         <script src="numeric-1.2.6.js"></script>
 
@@ -16,6 +15,8 @@
 		 
         <link href="home-screen.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		
+
         <link href="graph.css" rel="stylesheet">
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
 
@@ -67,10 +68,44 @@ First, you can input starting values for the meat. The maximum meat thickness is
         </div>
     </div>
         
+    <div id="startModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Create Your Meat</h3>
+        </div>
+        <div class="modal-body">
+            <div id=thickInpDiv>Meat Thickness: <input type='text' id='thicknessInp' value='6'> cm </div>
+            <div id=tempInpDiv>Initial Meat Temperature: <input type='text' id='steakTemp' value='23'>&#176;C</div>
+<!--
+            <div id=meatTypeDiv>
+                <div class="dropdown dropup">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        Select Meat Type <span class="caret"></span>
+                      </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                    <li><a tabindex="-1" href="#">Steak</a></li>
+                    <li><a tabindex="-1" href="#">Tuna</a></li>
+                    <li><a tabindex="-1" href="#">Turkey</a></li>
+                  </ul>
+                </div>
+                </div>
+-->
+            <form id="meatInp">What type of meat are you cooking?<br>
+                <input type="radio" name="meat" id="Steak" checked>Steak<br>
+                <input type="radio" name="meat" id="Tuna">Tuna<br>
+                <input type="radio" name="meat" id="Turkey">Turkey</form>
+        </div>
+        <div class="modal-footer">
+        <button class="btn cookButton" data-dismiss="modal" aria-hidden="true">Let's Get Cooking!</button>
+        </div>
+    </div>
+        
 	<link href="perfectSteak.css" rel="stylesheet">
     <div class="perfectSteak"></div>
+	
     <div class='graph' id='graphSteak'></div>
     <div class='chart-container'></div>
+		
         
         
 
