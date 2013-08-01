@@ -5,6 +5,13 @@
 /*	left: 10% !important;*/
 }
 
+.displayDiv{
+	position: relative;
+	width: 80%;
+}
+
+
+
 .table-container{
     overflow-x: hidden;
     overflow-y: auto;
