@@ -47,6 +47,29 @@ var n = boundaries[meatType].length*2+1, // number of layers
 			dat.push(moves);
 		}
 	
+			var maxs = [];
+			for (var x = 0; x < 7; x++) maxs.push(0);
+			var state=getState(maxTemps[0]);
+			var offset=0;
+			for(var j=0;j<maxTemps.length;j++)
+			{	
+			
+				var nextState=getState(maxs[j]);
+				
+				if(state==nextState){maxs[Math.abs(offset-nextState)]+=1}
+				else{
+
+					if(Math.abs(offset-state)>Math.abs(offset-nextState)){offset=boundaries[meatType].length*2;}
+
+					maxs[Math.abs(offset-nextState)]+=1;
+				
+					state=nextState;
+					}
+	
+			}
+		maxs.reverse();
+			
+		
     stack = d3.layout.stack(),
     layers = stack(d3.range(n).map(function(d,i) { return bumpLayer(i,dat); })),
     yGroupMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); }),
@@ -102,7 +125,7 @@ var svg3= d3.select(".span3").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", 180)
   .append("g")
-    .attr("transform", "translate(" + margin.left + "," + 150 + ")");
+    .attr("transform", "translate(" + margin.left + "," + 130 + ")");
 		var legend = svg3.selectAll('g')
 
         .data(tempScale[meatType])
@@ -263,22 +286,50 @@ svg.append("text")
     .attr("x",-height+margin.bottom/3)
     .attr("transform", "rotate(-90)")
     .text("Side 2");	
-var svgContainer = d3.select(".span5").append("svg")
+var svgContainer = d3.select(".span6").append("svg")
                                    .attr("width", '50%')
-                                    .attr("height", '20%');
+                                    .attr("height", '20%')
+									.append("g")
+    .attr("transform", "translate(" + 20 + "," + 130 + ")");
+		var legend = svgContainer.selectAll('g')
+
+        .data(tempScale[meatType])
+
+        .enter()
+      .append('g')
+        .attr('class', 'legend')
+		.style('fill', "black");
+
+
+    legend.append('rect')
+        .attr('x', function(d,i){return i*30-20})
+        .attr('y', function(d, i){ return -125;})
+        .attr('width', 8)
+        .attr('height', 8)
+
+        .style('fill', function(d) { return color[meatType](d['position'])
+
+        });
+
+    legend.append('text')
+	.data(maxs)
+        .attr('x', function(d,i){return i*30-12})
+        .attr('y', function(d, i){ return (-125+8);})
+		.style('font-size','6pt')
+        .text(function(d){ return (100*d/m).toFixed(0) +"%"; });	
 var texts=svgContainer.selectAll("text")
 .data([0])
  .enter().append("text")
  .attr("text-anchor", "left")
-    .attr("x", '10%')
-    .attr("y", 10)
+    .attr("x", '-10%')
+    .attr("y", -130)
 .text("Final Protein State Reached");
 //Draw the Rectangle
 var rectangle = svgContainer.selectAll("rect")
     .data(maxTemps.reverse())
   .enter().append("rect")
-           .attr("x", '10%')
-           .attr("y", function(d,i){return 20+i*1})
+           .attr("x", '-10%')
+           .attr("y", function(d,i){return-130+ 20+i*1})
            .attr("width", '60%')
            .attr("height", 1)
 		   .style('fill', function(d,i) {return color[meatType](getState(d))});

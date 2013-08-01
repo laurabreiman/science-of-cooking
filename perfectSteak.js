@@ -16,8 +16,8 @@ var perfectSteak = function (div) {
 			currentInfo["OKToGraph"]=true;
 			$(".alert").remove();
 			for (var h=0; h<currentInfo["numRows"]; h++){
-				console.log(h)
-				console.log($("#inp1_"+h).val())
+				//console.log(h)
+				//console.log($("#inp1_"+h).val())
 
 				if(parseFloat($("#inp1_"+h).val())<0){
 					var side1Alert=$("<div class='alert alert-danger' id='row"+h+"side1alert'>Too low!</div>");
@@ -136,16 +136,20 @@ var perfectSteak = function (div) {
 		displayDiv.change(function(){
 				model.checkDiv()
 
-				console.log("display_div changed")
+				//console.log("display_div changed")
 				model.buildData();
 				updateTime();
 
 				if(clicked&&model.currentInfo["OKToGraph"]){graph()}
-				else{d3.select("svg")
+			
+			else{d3.selectAll("svg")
                     .remove();
-				 d3.select("svg")
-                    .remove();
-                model.dataClear();}
+			
+				   
+                model.dataClear();
+				
+				}
+				
 		})
 
 //        div.append
@@ -156,7 +160,7 @@ var perfectSteak = function (div) {
         var updateTime=function(){
 			for(var i=0;i<model.currentInfo["numRows"];i++)
 			{
-				console.log("change");
+				//console.log("change");
 				if(i>0){
 				var vals=parseFloat($("#row" + (i-1) + "time").val());
 
@@ -172,14 +176,14 @@ var perfectSteak = function (div) {
 		}
 
         var buildDisplay = function () {
-			console.log("isOK"+model.checkDiv())
-			console.log("OK"+model.currentInfo["OKToGraph"])
+			//console.log("isOK"+model.checkDiv())
+			//console.log("OK"+model.currentInfo["OKToGraph"])
 			if (model.currentInfo["OKToGraph"]){
-				console.log("isOK");
-				console.log("click");
+				//console.log("isOK");
+				//console.log("click");
 
 
-				div.append("<div class='row'><div class='span3'><div class='container optionBar'></div></div><div class='span4'><div class='container table-container'></div></div><div class='span5'></div></div>")
+				div.append("<div class='row'><div class='span3'><div class='container optionBar'></div></div><div class='span3'><div class='container table-container'></div></div><div class='span6'></div></div>")
 
 				$(".table-container").append(displayDiv);
                 
@@ -343,6 +347,8 @@ var graph=function(){
                     .remove();
 				 d3.select("svg")
                     .remove();
+				 d3.select("svg")
+                    .remove();
                 model.dataClear();
 
                 for (var e = 0; e < model.currentInfo["numRows"]; e++) {
@@ -396,7 +402,7 @@ var graph=function(){
             $(".cookButton").on("click", function () {
 				clicked=true;
 				model.checkDiv();
-				console.log("isOKtograph"+model.currentInfo["OKToGraph"]);
+				//console.log("isOKtograph"+model.currentInfo["OKToGraph"]);
 				if (model.currentInfo["OKToGraph"]){
 					graph();
 				};
