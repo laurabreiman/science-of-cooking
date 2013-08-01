@@ -88,8 +88,31 @@ var perfectSteak = function (div) {
 				for (var g=0; g<currentInfo["numRows"]; g++){
 					var side1data=parseFloat($("#inp1_"+g).val());
 					var side2data=parseFloat($("#inp2_"+g).val());
-					var timedata=parseFloat($("#row"+g+"time").val());
-					newData.push([timedata, side1data, side2data]);
+					var timedata=$("#row"+g+"time").val();
+					if (timedata.length>2){
+						var timeMin=function(time){
+							console.log("timeMin")
+							var timeString=''
+							for (var x=0; x<time.length; x++){
+								if (time.charAt(x)==':'){
+									break;
+								} else {
+								timeString += time.charAt(x);
+								}
+							}
+							return parseInt(timeString)
+						}
+					}else{
+						var timeMin=function(time){
+							return 0;
+						}
+					}
+					var timeSec=parseInt(timedata.charAt(timedata.length-2)+timedata.charAt(timedata.length-1));
+					console.log('timeMin '+timeMin(timedata))
+					console.log('timeSec '+timeSec);
+					var timeForGraph=60*timeMin(timedata)+timeSec;
+					newData.push([timeForGraph, side1data, side2data]);
+					console.log('timeForGraph'+timeForGraph)
 				}
 
 			dataChange(newData);
