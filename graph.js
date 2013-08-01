@@ -46,29 +46,28 @@ var n = boundaries[meatType].length*2+1, // number of layers
 		
 			dat.push(moves);
 		}
-	
+		maxTemps=maxTemps.splice(0,maxTemps.length-2);
 			var maxs = [];
 			for (var x = 0; x < 7; x++) maxs.push(0);
 			var state=getState(maxTemps[0]);
-			var offset=0;
+		
 			for(var j=0;j<maxTemps.length;j++)
 			{	
 			
-				var nextState=getState(maxs[j]);
+				var nextState=getState(maxTemps[j]);
 				
-				if(state==nextState){maxs[Math.abs(offset-nextState)]+=1}
+				if(state==nextState){maxs[nextState]+=1}
 				else{
-
-					if(Math.abs(offset-state)>Math.abs(offset-nextState)){offset=boundaries[meatType].length*2;}
-
-					maxs[Math.abs(offset-nextState)]+=1;
+					
+					maxs[nextState]+=1;
 				
 					state=nextState;
 					}
 	
 			}
+		
 		maxs.reverse();
-			
+		console.log(maxs);	
 		
     stack = d3.layout.stack(),
     layers = stack(d3.range(n).map(function(d,i) { return bumpLayer(i,dat); })),
@@ -153,7 +152,7 @@ var svg3= d3.select(".span3").append("svg")
 
 var ttip = d3.select("body").append("div")   
     .attr("class", "tooltip")               
-    .style("opacity", 1);	
+    .style("opacity", 0);	
 		
 var layer = svg.selectAll(".layer")
     .data(layers)
@@ -288,7 +287,7 @@ svg.append("text")
     .text("Side 2");	
 var svgContainer = d3.select(".span6").append("svg")
                                    .attr("width", '50%')
-                                    .attr("height", '20%')
+                                    .attr("height", '200px')
 									.append("g")
     .attr("transform", "translate(" + 20 + "," + 130 + ")");
 		var legend = svgContainer.selectAll('g')
@@ -326,13 +325,14 @@ var texts=svgContainer.selectAll("text")
 .text("Final Protein State Reached");
 //Draw the Rectangle
 var rectangle = svgContainer.selectAll("rect")
-    .data(maxTemps.reverse())
+    .data([0,0,0,0,0,0,0].concat(maxTemps.reverse()))
   .enter().append("rect")
            .attr("x", '-10%')
            .attr("y", function(d,i){return-130+ 20+i*1})
-           .attr("width", '60%')
-           .attr("height", 1)
-		   .style('fill', function(d,i) {return color[meatType](getState(d))});
+           .attr("width", '50%')
+           .attr("height", '1px')
+		   .style('fill', function(d,i) {
+			   return color[meatType](getState(d))});
 /*
  svg.append("g")         
         .attr("class", "grid")
