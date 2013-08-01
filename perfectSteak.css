@@ -1,6 +1,6 @@
 .inputTable{
 	position: relative;
-	width: 100% !important;
+	width: 120% !important;
 	text-align: center;
 /*	left: 10% !important;*/
 }
@@ -15,16 +15,18 @@
 .table-container{
     overflow-x: hidden;
     overflow-y: auto;
-    width:100%;
+    width:120%;
     height:160px;
 	font-size: 10px;
    }
 th{
 	font-size: 8px;
 
+
 }
 td{
     height: 30px !important;
+
 }
 #addButton{
 
@@ -66,30 +68,18 @@ input[type="text"] {
     font-size: 12px;
     width: 40px;
 		
-	margin-right:10px;
+	margin-right:0px;
 }
 #thickInpDiv, #tempInpDiv, #meatTypeDiv{
 	padding: 5px;
 	margin:5px;
-	width:80px;!important
+	width:80px;!important;
 	  font-size: 12px;
 }
-
-.toggleSwitch {
-    width: ...;
-    height: ...;
-    /* add other styling as appropriate to position element */
-    position: relative;
-}
-.slider {
-    background-image: url(...);
-    position: absolute;
-    width: ...;
-    height: ...;
-}
-.slider.on {
-    right: 0;
-}
-.slider.off {
-    left: 0;
+.btn-mini{
+	width:25px!important;
+	padding:0px!important;
+	margin:0px !important;
+	position: relative !important;
+	top:-5px!important;
 }

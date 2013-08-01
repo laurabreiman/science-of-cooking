@@ -75,7 +75,7 @@ var n = boundaries[meatType].length*2+1, // number of layers
     yGroupMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); }),
     yStackMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y0 + d.y; }); });
 
-var margin = {top: 10, right: 10, bottom: 100, left: 50},
+var margin = {top: 50, right: 10, bottom: 100, left: 50},
     width = 960 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
