@@ -1,5 +1,9 @@
-.rules:hover, .about:hover{
+.rules:hover, .about:hover, .newSteak:hover{
     color: black !important;
+}
+
+.newSteak{
+    float: right !important;
 }
 
 .modal-body img{
