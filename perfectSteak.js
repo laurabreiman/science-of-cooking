@@ -154,7 +154,6 @@ var perfectSteak = function (div) {
 
 //        div.append
         var addButton;
-        var subButton;
         var flipButton;
         var cookButton;
         var updateTime=function(){
@@ -269,7 +268,6 @@ var toF=function(C)
             for (var i = 0; i < model.currentInfo["numRows"]; i++) {
                 var iminus = i - 1;
                 addButton = $("<button class='btn btn-mini' id='addButton'>+</button>");
-                subButton = $("<button class='btn btn-mini' id='subButton'>-</button>");
                 flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
 
                 var row = $("<tr id='row"+i+"'></tr>");
@@ -306,7 +304,7 @@ var toF=function(C)
                 row.append(duration, step1Col, step2Col);
                 inputTable.append(row);
                 if (i == model.currentInfo["numRows"] - 1) {
-                    inputTable.append(addButton, subButton);
+                    inputTable.append(addButton);
 //>>>>>>> 98101b5e50ec50526ddb403f94f4d68ebcd1d185
                 }
                 if (len == 0) {
@@ -334,7 +332,6 @@ var toF=function(C)
 
             model.dataClear();
             addButtonFun();
-            subButtonFun();
             CookButtonFun();
 			closeRowFun();
         };
@@ -378,11 +375,6 @@ var toF=function(C)
             table.append(row);
             inp1.val($("#inp1_" + (i-1)).val());
             inp2.val($("#inp2_" + (i-1)).val());
-			if (model.currentInfo["numRows"]==2){
-				subButton = $("<button class='btn btn-mini' id='subButton'>-</button>");
-				table.append(subButton);
-				subButtonFun();
-			}
             model.dataAdd([parseFloat($("#row" + i + "time").val()), parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())])
 			closeRowFun();
         }
@@ -400,27 +392,22 @@ var toF=function(C)
             });
         };
 
-        var subButtonFun = function () {
-            subButton.on("click", function () {
-
-                model.numRowsMinus();
-				model.buildData();
-                delRow();
-                if (model.currentInfo["numRows"] == 1) {
-                    $(".inputTable").empty();
-                    buildTable(model.currentInfo["numRows"]);
-                    subButton.remove();
-                } else {
-                    $(".inputTable").empty();
-                    buildTable(model.currentInfo["numRows"]);
-                }
-            });
-        };
 		
 		var closeRowFun=function(){
 			$(".closeRow").on("click", function(){
 				var rowNum=String($(this).attr("id").charAt(3))
 				$("#row"+rowNum).remove();
+				model.numRowsMinus();
+				
+				//NOW WE NEED TO CHANGE THE ROW NUMBER OF ALL THE OTHER ROWS
+				for (var l=rowNum+1; l<model.currentInfo["numRows"]; l++){
+					$("#row"+l).attr("id", "row"+l-1);
+					$("#duration"+l).attr("id", "duration"+l-1);
+					$("#row"+l+"side1").attr("id", "row"+l-1+"side1");
+					$("inp1_"+l).attr("id", "inp1_"+l-1);
+					$("#row"+l+"side2").attr("id", "row"+l-1+"side2");
+					$("#inp2_"+l).attr("id", "inp2_"+l-1);
+				}
 				
 			});
 		}
@@ -524,7 +511,6 @@ var graph=function(){
             buildDisplay: buildDisplay,
             buildTable: buildTable,
             addButtonFun: addButtonFun,
-            subButtonFun: subButtonFun,
             flipButtonFun: flipButtonFun,
             timeFun: timeFun
         }
