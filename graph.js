@@ -91,8 +91,8 @@ var make_y_axis=function() {
         
 }		
 var svg = d3.select("body").append("svg")
-	.attr("class","container")
-	.attr("id", "steak")
+	.attr("class","mysteak")
+	.attr("id", "mysteak")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
@@ -131,6 +131,7 @@ var svg3= d3.select(".span3").append("svg")
 var ttip = d3.select("body").append("div")   
     .attr("class", "tooltip")               
     .style("opacity", 1);	
+		
 var layer = svg.selectAll(".layer")
     .data(layers)
   .enter().append("g")
@@ -171,8 +172,7 @@ var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-5.0);
 //$(d3.select('.mylabel')[0][0]).text( meatType+ " temperature is "+ data[line][pos].toFixed(2)+ "\xB0C");
 	//$(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ pos+ "\xB0C");
 	$("line").remove();
-	console.log(d3.selectAll("svg")[0][1]);
-	var myLine = d3.selectAll("svg")[0][1].append("svg:line")
+	var myLine = d3.selectAll("svg").filter(function(d,i){return i==2;}).append("svg:line")
     .attr("x1", margin.left)
     .attr("y1", event.pageY-Offset)
     .attr("x2", width*31/30)
