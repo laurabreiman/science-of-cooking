@@ -11,8 +11,6 @@ var perfectSteak = function (div) {
             currentInfo["thickness"] = newVal;
 
         }
-
-
 		var checkDiv=function(){
 			currentInfo["OKToGraph"]=true;
 			$(".alert").remove();
@@ -130,6 +128,7 @@ var perfectSteak = function (div) {
         displayDiv.append(inputTable);
 		displayDiv.change(function(){
 				model.checkDiv()
+//<<<<<<< HEAD
 				model.buildData();
 				updateTime();
 				for (var j=0; j<model.currentInfo["numRows"]; j++){
@@ -138,6 +137,13 @@ var perfectSteak = function (div) {
 						$("#row"+j+"time").val(model.convertTime(timeInSecs))
 					}
 				}
+//=======
+
+				console.log("display_div changed")
+				model.buildData();
+				updateTime();
+
+//>>>>>>> 98101b5e50ec50526ddb403f94f4d68ebcd1d185
 				if(clicked&&model.currentInfo["OKToGraph"]){graph()}
 				else{d3.select("svg")
                     .remove();
@@ -158,16 +164,12 @@ var perfectSteak = function (div) {
 				if(i>0){
 				var vals=parseFloat($("#row" + (i-1) + "time").val());
 
-				//var info=$("#timeCol"+(i-1)).html();
-					//info = info.replace(":", ".").split('.');
-					//console.log(info);
-				//vals=vals+60*parseFloat(info[0])+parseFloat(info[1]);
+
 				var minSecs=model.convertTime(vals);
 				}
 				else{
 					var minSecs=model.convertTime(0);
 				}
-				//$("#timeCol"+(i)).html(" "+ minSecs);
 
 			}
 		}
@@ -179,12 +181,19 @@ var perfectSteak = function (div) {
 				console.log("isOK");
 				console.log("click");
 
-				div.append("<div class='row'><div class='span6'><div class='container optionBar'></div></div><div class='span6'><div class='container table-container'></div></div></div>")
+//<<<<<<< HEAD
+				//div.append("<div class='row'><div class='span6'><div class='container optionBar'></div></div><div class='span6'><div class='container //table-container'></div></div></div>")
+//=======
+
+				div.append("<div class='row'><div class='span3'><div class='container optionBar'></div></div><div class='span4'><div class='container table-container'></div></div><div class='span5'></div></div>")
+
+//>>>>>>> 98101b5e50ec50526ddb403f94f4d68ebcd1d185
 				$(".table-container").append(displayDiv);
                 
                 $("#startModal").modal("show");
                 
 				cookButton = $(".cookButton");
+//<<<<<<< HEAD
 //				
 //				var thicknessInp = ($("<div id=thickInpDiv><input type='text' id='thicknessInp' value='6'></input> Meat Thickness (cm) </div>"));
 //				thicknessInp.change(function(){
@@ -232,6 +241,8 @@ var perfectSteak = function (div) {
 //				cookbuttonrow.append(cookButton);
 //
 //				$('.optionBar').append(thicknessInp, steakTemp, meatInput,cookbuttonrow);
+//=======
+//>>>>>>> 98101b5e50ec50526ddb403f94f4d68ebcd1d185
 
 				buildTable();
 				}
@@ -249,7 +260,11 @@ var toF=function(C)
             var timeStep = model.timeStep;
             var len = model.currentInfo["data"].length;
             var newData = []
+//<<<<<<< HEAD
 //            $("#cookButton").remove();
+//=======
+
+//>>>>>>> 98101b5e50ec50526ddb403f94f4d68ebcd1d185
 			var sumtime=0;
             for (var i = 0; i < model.currentInfo["numRows"]; i++) {
                 var iminus = i - 1;
@@ -257,7 +272,8 @@ var toF=function(C)
                 subButton = $("<button class='btn btn-mini' id='subButton'>-</button>");
                 flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
 
-                var row = $("<tr></tr>");
+                var row = $("<tr id='row"+i+"'></tr>");
+//<<<<<<< HEAD
 				if(i>0){
 				var vals=parseFloat($("#row" + (i-1) + "time").val());
 
@@ -271,6 +287,10 @@ var toF=function(C)
 					// var minSecs=model.convertTime(i*timeStep);
 				// }
 				//var timeCol=$("<td id='timeCol"+i+"'>"+minSecs+"</td>");
+//=======
+		
+
+//>>>>>>> 98101b5e50ec50526ddb403f94f4d68ebcd1d185
                 var duration = $("<td id='duration"+i+"'><input id='row" + i + "time' type='text' value='15'></td>");
                 var inp1 = $("<input type='text' id='inp1_" + i + "'>");
                 var inp2 = $("<input type='text' id='inp2_" + i + "'><button type='button' class='close closeRow' id='row"+i+"button'>&times;</button>");
@@ -279,11 +299,15 @@ var toF=function(C)
                 var step2Col = $("<td id='row" + i + "side2' class='row" + i + "'></td>");
                 step2Col.append(inp2);
                 step1Col.append(flipButton);
+//<<<<<<< HEAD
+//=======
+
+//>>>>>>> 98101b5e50ec50526ddb403f94f4d68ebcd1d185
                 row.append(duration, step1Col, step2Col);
                 inputTable.append(row);
                 if (i == model.currentInfo["numRows"] - 1) {
                     inputTable.append(addButton, subButton);
-//                    displayDiv.append(cookButton);
+//>>>>>>> 98101b5e50ec50526ddb403f94f4d68ebcd1d185
                 }
                 if (len == 0) {
 
@@ -318,10 +342,14 @@ var toF=function(C)
 
         var addRow = function (table) {
             flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
-            var row = $("<tr></tr>");
             var i = model.currentInfo["numRows"] - 1;
-				if(i>0){
-					var vals=parseFloat($("#row" + (i-1) + "time").val());
+			var row = $("<tr id='row"+i+"'></tr>");
+
+
+
+			if(i>0){
+			var vals=parseFloat($("#row" + (i-1) + "time").val());
+//>>>>>>> 98101b5e50ec50526ddb403f94f4d68ebcd1d185
 
 				//var info=$("#timeCol"+(i-1)).html();
 					//info = info.replace(":", ".").split('.');
@@ -333,7 +361,9 @@ var toF=function(C)
 					//var minSecs=model.convertTime(i*timeStep);
 				//}
 
+
 			//var timeCol=$("<td id='timeCol"+i+"'>"+minSecs+"</td>");
+
             var duration = $("<td ><input id='row" + i + "time' type='text' value='15'></td>");
             var inp1 = $("<input type='text' id='inp1_" + i + "'>");
             var inp2 = $("<input type='text' id='inp2_" + i + "'>");
@@ -389,8 +419,9 @@ var toF=function(C)
 		
 		var closeRowFun=function(){
 			$(".closeRow").on("click", function(){
-				console.log($(this).attr("id"))
-				rowNum=String($(this).attr("id")[])
+				var rowNum=String($(this).attr("id").charAt(3))
+				$("#row"+rowNum).remove();
+				
 			});
 		}
 		
@@ -471,6 +502,11 @@ var graph=function(){
 					// console.log("greaterthan60")
 					// $("#row"+j+"time").val(convertTime(timeInSecs))
 				// }
+
+                if (j == 0) {
+                    timeStep = parseInt($("#row" + j + "time").value);
+                }
+
             })
         };
 
