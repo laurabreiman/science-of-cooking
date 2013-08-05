@@ -46,28 +46,8 @@ var n = boundaries[meatType].length*2+1, // number of layers
 		
 			dat.push(moves);
 		}
-		maxTemps=maxTemps.splice(0,maxTemps.length-2);
-			var maxs = [];
-			for (var x = 0; x < 7; x++) maxs.push(0);
-			var state=getState(maxTemps[0]);
-		
-			for(var j=0;j<maxTemps.length;j++)
-			{	
+		maxTemps=maxTemps.splice(0,maxTemps.length-1);
 			
-				var nextState=getState(maxTemps[j]);
-				
-				if(state==nextState){maxs[nextState]+=1}
-				else{
-					
-					maxs[nextState]+=1;
-				
-					state=nextState;
-					}
-	
-			}
-		
-		maxs.reverse();
-		console.log(maxs);	
 		
     stack = d3.layout.stack(),
     layers = stack(d3.range(n).map(function(d,i) { return bumpLayer(i,dat); })),
@@ -149,57 +129,7 @@ var svg3= d3.select(".span3").append("svg")
         .attr('x', -18)
         .attr('y', function(d, i){ return (-125+i *  15+8);})
         .text(function(d){ return d['info']; });	
-var drawFinished=function(myMeatType,myMaxs,myMaxTemps)
-	{
-		var svgContainer = d3.select(".span6").append("svg")
-                                   .attr("width", '50%')
-                                    .attr("height", '200px')
-									.append("g")
-    .attr("transform", "translate(" + 20 + "," + 130 + ")");
-		var legend = svgContainer.selectAll('g')
 
-        .data(tempScale[myMeatType])
-
-        .enter()
-      .append('g')
-        .attr('class', 'legend')
-		.style('fill', "black");
-
-
-    legend.append('rect')
-        .attr('x', function(d,i){return i*30-20})
-        .attr('y', function(d, i){ return -125;})
-        .attr('width', 8)
-        .attr('height', 8)
-
-        .style('fill', function(d) { return color[myMeatType](d['position'])
-
-        });
-
-    legend.append('text')
-	.data(myMaxs)
-        .attr('x', function(d,i){return i*30-12})
-        .attr('y', function(d, i){ return (-125+8);})
-		.style('font-size','6pt')
-        .text(function(d){ return (100*d/m).toFixed(0) +"%"; });	
-var texts=svgContainer.selectAll("text")
-.data([0])
- .enter().append("text")
- .attr("text-anchor", "left")
-    .attr("x", '-10%')
-    .attr("y", -130)
-.text("Final Protein State Reached");
-//Draw the Rectangle
-var rectangle = svgContainer.selectAll("rect")
-    .data([0,0,0,0,0,0,0].concat(myMaxTemps.reverse()))
-  .enter().append("rect")
-           .attr("x", '-10%')
-           .attr("y", function(d,i){return-130+ 20+i*1})
-           .attr("width", '50%')
-           .attr("height", '1px')
-		   .style('fill', function(d,i) {
-			   return color[myMeatType](getState(d))});
-	}
 var ttip = d3.select("body").append("div")   
     .attr("class", "tooltip")               
     .style("opacity", 0);	
@@ -240,11 +170,10 @@ var rect = layer.selectAll("rect")
 
 	var Offset = document.getElementById("graphSteak").offsetTop;
 	var pos=parseInt(data[0].length-(event.pageY-Offset-margin.top)/(height/yStackMax)+1);
-var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-5.0);
-//$(d3.select('.mylabel')[0][0]).text( meatType+ " temperature is "+ data[line][pos].toFixed(2)+ "\xB0C");
-	//$(d3.select('.mylabel')[0][0]).text("Steak temperature is "+ pos+ "\xB0C");
+var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-2.0);
+
 	$("line").remove();
-	var myLine = d3.selectAll("svg").filter(function(d,i){return i==2;}).append("svg:line")
+	var myLine = d3.selectAll("svg").filter(function(d,i){return i==3;}).append("svg:line")
     .attr("x1", margin.left)
     .attr("y1", event.pageY-Offset)
     .attr("x2", width*31/30)
@@ -252,6 +181,7 @@ var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-5.0);
     .style("stroke", "grey");
 	var ttip=d3.select('.tooltip');
 	   ttip.html(data[line][pos].toFixed(2)+ "\xB0C")  
+	   //ttip.html(line.toFixed(2)+ "\xB0C")  
 	   			.style("opacity", 1)
                 .style("left", (d3.event.pageX) + "px")     
                 .style("top", (d3.event.pageY) + "px");   
@@ -289,7 +219,7 @@ var linktext = svg.selectAll("g.linklabelholder").data(flame);
      .attr("dy", function(d){return -Math.min(x.rangeBand(),30)/1.2+(height+2*Math.min(x.rangeBand(),30))*d[1]})
      .attr("text-anchor", "right")
 		.style("font-size", "8px")
-     .text(function(d) { return d[2].toFixed(0)});	
+     .text(function(d,i) { if(i==0){return  d[2].toFixed(0)}return (flame[i-1][2]!=d[2])? d[2].toFixed(0):""});	
 
 		
 rect.transition()
@@ -335,8 +265,8 @@ svg.append("text")
     .attr("x",-height+margin.bottom/3)
     .attr("transform", "rotate(-90)")
     .text("Side 2");	
-drawFinished(meatType,maxs,maxTemps);
-drawFinished(meatType,maxs,maxTemps);		
+drawFinished(meatType,maxTemps);
+drawFinished(meatType,maxTemps);		
 /*
  svg.append("g")         
         .attr("class", "grid")
