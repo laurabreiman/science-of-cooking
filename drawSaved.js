@@ -1,5 +1,5 @@
 
-var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp)
+var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side)
 	{
 			var getState=function(temp)
 	{
@@ -46,7 +46,7 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp)
                                     .attr("height", '200px')
 									.append("g")
 	.attr("class",'savedInfo')
-    .attr("transform", "translate(" + 45 + "," + 130 + ")")
+    .attr("transform", "translate(" + 45 + "," + 140 + ")")
 		
 		
 		var legend = svgContainer.selectAll('g')
@@ -61,8 +61,8 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp)
 
 
     legend.append('rect')
-        .attr('x', function(d,i){return i<4? i*30-20:(i-4)*30-20})
-        .attr('y', function(d, i){ return i<4? -125: -125+10})
+        .attr('x', function(d,i){return i<8? i*30-20:(i-4)*30-20})
+        .attr('y', function(d, i){ return i<8? -125: -125+10})
         .attr('width', 8)
         .attr('height', 8)
 
@@ -72,8 +72,8 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp)
 
     legend.append('text')
 	.data(myMaxs)
-        .attr('x', function(d,i){return i<4? i*30-12:(i-4)*30-12})
-        .attr('y', function(d, i){ return i<4? -125+8: -125+18})
+        .attr('x', function(d,i){return i<8? i*30-12:(i-4)*30-12})
+        .attr('y', function(d, i){ return i<8? -125+8: -125+18})
 		.style('font-size','6pt')
         .text(function(d){ return (100*d/(myMaxTemps.length)).toFixed(0) +"%"; });	
 
@@ -81,17 +81,18 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp)
 var rectangle = svgContainer.selectAll("rect")
     .data([0,0,0,0,0,0,0].concat(myMaxTemps.reverse()))
   .enter().append("rect")
-           .attr("x", '-10%')
-           .attr("y", function(d,i){return-130+ 20+i*1})
-           .attr("width", '70%')
-           .attr("height", '1px')
+           .attr("x", (-10+(1-side)*80)+'%')
+           .attr("y", function(d,i){return -140+ 20+i*2})
+           .attr("width", '10%')
+           .attr("height", '2px')
 		   .style('fill', function(d,i) {
 			   return color[myMeatType](getState(d))});
 var texts=svgContainer.selectAll("text")
   .data([0,1,2,3,4,5,6].concat(directions))
 .enter().append("text")
-.attr("x", -20)
-.attr("y", function(d,i){return -50+(i-7)*10})
+.attr("x", (-10+(side)*10)+'%')
+.attr("width", '90%')
+.attr("y", function(d,i){return -100+(i-7)*10})
 .text(function(d){return d})
 .attr("font-size", "20px")
 
