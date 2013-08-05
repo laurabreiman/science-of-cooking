@@ -265,8 +265,8 @@ svg.append("text")
     .attr("x",-height+margin.bottom/3)
     .attr("transform", "rotate(-90)")
     .text("Side 2");	
-drawFinished(meatType,maxTemps);
-drawFinished(meatType,maxTemps);		
+		
+		
 /*
  svg.append("g")         
         .attr("class", "grid")

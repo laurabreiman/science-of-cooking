@@ -1,5 +1,5 @@
 
-var drawFinished=function(myMeatType,myMaxTemps)
+var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp)
 	{
 			var getState=function(temp)
 	{
@@ -11,6 +11,13 @@ var drawFinished=function(myMeatType,myMaxTemps)
 		return 6;
 
 	};
+		var directions=[myMeatType+" starts at "+startingtemp+ "\xB0C"];
+		for(var i=0;i<instructions.length;i++)
+		{
+			directions.push("Side 1 at "+instructions[i][1]+"\xB0C and Side 2 at  "+instructions[i][2]+"\xB0C for"
+			+instructions[i][0]+" s");
+			
+		}
 		var myMaxs=[];
 		
 			for (var x = 0; x < 7; x++) {myMaxs.push(0);}
@@ -38,13 +45,17 @@ var drawFinished=function(myMeatType,myMaxTemps)
                                    .attr("width", '50%')
                                     .attr("height", '200px')
 									.append("g")
-    .attr("transform", "translate(" + 45 + "," + 130 + ")");
+	.attr("class",'savedInfo')
+    .attr("transform", "translate(" + 45 + "," + 130 + ")")
+		
+		
 		var legend = svgContainer.selectAll('g')
 
         .data(tempScale[myMeatType])
 
         .enter()
       .append('g')
+		
         .attr('class', 'legend')
 		.style('fill', "black");
 
@@ -65,13 +76,7 @@ var drawFinished=function(myMeatType,myMaxTemps)
         .attr('y', function(d, i){ return i<4? -125+8: -125+18})
 		.style('font-size','6pt')
         .text(function(d){ return (100*d/(myMaxTemps.length)).toFixed(0) +"%"; });	
-var texts=svgContainer.selectAll("text")
-.data([0])
- .enter().append("text")
- .attr("text-anchor", "left")
-    .attr("x", '-10%')
-    .attr("y", -130)
-.text("Final Protein State Reached");
+
 //Draw the Rectangle
 var rectangle = svgContainer.selectAll("rect")
     .data([0,0,0,0,0,0,0].concat(myMaxTemps.reverse()))
@@ -82,4 +87,12 @@ var rectangle = svgContainer.selectAll("rect")
            .attr("height", '1px')
 		   .style('fill', function(d,i) {
 			   return color[myMeatType](getState(d))});
+var texts=svgContainer.selectAll("text")
+  .data([0,1,2,3,4,5,6].concat(directions))
+.enter().append("text")
+.attr("x", -20)
+.attr("y", function(d,i){return -50+(i-7)*10})
+.text(function(d){return d})
+.attr("font-size", "20px")
+
 	}

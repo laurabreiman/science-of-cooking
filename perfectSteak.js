@@ -210,7 +210,7 @@ var perfectSteak = function (div) {
 				//div.append("<div class='row'><div class='span6'><div class='container optionBar'></div></div><div class='span6'><div class='container //table-container'></div></div></div>")
 //=======
 
-				div.append("<div class='row'><div class='span3'><div class='container optionBar'></div></div><div class='span3'><div class='container table-container'></div></div><div class='span6'></div></div>")
+				div.append("<div class='row'><div class='span3'><div class='container optionBar'></div></div><div class='span3'><div class='container table-container' id='theTable'></div></div><div class='span6'></div></div>")
 
 //>>>>>>> 98101b5e50ec50526ddb403f94f4d68ebcd1d185
 				$(".table-container").append(displayDiv);
@@ -323,34 +323,40 @@ var toF=function(C)
                 var step2Col = $("<td id='row" + i + "side2' class='row" + i + "'></td>");
                 step2Col.append(inp2);
                 step1Col.append(flipButton);
-//<<<<<<< HEAD
-//=======
 
-//>>>>>>> 98101b5e50ec50526ddb403f94f4d68ebcd1d185
                 row.append(duration, step1Col, step2Col);
                 inputTable.append(row);
                 if (i == model.currentInfo["numRows"] - 1) {
                     inputTable.append(addButton);
-//>>>>>>> 98101b5e50ec50526ddb403f94f4d68ebcd1d185
+
                 }
+				var sumtime=0;
+				var time=$("#row" + i + "time").val().replace(':','.').split('.');
+			for (var k=0;k<time.length;k++)
+			{
+				sumtime+=parseFloat(time[k]);
+			}
+				console.log(sumtime);
                 if (len == 0) {
 
                     inp1.val(23);
                     inp2.val(23);
-                    model.dataAdd([parseFloat($("#row" + i + "time").val()), parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())]);
+					
+			
+                    model.dataAdd([sumtime, parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())]);
 
                 } else if (i <= len) {
 
                     inp1.val(model.currentInfo["data"][i][1]);
                     inp2.val(model.currentInfo["data"][i][2]);
 
-                    model.dataAdd([parseFloat($("#row" + i + "time").val()), parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())])
+                    model.dataAdd([sumtime, parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())])
                 } else {
 
                     inp1.val(model.currentInfo["data"][i - 1][1]);
                     inp2.val(model.currentInfo["data"][i - 1][2]);
 
-                    model.dataAdd([parseFloat($("#row" + i + "time").val()), parseFloat($("#inp1_" + iminus).val()), parseFloat($("#inp2_" + iminus).val())])
+                    model.dataAdd([sumtime, parseFloat($("#inp1_" + iminus).val()), parseFloat($("#inp2_" + iminus).val())])
                 }
                 timeFun(i);
                 flipButtonFun(i);
@@ -367,25 +373,12 @@ var toF=function(C)
             flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
             var i = model.currentInfo["numRows"] - 1;
 			var row = $("<tr id='row"+i+"'></tr>");
-
+			
 
 
 			if(i>0){
 			var vals=parseFloat($("#row" + (i-1) + "time").val());
-//>>>>>>> 98101b5e50ec50526ddb403f94f4d68ebcd1d185
 
-				//var info=$("#timeCol"+(i-1)).html();
-					//info = info.replace(":", ".").split('.');
-
-				//vals=vals+60*parseFloat(info[0])+parseFloat(info[1]);
-				//var minSecs=model.convertTime(vals);
-					}
-				//else{
-					//var minSecs=model.convertTime(i*timeStep);
-				//}
-
-
-			//var timeCol=$("<td id='timeCol"+i+"'>"+minSecs+"</td>");
 
             var duration = $("<td ><input id='row" + i + "time' type='text' value='15'></td>");
             var inp1 = $("<input type='text' id='inp1_" + i + "'>");
@@ -396,12 +389,23 @@ var toF=function(C)
             step2Col.append(inp2);
             step1Col.append(flipButton);
             row.append(duration, step1Col, step2Col);
+			$('#theTable').stop().animate({
+  scrollTop: $("#theTable")[0].scrollHeight
+}, 800);
+			console.log($("#theTable").scrollTop());
             timeFun(i);
             flipButtonFun(i);
             table.append(row);
             inp1.val($("#inp1_" + (i-1)).val());
             inp2.val($("#inp2_" + (i-1)).val());
-            model.dataAdd([parseFloat($("#row" + i + "time").val()), parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())])
+					var sumtime=0;
+				var time=$("#row" + i + "time").val().replace(':','.').split('.');
+			for (var k=0;k<time.length;k++)
+			{
+				sumtime+=parseFloat(60*k*time[k]);
+			}
+				console.log(sumtime);
+            model.dataAdd([sumtime, parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())])
 			closeRowFun();
         }
 
@@ -440,19 +444,26 @@ var toF=function(C)
 		
 		
 var graph=function(){
-	              d3.select("svg")
+	              d3.selectAll("svg")
                     .remove();
-				 d3.select("svg")
-                    .remove();
-				 d3.select("svg")
-                    .remove();
+			
                 model.dataClear();
 
                 for (var e = 0; e < model.currentInfo["numRows"]; e++) {
-                    var curTime = parseFloat($("#row" + e + "time").val());
+                    var curTime = $("#row" + e + "time").val();
                     var cur1 = parseFloat($("#inp1_" + e).val());
                     var cur2 = parseFloat($("#inp2_" + e).val());
-                    model.dataAdd([curTime, cur1, cur2]);
+							
+				var time=curTime.replace(':','.').split('.');
+					if(time.length>1){
+				var sumtime=parseFloat(time[1]);	
+			
+				sumtime+=parseFloat(60*time[0]);
+					}
+					else{var sumtime=parseFloat(time[0]);}
+			
+				console.log(sumtime);
+                    model.dataAdd([sumtime, cur1, cur2]);
                 }
 
 				var OKtoCook=true; //IF WE HAVE INVALID INPUTS, IT WILL BE CHANGED TO FALSE
