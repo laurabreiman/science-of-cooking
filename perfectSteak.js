@@ -41,6 +41,10 @@ var perfectSteak = function (div) {
 		var changeTime=function(value){
 			currentInfo['time']=value;
 		}
+		
+		var addRecipe=function(name, recipe){
+			currentInfo['recipe']['name']=recipe;
+		}
 
 		var addRecipe=function(name, recipe){
 			currentInfo['recipe']['name']=recipe;
@@ -85,6 +89,10 @@ var perfectSteak = function (div) {
             currentInfo["data"]=array;
 
         }
+		
+		var saveRecipe=function(name){
+			console.log(currentInfo["data"]);
+		}
 
 		var saveRecipe=function(name){
 			console.log(currentInfo["data"]);
@@ -182,7 +190,9 @@ var perfectSteak = function (div) {
 
                 model.dataClear();
 
+
 				}
+
 
 		})
         var addButton;
@@ -217,6 +227,7 @@ var perfectSteak = function (div) {
 
 		var addDropdown=function(){
 			var dropdownDiv=$("<div class='dropdown'></div>");
+
 			var dropdown1=$('<select id="steakHist"></select>');
 		dropdown1.append($('<option>Current</option>'));
 			
@@ -228,6 +239,7 @@ var perfectSteak = function (div) {
 			$(".span6").append(dropdownDiv);
 
 		}
+
 
         var buildDisplay = function () {
 			if (model.currentInfo["OKToGraph"]){
@@ -244,8 +256,10 @@ var perfectSteak = function (div) {
 					(".")
 				}
 
+
 				addDropdown();
         }
+
 
 			var toF=function(C)
 			{
@@ -264,24 +278,13 @@ var perfectSteak = function (div) {
                 flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
 
                 var row = $("<tr id='row"+i+"'></tr>");
-//<<<<<<< HEAD
+
 				if(i>0){
 				var vals=parseFloat($("#row" + (i-1) + "time").val());
 
-				//var info=$("#timeCol"+(i-1)).html();
-					//info = info.replace(":", ".").split('.');
-
-				// vals=vals+60*parseFloat(info[0])+parseFloat(info[1]);
-				// var minSecs=model.convertTime(vals);
+	
 				 }
-				// else{
-					// var minSecs=model.convertTime(i*timeStep);
-				// }
-				//var timeCol=$("<td id='timeCol"+i+"'>"+minSecs+"</td>");
-//=======
 
-
-//>>>>>>> 98101b5e50ec50526ddb403f94f4d68ebcd1d185
                 var duration = $("<td id='duration"+i+"'><input id='row" + i + "time' type='text' value='15'></td>");
                 var inp1 = $("<input type='text' id='inp1_" + i + "'>");
                 var inp2 = $("<input type='text' id='inp2_" + i + "'><button type='button' class='close closeRow' id='row"+i+"button'>&times;</button>");
