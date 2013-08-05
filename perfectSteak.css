@@ -1,21 +1,40 @@
 .inputTable{
 	position: relative;
-	width: 120% !important;
+	width: 150% !important;
 	text-align: center;
+	padding: 0px !important;
+	margin: 0px!important;
 /*	left: 10% !important;*/
 }
 
 .displayDiv{
 	position: relative;
-	width: 80%;
+	width: 100%;
 }
 
+.dropdown{
+	top:100%;
+}
 
+.selectName{
+	position: absolute;
+	width: 30%;
+	height: 20%;
+}
+
+#recipeName{
+	width: 200px !important;
+}
+
+#saveBut{
+	width: 400px !important;
+	align: center !important;
+}
 
 .table-container{
     overflow-x: hidden;
     overflow-y: auto;
-    width:120%;
+    width:100%;
     height:160px;
 	font-size: 10px;
    }
