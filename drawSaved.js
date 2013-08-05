@@ -43,7 +43,7 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side)
 		//$(".span6").append(dropdown);
 		var svgContainer = d3.select(".span6").append("svg")
                                    .attr("width", '50%')
-                                    .attr("height", '200px')
+                                    .attr("height", '150px')
 									.append("g")
 	.attr("class",'savedInfo')
     .attr("transform", "translate(" + 45 + "," + 140 + ")")
