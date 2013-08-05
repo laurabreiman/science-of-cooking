@@ -46,6 +46,10 @@ var perfectSteak = function (div) {
 			currentInfo['recipe']['name']=recipe;
 		}
 
+		var addRecipe=function(name, recipe){
+			currentInfo['recipe']['name']=recipe;
+		}
+
 		//CHANGES X SECONDS INTO Y:X WHERE Y IS MINUTES X IS SECONDS
 		var convertTime=function(secs){
 			var minutes=Math.floor(parseInt(secs)/60);
@@ -89,6 +93,10 @@ var perfectSteak = function (div) {
 		var saveRecipe=function(name){
 			currentInfo["recipes"][name]=currentInfo["data"];
 			console.log("should give us the data" +currentInfo["recipes"][name]);
+		}
+
+		var saveRecipe=function(name){
+			console.log(currentInfo["data"]);
 		}
 
 		var buildData=function(){
@@ -174,22 +182,37 @@ var perfectSteak = function (div) {
 				//console.log("display_div changed")
 				model.buildData();
 				updateTime();
-				
+
 				if(clicked&&model.currentInfo["OKToGraph"]){graph()}
-			
+
 			else{d3.selectAll("svg")
                     .remove();
-			
-				   
+
+
                 model.dataClear();
-			
+
+
 				}
-				
+
+
 		})
         var addButton;
         var flipButton;
         var cookButton;
+<<<<<<< HEAD
 		var saveBut;
+=======
+					var saveBut=$('<a href="#saveBut" role="button" class="btn" data-toggle="modal" id="saveBut">Save</a>');
+			var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe <p> <input type="text" id=recipeName width="150px"></input><p><button class="btn" data-dismiss="modal" aria-hidden="true">OK</button></div></div>');
+			displayDiv.append(saveModal)
+
+			saveBut.on("click", function(){
+				var selectName=$("<div class='selectName'></div>")
+				var name=$("#recipeName").val();
+				console.log("name "+ name);
+				model.saveRecipe(name)
+			});
+>>>>>>> 21a63eaba2ead7d127b7607e18736c7e55b37d51
         var updateTime=function(){
 			for(var i=0;i<model.currentInfo["numRows"];i++)
 			{
@@ -210,6 +233,7 @@ var perfectSteak = function (div) {
 		var addDropdown=function(){
 			$(".dropdown").remove();
 			var dropdownDiv=$("<div class='dropdown'></div>");
+<<<<<<< HEAD
 			var dropdownMenu=$('<button class="btn" data-toggle="dropdown">Recipes</button><ul class="dropdown-menu" role="menu" aria-labelledby="dLabel"><li><a tabindex="-1" href="#">Current</a></li><li class="divider"></li></ul></div>');
 			for (var q in model.currentInfo["recipes"]){
 				dropdownMenu.append($("<li id='"+q+"rec'>"+q+"</li>"))
@@ -217,12 +241,27 @@ var perfectSteak = function (div) {
 			dropdownDiv.append(dropdownMenu);
 			$(".span6").append(dropdownDiv);
 		}
+=======
+
+			var dropdown1=$('<select id="steakHist"></select>');
+		dropdown1.append($('<option>Current</option>'));
+			
+				var dropdown2=$('<select id="steakHist"></select>');
+		dropdown2.append($('<option>Current</option>'));
+	
+>>>>>>> 21a63eaba2ead7d127b7607e18736c7e55b37d51
 		
+			dropdownDiv.append(dropdown1,dropdown2);
+			$(".span6").append(dropdownDiv);
+
+		}
+
+
         var buildDisplay = function () {
 			if (model.currentInfo["OKToGraph"]){
 				div.append("<div class='row'><div class='span3'><div class='container optionBar'></div></div><div class='span3'><div class='container table-container' id='theTable'></div></div><div class='span6'></div></div>");
 				$(".table-container").append(displayDiv);
-				
+
                 $("#startModal").modal("show");
             
 				cookButton = $(".cookButton");
@@ -232,10 +271,12 @@ var perfectSteak = function (div) {
 				else{
 					(".")
 				}
-				
+
+
 				addDropdown();
         }
-		
+
+
 			var toF=function(C)
 			{
 			return (C*(5/9)+32 + "&#176;F");
@@ -253,24 +294,13 @@ var perfectSteak = function (div) {
                 flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
 
                 var row = $("<tr id='row"+i+"'></tr>");
-//<<<<<<< HEAD
+
 				if(i>0){
 				var vals=parseFloat($("#row" + (i-1) + "time").val());
 
-				//var info=$("#timeCol"+(i-1)).html();
-					//info = info.replace(":", ".").split('.');
-
-				// vals=vals+60*parseFloat(info[0])+parseFloat(info[1]);
-				// var minSecs=model.convertTime(vals);
+	
 				 }
-				// else{
-					// var minSecs=model.convertTime(i*timeStep);
-				// }
-				//var timeCol=$("<td id='timeCol"+i+"'>"+minSecs+"</td>");
-//=======
-		
 
-//>>>>>>> 98101b5e50ec50526ddb403f94f4d68ebcd1d185
                 var duration = $("<td id='duration"+i+"'><input id='row" + i + "time' type='text' value='15'></td>");
                 var inp1 = $("<input type='text' id='inp1_" + i + "'>");
                 var inp2 = $("<input type='text' id='inp2_" + i + "'><button type='button' class='close closeRow' id='row"+i+"button'>&times;</button>");
@@ -306,7 +336,6 @@ var perfectSteak = function (div) {
 			
                     inputTable.append(addButton, saveBut, saveModal);
 					addDropdown();
-
                 }
 				var sumtime=0;
 				var time=$("#row" + i + "time").val().replace(':','.').split('.');
@@ -319,8 +348,8 @@ var perfectSteak = function (div) {
 
                     inp1.val(180);
                     inp2.val(23);
-					
-			
+
+
                     model.dataAdd([sumtime, parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())]);
 
                 } else if (i <= len) {
@@ -351,7 +380,7 @@ var perfectSteak = function (div) {
             flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
             var i = model.currentInfo["numRows"] - 1;
 			var row = $("<tr id='row"+i+"'></tr>");
-			
+
 
 
 			if(i>0){
@@ -402,13 +431,13 @@ var perfectSteak = function (div) {
             });
         };
 
-		
+
 		var closeRowFun=function(){
 			$(".closeRow").on("click", function(){
 				var rowNum=String($(this).attr("id").charAt(3))
 				$("#row"+rowNum).remove();
 				model.numRowsMinus();
-				
+
 				//NOW WE NEED TO CHANGE THE ROW NUMBER OF ALL THE OTHER ROWS
 				for (var l=rowNum+1; l<model.currentInfo["numRows"]; l++){
 					$("#row"+l).attr("id", "row"+l-1);
@@ -418,30 +447,30 @@ var perfectSteak = function (div) {
 					$("#row"+l+"side2").attr("id", "row"+l-1+"side2");
 					$("#inp2_"+l).attr("id", "inp2_"+l-1);
 				}
-				
+
 			});
 		}
-		
-		
+
+
 var graph=function(){
 	              d3.selectAll("svg")
                     .remove();
-			
+
                 model.dataClear();
 
                 for (var e = 0; e < model.currentInfo["numRows"]; e++) {
                     var curTime = $("#row" + e + "time").val();
                     var cur1 = parseFloat($("#inp1_" + e).val());
                     var cur2 = parseFloat($("#inp2_" + e).val());
-							
+
 				var time=curTime.replace(':','.').split('.');
 					if(time.length>1){
 				var sumtime=parseFloat(time[1]);	
-			
+
 				sumtime+=parseFloat(60*time[0]);
 					}
 					else{var sumtime=parseFloat(time[0]);}
-			
+
 				console.log(sumtime);
                     model.dataAdd([sumtime, cur1, cur2]);
                 }
