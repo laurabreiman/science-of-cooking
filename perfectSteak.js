@@ -2,7 +2,7 @@ var perfectSteak = function (div) {
 
 
     function Model(div) {
-		var currentInfo={'meatTemp':23, 'thickness':3, 'data':[], 'numRows':2, 'time':0, 'OKToGraph':true, 'recipes':[]}
+		var currentInfo={'meatTemp':23, 'thickness':3, 'data':[], 'numRows':2, 'time':0, 'OKToGraph':true, 'recipes':{}}
         var timeStep = 15;
         var inputTable = $(".inputTable");
 
@@ -87,7 +87,8 @@ var perfectSteak = function (div) {
         }
 		
 		var saveRecipe=function(name){
-			console.log(currentInfo["data"]);
+			currentInfo["recipes"][name]=currentInfo["data"];
+			console.log("should give us the data" +currentInfo["recipes"][name]);
 		}
 
 		var buildData=function(){
@@ -188,6 +189,7 @@ var perfectSteak = function (div) {
         var addButton;
         var flipButton;
         var cookButton;
+		var saveBut;
         var updateTime=function(){
 			for(var i=0;i<model.currentInfo["numRows"];i++)
 			{
@@ -206,20 +208,14 @@ var perfectSteak = function (div) {
 		}
 
 		var addDropdown=function(){
+			$(".dropdown").remove();
 			var dropdownDiv=$("<div class='dropdown'></div>");
-			var dropdownMenu=$('<button class="btn" data-toggle="dropdown">Dropdown</button><ul class="dropdown-menu" role="menu" aria-labelledby="dLabel"><li><a tabindex="-1" href="#">Current</a></li><li class="divider"></li></ul></div>');
-			var saveBut=$('<a href="#saveBut" role="button" class="btn" data-toggle="modal">Save Recipe</a>');
-			dropdownDiv.append(dropdownMenu, saveBut);
+			var dropdownMenu=$('<button class="btn" data-toggle="dropdown">Recipes</button><ul class="dropdown-menu" role="menu" aria-labelledby="dLabel"><li><a tabindex="-1" href="#">Current</a></li><li class="divider"></li></ul></div>');
+			for (var q in model.currentInfo["recipes"]){
+				dropdownMenu.append($("<li id='"+q+"rec'>"+q+"</li>"))
+			}
+			dropdownDiv.append(dropdownMenu);
 			$(".span6").append(dropdownDiv);
-			var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe <p> <input type="text" id=recipeName width="150px"></input><p><button class="btn" data-dismiss="modal" aria-hidden="true">OK</button></div></div>');
-			dropdownDiv.append(saveModal)
-	
-			saveBut.on("click", function(){
-				var selectName=$("<div class='selectName'></div>")
-				var name=$("#recipeName").val();
-				console.log("name "+ name);
-				model.saveRecipe(name)
-			});
 		}
 		
         var buildDisplay = function () {
@@ -287,7 +283,29 @@ var perfectSteak = function (div) {
                 row.append(duration, step1Col, step2Col);
                 inputTable.append(row);
                 if (i == model.currentInfo["numRows"] - 1) {
-                    inputTable.append(addButton);
+						saveBut=$('<a href="#saveBut" role="button" class="btn" data-toggle="modal">Save Recipe</a>');
+						var name;
+						var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe</div></div>');
+					var nameInp=$('<input type="text" id=recipeName width="150px"></input>');
+					var okModal=$('<button class="btn" data-dismiss="modal" aria-hidden="true" id="okModal">OK</button>');
+			okModal.on("click", function(){
+				name=nameInp.val();
+			})
+			saveModal.append(nameInp,okModal);
+			
+			saveBut.on("click", function(){
+				//var selectName=$("<div class='selectName'></div>")
+				var name=nameInp.val();
+				console.log("name "+ name);
+				model.saveRecipe($("#recipeName").val());
+					console.log("kip kip kip")
+					//$(".dropdown-menu").remove($("#"+name+"LI"));
+					newLI=$("<li id='"+name+"LI'><a tabindex=-1 id='"+name+"DD'>"+name+"</a></li>")
+					$(".dropdown-menu").append(newLI);
+				});
+			
+                    inputTable.append(addButton, saveBut, saveModal);
+					addDropdown();
 
                 }
 				var sumtime=0;
@@ -368,6 +386,7 @@ var perfectSteak = function (div) {
             model.dataAdd([sumtime, parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())])
 			closeRowFun();
         }
+		
 		}
 
 
