@@ -2,7 +2,7 @@ var perfectSteak = function (div) {
 
 
     function Model(div) {
-		var currentInfo={'meatTemp':23, 'thickness':3, 'data':[], 'numRows':2, 'time':0, 'OKToGraph':true, 'recipes':[]}
+		var currentInfo={'meatTemp':23, 'thickness':3, 'data':[], 'numRows':2, 'time':0, 'OKToGraph':true, 'recipe':{'Steak1':[1,23],'Steak2':[23,1],'Steak3':[1,2,3]}};
         var timeStep = 15;
         var inputTable = $(".inputTable");
 
@@ -43,12 +43,10 @@ var perfectSteak = function (div) {
 		}
 		
 		var addRecipe=function(name, recipe){
-			currentInfo['recipe']['name']=recipe;
+			currentInfo['recipe'][name]=recipe;
 		}
 
-		var addRecipe=function(name, recipe){
-			currentInfo['recipe']['name']=recipe;
-		}
+	
 
 		//CHANGES X SECONDS INTO Y:X WHERE Y IS MINUTES X IS SECONDS
 		var convertTime=function(secs){
@@ -92,11 +90,11 @@ var perfectSteak = function (div) {
 		
 		var saveRecipe=function(name){
 			console.log(currentInfo["data"]);
+			var recipe=currentInfo["data"];
+			addRecipe(name,recipe);
 		}
 
-		var saveRecipe=function(name){
-			console.log(currentInfo["data"]);
-		}
+	
 
 		var buildData=function(){
 			var newData=[];
@@ -198,15 +196,17 @@ var perfectSteak = function (div) {
         var addButton;
         var flipButton;
         var cookButton;
-					var saveBut=$('<a href="#saveBut" role="button" class="btn" data-toggle="modal" id="saveBut">Save</a>');
+					var saveBut=$('<a href="#saveBut" role="button" class=sBut data-toggle="modal" id="saveButton">Save</a>');
 			var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe <p> <input type="text" id=recipeName width="150px"></input><p><button class="btn" data-dismiss="modal" aria-hidden="true">OK</button></div></div>');
 			displayDiv.append(saveModal)
 
 			saveBut.on("click", function(){
+				
 				var selectName=$("<div class='selectName'></div>")
 				var name=$("#recipeName").val();
 				console.log("name "+ name);
-				model.saveRecipe(name)
+				model.saveRecipe(name);
+				addDropdown();
 			});
         var updateTime=function(){
 			for(var i=0;i<model.currentInfo["numRows"];i++)
@@ -226,15 +226,26 @@ var perfectSteak = function (div) {
 		}
 
 		var addDropdown=function(){
+			$('.dropdown').html("");
 			var dropdownDiv=$("<div class='dropdown'></div>");
 
-			var dropdown1=$('<select id="steakHist"></select>');
-		dropdown1.append($('<option>Current</option>'));
-			
-				var dropdown2=$('<select id="steakHist"></select>');
-		dropdown2.append($('<option>Current</option>'));
-	
+			var dropdown1=$('<select class="steakHist"></select>');
 		
+		
+		
+			
+				var dropdown2=$('<select class="steakHist"></select>');
+	for(var key in model.currentInfo['recipe']){
+				dropdown1.append($('<option>'+key+'</option>'));
+				dropdown2.append($('<option>'+key+'</option>'));
+			}
+	
+			dropdown1.change(function(){
+			
+			});
+				dropdown2.change(function(){
+			
+			});
 			dropdownDiv.append(dropdown1,dropdown2);
 			$(".span6").append(dropdownDiv);
 
@@ -306,7 +317,7 @@ var perfectSteak = function (div) {
 			{
 				sumtime+=parseFloat(time[k]);
 			}
-				console.log(sumtime);
+				
                 if (len == 0) {
 
                     inp1.val(180);
@@ -362,7 +373,7 @@ var perfectSteak = function (div) {
 			$('#theTable').stop().animate({
 				scrollTop: $("#theTable")[0].scrollHeight
 			}, 800);
-			console.log($("#theTable").scrollTop());
+			
             timeFun(i);
             flipButtonFun(i);
             table.append(row);
@@ -374,7 +385,7 @@ var perfectSteak = function (div) {
 			{
 				sumtime+=parseFloat(60*k*time[k]);
 			}
-				console.log(sumtime);
+				
             model.dataAdd([sumtime, parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())])
 			closeRowFun();
         }
@@ -433,7 +444,7 @@ var graph=function(){
 					}
 					else{var sumtime=parseFloat(time[0]);}
 
-				console.log(sumtime);
+		
                     model.dataAdd([sumtime, cur1, cur2]);
                 }
 
@@ -481,7 +492,7 @@ var graph=function(){
             $(".cookButton").on("click", function () {
 				clicked=true;
 				model.checkDiv();
-				//console.log("isOKtograph"+model.currentInfo["OKToGraph"]);
+				
 				if (model.currentInfo["OKToGraph"]){
 					graph();
 				};
@@ -490,15 +501,11 @@ var graph=function(){
 
         var timeFun = function (j) {
             $("#row" + j + "time").change(function () {
-				console.log("timeFun")
+				
                 if (j == 0) {
                     timeStep = parseInt($("#row" + j + "time").value);
                 }
-				// var timeInSecs=parseFloat($("#row"+j+"time").val());
-				// if (timeInSecs>60){
-					// console.log("greaterthan60")
-					// $("#row"+j+"time").val(convertTime(timeInSecs))
-				// }
+			
 
                 if (j == 0) {
                     timeStep = parseInt($("#row" + j + "time").value);
