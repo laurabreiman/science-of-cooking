@@ -201,9 +201,9 @@ var perfectSteak = function (div) {
         var flipButton;
         var cookButton;
 
-        var saveBut=$('<a href="#saveBut" role="button" class="btn" data-toggle="modal" id="saveBut">Save</a>');
+        var saveBut=$('<a href="#saveBut" role="button" class="btn sBut" data-toggle="modal" id="saveBut">Save</a>');
 
-			var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe <p> <input type="text" id=recipeName width="150px"></input><p><button class="btn" data-dismiss="modal" aria-hidden="true">OK</button></div></div>');
+			var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe <p> <input type="text" id="recipeName"></input><p><button class="btn" data-dismiss="modal" aria-hidden="true">OK</button></div></div>');
 			displayDiv.append(saveModal)
 
 			saveBut.on("click", function(){
@@ -317,7 +317,7 @@ var perfectSteak = function (div) {
                 row.append(duration, step1Col, step2Col);
                 inputTable.append(row);
                 if (i == model.currentInfo["numRows"] - 1) {
-						saveBut=$('<a href="#saveBut" role="button" class="sBut" data-toggle="modal">Save</a>');
+						saveBut=$('<a href="#saveBut" role="button" class="btn sBut" data-toggle="modal">Save</a>');
 						var name;
 						var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe</div></div>');
 					var nameInp=$('<input type="text" id=recipeName width="150px"></input>');
@@ -422,10 +422,10 @@ var perfectSteak = function (div) {
 		
 		}
 
-
-        var delRow = function () {
-            $('.inputTable tr:last').remove();
-        }
+// UNUSED FUNCTION - GONNA BE DELETED
+//        var delRow = function () {
+//            $('.inputTable tr:last').remove();
+//        }
 
         var addButtonFun = function () {
             addButton.on("click", function () {
