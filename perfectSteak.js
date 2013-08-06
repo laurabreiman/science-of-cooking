@@ -201,20 +201,6 @@ var perfectSteak = function (div) {
         var flipButton;
         var cookButton;
 
-        var saveBut=$('<a href="#saveBut" role="button" class="btn" data-toggle="modal" id="saveBut">Save</a>');
-
-			var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe <p> <input type="text" id=recipeName width="150px"></input><p><button class="btn" data-dismiss="modal" aria-hidden="true">OK</button></div></div>');
-			displayDiv.append(saveModal)
-
-			saveBut.on("click", function(){
-				
-				var selectName=$("<div class='selectName'></div>")
-				var name=$("#recipeName").val();
-				console.log("name "+ name);
-				model.saveRecipe(name);
-				addDropdown();
-			});
-
         var updateTime=function(){
 			for(var i=0;i<model.currentInfo["numRows"];i++)
 			{
@@ -317,28 +303,24 @@ var perfectSteak = function (div) {
                 row.append(duration, step1Col, step2Col);
                 inputTable.append(row);
                 if (i == model.currentInfo["numRows"] - 1) {
-						saveBut=$('<a href="#saveBut" role="button" class="sBut" data-toggle="modal">Save</a>');
+						var saveBut=$('<a href="#saveBut" role="button" class="sBut" data-toggle="modal">Save</a>');
 						var name;
 						var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe</div></div>');
-					var nameInp=$('<input type="text" id=recipeName width="150px"></input>');
-					var okModal=$('<button class="btn" data-dismiss="modal" aria-hidden="true" id="okModal">OK</button>');
+						var nameInp=$('<input type="text" id=recipeName width="150px"></input>');
+						var okModal=$('<button class="btn" data-dismiss="modal" aria-hidden="true" id="okModal">OK</button>');
 			okModal.on("click", function(){
-				name=nameInp.val();
+				var name=nameInp.val();
+				console.log("name "+ name);
+				model.saveRecipe($("#recipeName").val());
+				console.log("kip kip kip");
+				console.log(model.currentInfo["recipe"][name])
 			})
 			saveModal.append(nameInp,okModal);
 			
 			saveBut.on("click", function(){
-				//var selectName=$("<div class='selectName'></div>")
-				var name=nameInp.val();
-				console.log("name "+ name);
-				model.saveRecipe($("#recipeName").val());
-					console.log("kip kip kip")
-					//$(".dropdown-menu").remove($("#"+name+"LI"));
-					newLI=$("<li id='"+name+"LI'><a tabindex=-1 id='"+name+"DD'>"+name+"</a></li>")
-					$(".dropdown-menu").append(newLI);
-				});
+			});
 			
-                    inputTable.append(addButton, saveBut, saveModal);
+            inputTable.append(addButton, saveBut, saveModal);
 					addDropdown();
                 }
 				var sumtime=0;
