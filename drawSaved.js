@@ -1,6 +1,7 @@
 
 var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side)
 	{
+		console.log(myMeatType,myMaxTemps,instructions,startingtemp,side);
 			var getState=function(temp)
 	{
 
