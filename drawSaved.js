@@ -1,7 +1,7 @@
 
 var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side)
 	{
-		console.log(myMeatType,myMaxTemps,instructions,startingtemp,side);
+		d3.selectAll("svg").filter(function(d,i){return i==2+side;}).remove();
 			var getState=function(temp)
 	{
 

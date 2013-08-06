@@ -192,11 +192,9 @@ var perfectSteak = function (div) {
 				model.buildData();
 				updateTime();
 
-				if(clicked&&model.currentInfo["OKToGraph"]){graph()}
+				if(clicked&&model.currentInfo["OKToGraph"]){graph(false)}
 
-			else{d3.selectAll("svg")
-                    .remove();
-
+			else{ d3.selectAll("svg").filter(function(d,i){return i==3||i==0;}).remove();
 
                 model.dataClear();
 
@@ -260,7 +258,7 @@ var perfectSteak = function (div) {
 			}
 	
 
-			dropdown1.change(function(){
+			dropdownDiv.change(function(){
 				
 				var e1 = document.getElementById("d1");
 				var name1 = e1.options[e1.selectedIndex].text;
@@ -272,15 +270,7 @@ var perfectSteak = function (div) {
 				var inf=model.currentInfo['recipe'][name2];
 			drawFinished(inf[0],inf[1],inf[2],inf[3],0);
 			});
-				dropdown2.change(function(){
-			
-			var e1 = document.getElementById("d1");
-				var name1 = e1.options[e1.selectedIndex].text;
-					var e2 = document.getElementById("d2");
-				var name2 = e2.options[e2.selectedIndex].text;
-			drawFinished(model.currentInfo['recipe'][name1],0);
-			drawFinished(model.currentInfo['recipe'][name2],1);
-			});
+				
 
 			dropdownDiv.append(dropdown1,dropdown2);
 			$(".span6").prepend(dropdownDiv);
@@ -486,9 +476,8 @@ var perfectSteak = function (div) {
 		}
 
 
-var graph=function(){
-	              d3.selectAll("svg")
-                    .remove();
+var graph=function(isFirst){
+	              d3.selectAll("svg").filter(function(d,i){return i==3||i==0;}).remove();
 
                 model.dataClear();
 
@@ -546,16 +535,16 @@ var graph=function(){
 						steak.push(parseFloat($("#steakTemp").val()))
 					}
 					steak.push(model.currentInfo["data"][0][2]);
-					calculate(model.currentInfo["data"], steak,meatType)
+					calculate(model.currentInfo["data"], steak,meatType,isFirst)
 				}
 }
         var CookButtonFun = function () {
             $(".cookButton").on("click", function () {
 				clicked=true;
 				model.checkDiv();
-				
+				d3.selectAll("svg").remove();
 				if (model.currentInfo["OKToGraph"]){
-					graph();
+					graph(true);
 				};
             });
         }
