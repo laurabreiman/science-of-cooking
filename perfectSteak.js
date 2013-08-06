@@ -199,10 +199,7 @@ var perfectSteak = function (div) {
         var addButton;
         var flipButton;
         var cookButton;
-<<<<<<< HEAD
-		var saveBut;
-=======
-					var saveBut=$('<a href="#saveBut" role="button" class="btn" data-toggle="modal" id="saveBut">Save</a>');
+        var saveBut=$('<a href="#saveBut" role="button" class="btn" data-toggle="modal" id="saveBut">Save</a>');
 			var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe <p> <input type="text" id=recipeName width="150px"></input><p><button class="btn" data-dismiss="modal" aria-hidden="true">OK</button></div></div>');
 			displayDiv.append(saveModal)
 
@@ -212,7 +209,7 @@ var perfectSteak = function (div) {
 				console.log("name "+ name);
 				model.saveRecipe(name)
 			});
->>>>>>> 21a63eaba2ead7d127b7607e18736c7e55b37d51
+
         var updateTime=function(){
 			for(var i=0;i<model.currentInfo["numRows"];i++)
 			{
@@ -233,23 +230,12 @@ var perfectSteak = function (div) {
 		var addDropdown=function(){
 			$(".dropdown").remove();
 			var dropdownDiv=$("<div class='dropdown'></div>");
-<<<<<<< HEAD
-			var dropdownMenu=$('<button class="btn" data-toggle="dropdown">Recipes</button><ul class="dropdown-menu" role="menu" aria-labelledby="dLabel"><li><a tabindex="-1" href="#">Current</a></li><li class="divider"></li></ul></div>');
-			for (var q in model.currentInfo["recipes"]){
-				dropdownMenu.append($("<li id='"+q+"rec'>"+q+"</li>"))
-			}
-			dropdownDiv.append(dropdownMenu);
-			$(".span6").append(dropdownDiv);
-		}
-=======
 
 			var dropdown1=$('<select id="steakHist"></select>');
 		dropdown1.append($('<option>Current</option>'));
 			
 				var dropdown2=$('<select id="steakHist"></select>');
-		dropdown2.append($('<option>Current</option>'));
-	
->>>>>>> 21a63eaba2ead7d127b7607e18736c7e55b37d51
+		dropdown2.append($('<option>Current</option>'));	
 		
 			dropdownDiv.append(dropdown1,dropdown2);
 			$(".span6").append(dropdownDiv);
