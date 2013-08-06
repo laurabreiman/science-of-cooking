@@ -209,6 +209,7 @@ var perfectSteak = function (div) {
         var flipButton;
         var cookButton;
 
+
 					var saveBut=$('<a href="#saveBut" role="button" class=sBut data-toggle="modal" id="saveButton">Save</a>');
 
 		var saveBut;
@@ -224,6 +225,7 @@ var perfectSteak = function (div) {
 				model.saveRecipe(name);
 				addDropdown();
 			});
+
 
         var updateTime=function(){
 			for(var i=0;i<model.currentInfo["numRows"];i++)
@@ -251,6 +253,7 @@ var perfectSteak = function (div) {
 			var dropdown1=$('<select class="steakHist" id ="d1"></select>');
 		    var dropdown2=$('<select class="steakHist"id ="d2"></select>');
 			
+
 	for(var key in model.currentInfo['recipe']){
 				dropdown1.append($('<option>'+key+'</option>'));
 				dropdown2.append($('<option>'+key+'</option>'));
@@ -341,25 +344,31 @@ var perfectSteak = function (div) {
                 row.append(duration, step1Col, step2Col);
                 inputTable.append(row);
                 if (i == model.currentInfo["numRows"] - 1) {
+
 						saveBut=$('<a href="#saveBut" role="button" class="sBut" data-toggle="modal">Save</a>');
 						
+
 						var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe</div></div>');
-					var nameInp=$('<input type="text" id=recipeName width="150px"></input>');
-					var okModal=$('<button class="btn" data-dismiss="modal" aria-hidden="true" id="okModal">OK</button>');
+						var nameInp=$('<input type="text" id=recipeName width="150px"></input>');
+						var okModal=$('<button class="btn" data-dismiss="modal" aria-hidden="true" id="okModal">OK</button>');
 			okModal.on("click", function(){
+
 				
 				model.saveRecipe($("#recipeName").val());
 				addDropdown();
+
 			})
 			saveModal.append(nameInp,okModal);
 			
 			saveBut.on("click", function(){
+
 	
-				model.saveRecipe($("#recipeName").val());
+				//model.saveRecipe($("#recipeName").val());
 				
 				});
+
 			
-                    inputTable.append(addButton, saveBut, saveModal);
+            inputTable.append(addButton, saveBut, saveModal);
 					addDropdown();
                 }
 				var sumtime=0;
