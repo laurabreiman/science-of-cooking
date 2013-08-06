@@ -183,9 +183,9 @@ var perfectSteak = function (div) {
 				updateTime();
 				for (var j=0; j<model.currentInfo["numRows"]; j++){
 					var timeInSecs=parseFloat($("#row"+j+"time").val());
-					if (timeInSecs>60){
+//					if (timeInSecs>60){
 						$("#row"+j+"time").val(model.convertTime(timeInSecs))
-					}
+//					}
 				}
 
 				
@@ -300,7 +300,7 @@ var perfectSteak = function (div) {
 			return (C*(5/9)+32 + "&#176;F");
 	}
         var buildTable = function () {
-            var inpTabHeader = $("<tr><th class='inpTabHeader'>Duration (s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
+            var inpTabHeader = $("<tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
             inputTable.append(inpTabHeader);
             var timeStep = model.timeStep;
             var len = model.currentInfo["data"].length;
@@ -343,14 +343,6 @@ var perfectSteak = function (div) {
 
 			})
 			saveModal.append(nameInp,okModal);
-			
-			saveBut.on("click", function(){
-
-	
-				//model.saveRecipe($("#recipeName").val());
-				
-				});
-
 			
             inputTable.append(addButton, saveBut, saveModal);
 					addDropdown();
