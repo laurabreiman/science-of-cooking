@@ -2,7 +2,9 @@ var perfectSteak = function (div) {
 
 
     function Model(div) {
+
 		var currentInfo={'meatTemp':23, 'thickness':3, 'data':[], 'numRows':2, 'time':0, 'OKToGraph':true, 'recipe':{'Steak1':[1,23],'Steak2':[23,1],'Steak3':[1,2,3]}};
+
         var timeStep = 15;
         var inputTable = $(".inputTable");
 
@@ -89,9 +91,11 @@ var perfectSteak = function (div) {
         }
 		
 		var saveRecipe=function(name){
+
 			console.log(currentInfo["data"]);
 			var recipe=currentInfo["data"];
 			addRecipe(name,recipe);
+
 		}
 
 	
@@ -196,7 +200,11 @@ var perfectSteak = function (div) {
         var addButton;
         var flipButton;
         var cookButton;
+
 					var saveBut=$('<a href="#saveBut" role="button" class=sBut data-toggle="modal" id="saveButton">Save</a>');
+
+		var saveBut;
+
 			var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe <p> <input type="text" id=recipeName width="150px"></input><p><button class="btn" data-dismiss="modal" aria-hidden="true">OK</button></div></div>');
 			displayDiv.append(saveModal)
 
@@ -208,6 +216,7 @@ var perfectSteak = function (div) {
 				model.saveRecipe(name);
 				addDropdown();
 			});
+
         var updateTime=function(){
 			for(var i=0;i<model.currentInfo["numRows"];i++)
 			{
@@ -226,8 +235,16 @@ var perfectSteak = function (div) {
 		}
 
 		var addDropdown=function(){
-			$('.dropdown').html("");
+
+
+			$(".dropdown").remove();
+
 			var dropdownDiv=$("<div class='dropdown'></div>");
+
+
+			$(".span6").append(dropdownDiv);
+		
+
 
 			var dropdown1=$('<select class="steakHist"></select>');
 		
@@ -240,12 +257,14 @@ var perfectSteak = function (div) {
 				dropdown2.append($('<option>'+key+'</option>'));
 			}
 	
+
 			dropdown1.change(function(){
 			
 			});
 				dropdown2.change(function(){
 			
 			});
+
 			dropdownDiv.append(dropdown1,dropdown2);
 			$(".span6").append(dropdownDiv);
 
@@ -308,8 +327,29 @@ var perfectSteak = function (div) {
                 row.append(duration, step1Col, step2Col);
                 inputTable.append(row);
                 if (i == model.currentInfo["numRows"] - 1) {
-                    inputTable.append(addButton,saveBut);
-
+						saveBut=$('<a href="#saveBut" role="button" class="sBut" data-toggle="modal">Save</a>');
+						var name;
+						var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe</div></div>');
+					var nameInp=$('<input type="text" id=recipeName width="150px"></input>');
+					var okModal=$('<button class="btn" data-dismiss="modal" aria-hidden="true" id="okModal">OK</button>');
+			okModal.on("click", function(){
+				name=nameInp.val();
+			})
+			saveModal.append(nameInp,okModal);
+			
+			saveBut.on("click", function(){
+				//var selectName=$("<div class='selectName'></div>")
+				var name=nameInp.val();
+				console.log("name "+ name);
+				model.saveRecipe($("#recipeName").val());
+					console.log("kip kip kip")
+					//$(".dropdown-menu").remove($("#"+name+"LI"));
+					newLI=$("<li id='"+name+"LI'><a tabindex=-1 id='"+name+"DD'>"+name+"</a></li>")
+					$(".dropdown-menu").append(newLI);
+				});
+			
+                    inputTable.append(addButton, saveBut, saveModal);
+					addDropdown();
                 }
 				var sumtime=0;
 				var time=$("#row" + i + "time").val().replace(':','.').split('.');
@@ -389,6 +429,7 @@ var perfectSteak = function (div) {
             model.dataAdd([sumtime, parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())])
 			closeRowFun();
         }
+		
 		}
 
 
