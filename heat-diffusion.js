@@ -1,14 +1,14 @@
-function HeatSolver(startingTemps){
+function HeatSolver(startingTemps,timestep,spacestep){
     
     var tempArray = [startingTemps];
 
     var D = .14; // in units of mm^2/sec
     
-    var timestep = 1;
-    var spacestep = 0.1;
+    var timestep = timestep;
+    var spacestep = spacestep;
     
     var alpha = (D*timestep);
-    var alphacn = (D*timestep)/(2);
+    var alphacn = (D*timestep)/(2*spacestep*spacestep);
     
     var laplacian = makeLaplacian();
     
@@ -337,3 +337,10 @@ var len= tempArray[0].length;
     return {get_tempArray: get_tempArray, make_crank_nicolson_vector: make_crank_nicolson_vector, makecnLaplacian: makecnLaplacian, makeLaplacian: makeLaplacian, fifteen_flip_method: fifteen_flip_method, flip: flip, change_temp: change_temp, calculate_next_cn: calculate_next_cn, calculate_next_explicit: calculate_next_explicit, calculate_next_n_cn: calculate_next_n_cn, sixty_graph_arrays: sixty_graph_arrays, sixty_graph_arrays_duration: sixty_graph_arrays_duration, calculate_next_n_exp: calculate_next_n_exp}
 }
 
+
+function test(){
+    var heatsolverControl = HeatSolver([180,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23]);
+    heatsolverControl.calculate_next_n_cn(2000)
+    var b = heatsolverControl.get_tempArray()
+    console.log(b[2000]);
+}
