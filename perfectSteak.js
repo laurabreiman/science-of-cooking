@@ -182,9 +182,11 @@ var perfectSteak = function (div) {
 				model.buildData();
 				updateTime();
 				for (var j=0; j<model.currentInfo["numRows"]; j++){
-					var timeInSecs=parseFloat($("#row"+j+"time").val());
-//					if (timeInSecs>60){
-						$("#row"+j+"time").val(model.convertTime(timeInSecs))
+					var timeInSecs=$("#row"+j+"time").val().replace(':','.').split('.');
+					if(timeInSecs.length>1)
+					{var time=parseFloat(timeInSecs[0])+60*parseFloat(timeInSecs[1]);}
+					else{var time=parseFloat(timeInSecs[0]);}
+						$("#row"+j+"time").val(time)
 //					}
 				}
 
@@ -482,8 +484,8 @@ var perfectSteak = function (div) {
 
 
 var graph=function(isFirst){
-	              d3.selectAll("svg").remove();
-
+	              d3.selectAll(".mysteak").remove();
+ 					d3.selectAll(".containers").remove();
                 model.dataClear();
 
                 for (var e = 0; e < model.currentInfo["numRows"]; e++) {
@@ -547,8 +549,13 @@ var graph=function(isFirst){
             $(".cookButton").on("click", function () {
 				clicked=true;
 				model.checkDiv();
-				d3.selectAll("svg").remove();
+				d3.selectAll(".mysteak").remove();
+				d3.selectAll(".containers").remove();
 				if (model.currentInfo["OKToGraph"]){
+					d3.selectAll(".containters").remove();
+				 d3.selectAll(".mysteak").remove();
+
+                model.dataClear();
 					graph(true);
 				};
             });
