@@ -1,14 +1,14 @@
-function HeatSolver(startingTemps){
+function HeatSolver(startingTemps,timestep,spacestep){
     
     var tempArray = [startingTemps];
 
     var D = .14; // in units of mm^2/sec
     
-    var timestep = 1;
-    var spacestep = 0.1;
+    var timestep = timestep;
+    var spacestep = spacestep;
     
     var alpha = (D*timestep);
-    var alphacn = (D*timestep)/(2);
+    var alphacn = (D*timestep)/(2*spacestep*spacestep);
     
     var laplacian = makeLaplacian();
     
