@@ -14,8 +14,8 @@
 
 .dropdown{
 	top:100%;
-
-	height:20px;
+overflow:scroll;
+	height:200px;
 
 }
 

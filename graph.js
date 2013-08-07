@@ -173,7 +173,7 @@ var rect = layer.selectAll("rect")
 var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-2.0);
 
 	$("line").remove();
-	var myLine = d3.selectAll("svg").filter(function(d,i){return i==3;}).append("svg:line")
+	var myLine = d3.selectAll(".mysteak").append("svg:line")
     .attr("x1", margin.left)
     .attr("y1", event.pageY-Offset)
     .attr("x2", width*31/30)

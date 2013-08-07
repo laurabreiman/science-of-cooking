@@ -1,7 +1,7 @@
 
 var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side)
 	{
-		d3.selectAll("svg").filter(function(d,i){return i==2+side;}).remove();
+	
 			var getState=function(temp)
 	{
 
@@ -15,8 +15,8 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side)
 		var directions=[myMeatType+" starts at "+startingtemp+ "\xB0C"];
 		for(var i=0;i<instructions.length;i++)
 		{
-			directions.push("Side 1 at "+instructions[i][1]+"\xB0C and Side 2 at  "+instructions[i][2]+"\xB0C for"
-			+instructions[i][0]+" s");
+			directions.push(instructions[i][0]+" seconds at"+instructions[i][1]+"\xB0C and "+instructions[i][2]+"\xB0C"
+			);
 			
 		}
 		var myMaxs=[];
@@ -42,9 +42,9 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side)
 		var dropdown=$('<select id="steakHist"></select>');
 		dropdown.append($('<option>Current</option>'));
 		//$(".span6").append(dropdown);
-		var svgContainer = d3.select(".span6").append("svg")
+		var svgContainer = d3.select(".dropdown").append("svg")
                                    .attr("width", '50%')
-                                    .attr("height", '150px')
+                                   .attr("class", 'finalsteak')
 									.append("g")
 	.attr("class",'savedInfo')
     .attr("transform", "translate(" + 45 + "," + 140 + ")")

@@ -193,8 +193,9 @@ var perfectSteak = function (div) {
 				updateTime();
 
 				if(clicked&&model.currentInfo["OKToGraph"]){graph(false)}
-
-			else{ d3.selectAll("svg").filter(function(d,i){return i==3||i==0;}).remove();
+			
+			else{ d3.selectAll(".containters").remove();
+				 d3.selectAll(".mysteak").remove();
 
                 model.dataClear();
 
@@ -214,11 +215,11 @@ var perfectSteak = function (div) {
 
 			saveBut.on("click", function(){
 				
-				var selectName=$("<div class='selectName'></div>")
-				var name=$("#recipeName").val();
+				///var selectName=$("<div class='selectName'></div>")
+				//var name=$("#recipeName").val();
 				
-				model.saveRecipe(name);
-				addDropdown();
+				//model.saveRecipe(name);
+
 			});
 
 
@@ -243,8 +244,8 @@ var perfectSteak = function (div) {
 
 
 			$(".dropdown").remove();
-
-			var dropdownDiv=$("<div class='dropdown'></div>");
+			
+			var dropdownDiv=$("<div class='dropdown'><div>Saved Methods</div></div>");
 			var dropdown1=$('<select class="steakHist" id ="d1"></select>');
 		    var dropdown2=$('<select class="steakHist"id ="d2"></select>');
 			
@@ -262,9 +263,9 @@ var perfectSteak = function (div) {
 					var e2 = document.getElementById("d2");
 				var name2 = e2.options[e2.selectedIndex].text;
 				var info=model.currentInfo['recipe'][name1];
-			
+			d3.selectAll('.finalsteak').remove();
 			drawFinished(info[0],info[1],info[2],info[3],0);
-				var inf=model.currentInfo['recipe'][name2];
+				var inf=model.currentInfo['recipe'][name2];	
 			drawFinished(inf[0],inf[1],inf[2],inf[3],0);
 			});
 				
@@ -339,15 +340,27 @@ var perfectSteak = function (div) {
 
 				
 				model.saveRecipe($("#recipeName").val());
-				addDropdown();
-
+				var name=$("#recipeName").val();
+								var dropdown1=$("#d1");
+		    var dropdown2=$("#d2");
+				dropdown1.append($('<option>'+name+'</option>'));
+				dropdown2.append($('<option>'+name+'</option>'));
+	var e1 = document.getElementById("d1");
+				var name1 = e1.options[e1.selectedIndex].text;
+					var e2 = document.getElementById("d2");
+				var name2 = e2.options[e2.selectedIndex].text;
+				var info=model.currentInfo['recipe'][name1];
+			d3.selectAll('.finalsteak').remove();
+			drawFinished(info[0],info[1],info[2],info[3],0);
+				var inf=model.currentInfo['recipe'][name2];	
+			drawFinished(inf[0],inf[1],inf[2],inf[3],0);
 			})
 			saveModal.append(nameInp,okModal);
 			
 			saveBut.on("click", function(){
 
 	
-				//model.saveRecipe($("#recipeName").val());
+				//addDropdown();
 				
 				});
 
@@ -471,7 +484,7 @@ var perfectSteak = function (div) {
 
 
 var graph=function(isFirst){
-	              d3.selectAll("svg").filter(function(d,i){return i==3||i==0;}).remove();
+	              d3.selectAll("svg").remove();
 
                 model.dataClear();
 
