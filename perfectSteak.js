@@ -13,6 +13,11 @@ var perfectSteak = function (div) {
             currentInfo["thickness"] = newVal;
 
         }
+		
+		var browserInfo=function(M){
+			currentInfo["browser"]=M;
+		}
+		
 		var checkDiv=function(){
 			currentInfo["OKToGraph"]=true;
 			$(".alert").remove();
@@ -163,7 +168,8 @@ var perfectSteak = function (div) {
 			buildData:buildData,
 			checkDiv:checkDiv,
 			saveRecipe:saveRecipe,
-			addRecipe:addRecipe
+			addRecipe:addRecipe,
+			browserInfo:browserInfo
         }
     }
 
@@ -171,6 +177,26 @@ var perfectSteak = function (div) {
 
 
     function View(div, model) {
+		 navigator.sayswho= (function(){
+			var N= navigator.appName, ua= navigator.userAgent, tem;
+		  var M= ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
+		  if(M && (tem= ua.match(/version\/([\.\d]+)/i))!= null) M[2]= tem[1];
+		  M= M? [M[1], M[2]]: [N, navigator.appVersion,'-?'];
+		  console.log("browserinfo"+M);
+		  console.log(M[1] +"1" + M[0]+"0");
+		  if (M[0]=="MSIE"){
+			$('.sys input[type=text], .sys select').each(function(){
+			$(this).css(
+			"height", "100px !important"
+			));
+		  }
+		  model.browserInfo(M);
+		 })();
+		 
+
+		 
+		 
+	
         var inputTable = $("<table class='inputTable table table-striped'></table>");
 		var clicked=false;
 		
