@@ -59,7 +59,9 @@ var perfectSteak = function (div) {
 		var convertTime=function(secs){
 			var minutes=Math.floor(parseInt(secs)/60);
 			var seconds=parseInt(secs)%60;
-			if (seconds==0){
+			if (minutes==0 && seconds<10){
+				return String(0)+":0"+String(seconds);
+			}else if (seconds==0){
 				return String(minutes)+':'+String(seconds)+'0';
 			}else{
 				return String(minutes)+':'+String(seconds);
@@ -185,10 +187,11 @@ var perfectSteak = function (div) {
 		  console.log("browserinfo"+M);
 		  console.log(M[1] +"1" + M[0]+"0");
 		  if (M[0]=="MSIE"){
-			$('.sys input[type=text], .sys select').each(function(){
+			$('input[type=text]').each(function(){
 			$(this).css(
 			"height", "100px !important"
-			));
+			)}
+		  )
 		  }
 		  model.browserInfo(M);
 		 })();
