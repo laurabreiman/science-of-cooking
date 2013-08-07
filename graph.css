@@ -30,16 +30,19 @@ form {
       stroke-width: 0;
 }
 div.tooltip {   
+/*display:none;*/
   position: absolute;           
   text-align: center;           
-  width: 60px;                  
-  height: 28px;                 
+ /* width: 60px;                  
+  height: 20px;  */               
   padding: 2px;             
   font: 12px sans-serif;        
   background: lightsteelblue;   
   border: 0px;      
   border-radius: 8px;           
-  pointer-events: none;         
+
+		    -moz-box-shadow: 2px 2px 11px #666;
+    -webkit-box-shadow: 2px 2px 11px #666;
 }
 .css3gradient{width:300px;height:100px;
  background-color:#693d34;

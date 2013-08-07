@@ -32,7 +32,7 @@ overflow:scroll;
 .sBut{
 
 	position:relative;
-	top: -5px;
+
 	float: left;
 	width: 29% !important;
 	height: 17px !important;
@@ -44,7 +44,7 @@ overflow:scroll;
 }
 
 .table-container{
-    overflow-x: hidden;
+    overflow-x: scroll;
     overflow-y: auto;
     width:100%;
     height:200px;
@@ -56,9 +56,11 @@ th{
 
 }
 td{
-    height: 30px !important;
-	max-width:33%!important;
+
+		margin:0!important;
+	padding:1px!important;
 }
+
 #addButton{
 
     position:relative;
@@ -106,9 +108,10 @@ td{
 input[type="text"] {
     border: 1px solid black;
     font-size: 12px;
-    width: 40px;
-
-	margin-right:0px;
+    max-width: 40px;
+	max-height: 20px;
+	margin:2px;
+	
 }
 #thickInpDiv, #tempInpDiv, #meatTypeDiv{
 	padding: 5px;
@@ -121,5 +124,5 @@ input[type="text"] {
 	padding:0px!important;
 	margin:0px !important;
 	position: relative !important;
-	top:-5px!important;
+
 }

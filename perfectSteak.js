@@ -184,9 +184,9 @@ var perfectSteak = function (div) {
 				for (var j=0; j<model.currentInfo["numRows"]; j++){
 					var timeInSecs=$("#row"+j+"time").val().replace(':','.').split('.');
 					if(timeInSecs.length>1)
-					{var time=parseFloat(timeInSecs[0])+60*parseFloat(timeInSecs[1]);}
+					{var time=60*parseFloat(timeInSecs[0])+parseFloat(timeInSecs[1]);}
 					else{var time=parseFloat(timeInSecs[0]);}
-						$("#row"+j+"time").val(time)
+						$("#row"+j+"time").val(model.convertTime(time))
 //					}
 				}
 
@@ -552,8 +552,7 @@ var graph=function(isFirst){
 				d3.selectAll(".mysteak").remove();
 				d3.selectAll(".containers").remove();
 				if (model.currentInfo["OKToGraph"]){
-					d3.selectAll(".containters").remove();
-				 d3.selectAll(".mysteak").remove();
+					d3.selectAll("svg").remove();
 
                 model.dataClear();
 					graph(true);

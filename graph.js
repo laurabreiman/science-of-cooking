@@ -169,22 +169,23 @@ var rect = layer.selectAll("rect")
 
 
 	var Offset = document.getElementById("graphSteak").offsetTop;
-	var pos=parseInt(data[0].length-(event.pageY-Offset-margin.top)/(height/yStackMax)+1);
-var line=parseInt((event.pageX-margin.left)/(x.rangeBand()+1)-2.0);
+	var pos=parseInt(data[0].length-(event.pageY-Offset-margin.top)/(height/yStackMax));
+var line=parseInt((event.pageX-parseFloat($("body").css('margin-left'))-margin.left)/(x.rangeBand()+1)-2.0);
 
 	$("line").remove();
 	var myLine = d3.selectAll(".mysteak").append("svg:line")
     .attr("x1", margin.left)
-    .attr("y1", event.pageY-Offset)
+    .attr("y1", event.pageY-Offset-1)
     .attr("x2", width*31/30)
-    .attr("y2", event.pageY-Offset)
+    .attr("y2", event.pageY-Offset-1)
     .style("stroke", "grey");
+	//console.log(d3.event.pageX-parseFloat($("body").css('margin-left')));
 	var ttip=d3.select('.tooltip');
 	   ttip.html(data[line][pos].toFixed(2)+ "\xB0C")  
 	   //ttip.html(line.toFixed(2)+ "\xB0C")  
 	   			.style("opacity", 1)
-                .style("left", (d3.event.pageX) + "px")     
-                .style("top", (d3.event.pageY) + "px");   
+                .style("left", (d3.event.pageX-parseFloat($("body").css('margin-left'))+5) + "px")     
+                .style("top", (d3.event.pageY+5) + "px");   
 })
 			
         
@@ -219,7 +220,13 @@ var linktext = svg.selectAll("g.linklabelholder").data(flame);
      .attr("dy", function(d){return -Math.min(x.rangeBand(),30)/1.2+(height+2*Math.min(x.rangeBand(),30))*d[1]})
      .attr("text-anchor", "right")
 		.style("font-size", "8px")
-     .text(function(d,i) { if(i==0){return  d[2].toFixed(0)}return (flame[i-1][2]!=d[2])? d[2].toFixed(0):""});	
+     .text(function(d,i) {console.log(flame);
+		 
+		 if(i==0){return  d[2].toFixed(0)}
+		if(i==1&&flame[i][0]==flame[i-1][0]){return  d[2].toFixed(0)}
+		if(i==1){return '';}
+		if(flame[i][0]==flame[i-1][0]&&flame[i-2][2]!=flame[i][2]){return  d[2].toFixed(0)}				  
+		else return "";});
 
 		
 rect.transition()
