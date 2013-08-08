@@ -17,16 +17,20 @@ var calculate=function(data,steak,meatType,first,totalTime){
     if(timestep > 39){ //39 is basically the maximum timestep for acceptable accuracy (below 1° error)
         timestep = 39;
     }
-    
     var myheatsolver = HeatSolver(steak,timestep,spacestep);
     var Thedata=myheatsolver.sixty_graph_arrays_duration(data);
 	if(meatType=='False'){
     var sampledata=Thedata.temps;
 	}
 	else{
-		   var sampledata=Thedata.allMaxTemps;
-		console.log(sampledata.length);
+		   var sampledata=Thedata.allMaxTemps.slice(1,Thedata.allMaxTemps.length);
+		console.log(sampledata);
+
+	for(var i=0;i<sampledata.length;i++)
+	{
+		sampledata[i]=sampledata[i].slice(1,sampledata[i].length-1);
 	}
+			}
     var flame=Thedata.points;
     var timestep=1/Thedata.step;
     var maxTemps=Thedata.maxTemps;

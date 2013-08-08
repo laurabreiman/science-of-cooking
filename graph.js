@@ -152,7 +152,7 @@ var rect = layer.selectAll("rect")
     .attr("y", height)
     .attr("width", x.rangeBand())
     .attr("height", 0)
- .style("fill", function(d, i) {return meatType=='False'? color[meatType](data[i][d.y0]/tempMax):this.style("fill")})
+ .style("fill", function(d, i) {return meatType=='False'? color[meatType](data[i][d.y0]/tempMax):""})
 	.on("mouseover", function() {
 		if(meatType!='False'){
 		var rects = d3.select(this);
@@ -191,8 +191,8 @@ var line=parseInt((event.pageX-parseFloat($("body").css('margin-left'))-margin.l
     .style("stroke", "grey");
 	//console.log(d3.event.pageX-parseFloat($("body").css('margin-left')));
 	var ttip=d3.select('.tooltip');
-	  // ttip.html(data[line][pos].toFixed(2)+ "\xB0C")  
-	   ttip.html(line.toFixed(2)+ "\xB0C") 
+	  ttip.html(data[line][pos].toFixed(2)+ "\xB0C")  
+	  // ttip.html(line.toFixed(2)+ "\xB0C") 
 	//ttip.html("please work")
 	   			.style("opacity", 1)
                 .style("left", (d3.event.pageX-parseFloat($("body").css('margin-left'))+5) + "px")     
