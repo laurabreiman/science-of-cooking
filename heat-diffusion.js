@@ -36,8 +36,8 @@ function HeatSolver(startingTemps){//,timestep,spacestep){
     function makeLaplacian(){
         var num_of_measurements = tempArray[0].length;
         var newLaplacian = [];
-        var firstRow = [];
-        for(var i=0; i<num_of_measurements; i++){
+        var firstRow = [1];
+        for(var i=1; i<num_of_measurements; i++){
             firstRow.push(0)
         }
         newLaplacian.push(firstRow);
@@ -90,7 +90,10 @@ function HeatSolver(startingTemps){//,timestep,spacestep){
     */
     function calculate_next_explicit(){
         var currentTemps = tempArray[tempArray.length-1];
+        currentTemps[currentTemps.length-1]=currentTemps[currentTemps.length-2] 
         var dudt = numeric.dotMV(laplacian,currentTemps);
+        dudt[0] = 0;
+        dudt[dudt.length-1] =0;
     //    dudt = numeric.neg(dudt);
         var nextTemps = numeric.add(dudt,currentTemps);
         tempArray.push(nextTemps)
@@ -291,25 +294,6 @@ var len= tempArray[0].length;
         tempArray[tempArray.length-1][tempArray[0].length-1] = toptemp;
     }
     
-    function flip(){
-        change_temp(tempArray[tempArray.length-1][0], tempArray[tempArray.length-1][tempArray[0].length-1]);
-//        var top = tempArray[tempArray.length-1][tempArray[0].length-1];
-//        var bottom = tempArray[tempArray.length-1][0];
-//        tempArray[tempArray.length-1][0] = top;
-//        tempArray[tempArray.length-1][tempArray[0].length-1] = bottom;
-        nonconductive.reverse();
-    }
-    
-    function fifteen_flip_method(duration){
-        for(var i=0; i<duration; i++){
-            var cnVector = make_crank_nicolson_vector();
-            calculate_next_cn(cnVector);
-            if(i%150 == 0){
-                flip();
-            }
-        }
-    }
-    
     function make_crank_nicolson_vector(){
         var currentTemps = tempArray[tempArray.length-1];
         var cnVector = [];
@@ -334,13 +318,5 @@ var len= tempArray[0].length;
         return cnVector;
     }
  
-    return {get_tempArray: get_tempArray, make_crank_nicolson_vector: make_crank_nicolson_vector, makecnLaplacian: makecnLaplacian, makeLaplacian: makeLaplacian, fifteen_flip_method: fifteen_flip_method, flip: flip, change_temp: change_temp, calculate_next_cn: calculate_next_cn, calculate_next_explicit: calculate_next_explicit, calculate_next_n_cn: calculate_next_n_cn, sixty_graph_arrays: sixty_graph_arrays, sixty_graph_arrays_duration: sixty_graph_arrays_duration, calculate_next_n_exp: calculate_next_n_exp}
-}
-
-
-function test(){
-    var heatsolverControl = HeatSolver([180,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23]);
-    heatsolverControl.calculate_next_n_cn(2000)
-    var b = heatsolverControl.get_tempArray()
-    console.log(b[2000]);
+    return {get_tempArray: get_tempArray, make_crank_nicolson_vector: make_crank_nicolson_vector, makecnLaplacian: makecnLaplacian, makeLaplacian: makeLaplacian, change_temp: change_temp, calculate_next_cn: calculate_next_cn, calculate_next_explicit: calculate_next_explicit, calculate_next_n_cn: calculate_next_n_cn, sixty_graph_arrays: sixty_graph_arrays, sixty_graph_arrays_duration: sixty_graph_arrays_duration, calculate_next_n_exp: calculate_next_n_exp}
 }
