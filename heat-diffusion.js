@@ -246,11 +246,12 @@ function HeatSolver(startingTemps,timestep,spacestep){
         var temperatures = [];
 		var count=0;
 		var maxTemps=[];
+        var firstMaxTemp=[];
 		for(var i=0;i<tempArray[0].length;i++)
 		{
-			maxTemps.push(0)
+			firstMaxTemp.push(tempArray[0][i])
 		}
-       
+        maxTemps.push(firstMaxTemp);
         
         for(var j=0; j<time_top_bottom.length; j++){
             //set the conductivity of air to zero
@@ -277,12 +278,17 @@ function HeatSolver(startingTemps,timestep,spacestep){
                     temperatures.push(temperatures[temperatures.length-1]);
                 }
                 var cnVector = make_crank_nicolson_vector();
-                calculate_next_cn(cnVector);  
-                for(var n=0; n<maxTemps.length; n++){
-                    if(tempArray[tempArray.length-1][n] > maxTemps[n]){
-                        maxTemps[n] = tempArray[tempArray.length-1][n];
+                calculate_next_cn(cnVector);
+                var newMaxTemp = [];
+                for(var n=0; n<maxTemps[maxTemps.length-1].length; n++){
+                    if(tempArray[tempArray.length-1][n] > maxTemps[maxTemps.length-1][n]){
+                        newMaxTemp.push(tempArray[tempArray.length-1][n]);
+                    }
+                    else{
+                        newMaxTemp.push(maxTemps[maxTemps.length-1][n])
                     }
                 }
+                maxTemps.push(newMaxTemp);
             }
         }	
         var arrays = tempArray.length-1 ;
@@ -316,9 +322,8 @@ function HeatSolver(startingTemps,timestep,spacestep){
             count++;
 			
         }
-        
-        
-        return {temps: grapharray, points: graphlabels, step: step, maxTemps: maxTemps}
+                
+        return {temps: grapharray, points: graphlabels, step: step, maxTemps: maxTemps[maxTemps.length-1], allMaxTemps: maxTemps};
 
     }
     
