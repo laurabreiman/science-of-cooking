@@ -241,7 +241,16 @@ var clicked=false;
 			
 			// else{ d3.selectAll(".containters").remove();
 				 // d3.selectAll(".mysteak").remove();
-
+var  onoff=function(){
+  currentvalue = $(document.getElementById('onoff')).html();
+  if(currentvalue == "Protein State"){
+    $(document.getElementById("onoff")).html("False Color");
+	  graph(false,'');
+  }else{
+    $(document.getElementById("onoff")).html("Protein State");
+	   graph(false,'False');
+  }
+}
         var addButton;
         var flipButton;
         var cookButton;
@@ -249,7 +258,9 @@ var clicked=false;
         var saveBut=$('<a href="#saveBut" role="button" class="btn sBut" data-toggle="modal" id="saveBut">Save</a>');
         var cookButt=$("<button class='btn'>Cook</button>");
         var addQuickButton = $("<button class='btn' id='addQuickButton'>Quick Add</button>");
-        var addTextButton = $("<button class='btn' id='addTextButton'>Edit Recipe Text</button>");
+		var tog=$('<button class="btn" id="onoff">False Color</button>');
+		tog.on("click",onoff);
+        var addTextButton = $("<button class='btn' id='addTextButton'>Input Text</button>");
         var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe <p> <input type="text" id="recipeName"></input><p><button class="btn" data-dismiss="modal" aria-hidden="true">OK</button></div></div>');
         displayDiv.append(saveModal)
 
@@ -414,7 +425,7 @@ saveBut.on("click", function(){
     //}
     model.buildData();
     
-    if(clicked&&model.currentInfo["OKToGraph"]){graph(false)}
+    if(clicked&&model.currentInfo["OKToGraph"]){graph(false,'')}
     
     else{ d3.selectAll(".containers").remove();
     d3.selectAll(".mysteak").remove();
@@ -428,7 +439,7 @@ saveBut.on("click", function(){
 })
 
             inputTable.append(addButton);//, saveBut,saveModal);
-							  $(".span3").append(cookButt,addQuickButton,addTextButton);
+							  $(".span3").append(cookButt,addQuickButton,addTextButton,tog);
                         addDropdown();
                 }
 var sumtime=0;
@@ -546,7 +557,7 @@ $("#inp2_"+l).attr("id", "inp2_"+l-1);
 }
 
 
-var graph=function(isFirst){
+var graph=function(isFirst,falseColor){
              d3.selectAll(".mysteak").remove();
   d3.selectAll(".containers").remove();
                 model.dataClear();
@@ -596,7 +607,10 @@ else{var sumtime=parseFloat(time[0]);}
 
 				//add to on click and calculate(blah,blah,blah, meatType)
 				var meatType = $("input[type='radio'][name='meat']:checked").attr('id');
-
+				if(falseColor=='False')
+				{
+					meatType='False';
+				}
 				//THIS WILL COOK THE STEAK IF WE HAVE VALID INPUTS
 				if (OKtoCook==true){
 					var steak = [model.currentInfo["data"][0][1]];
@@ -617,7 +631,7 @@ if (model.currentInfo["OKToGraph"]){
 d3.selectAll("svg").remove();
 
                 model.dataClear();
-graph(true);
+graph(true,'');
 };
             });
         }

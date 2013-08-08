@@ -20,7 +20,13 @@ var calculate=function(data,steak,meatType,first,totalTime){
     
     var myheatsolver = HeatSolver(steak,timestep,spacestep);
     var Thedata=myheatsolver.sixty_graph_arrays_duration(data);
+	if(meatType=='False'){
     var sampledata=Thedata.temps;
+	}
+	else{
+		   var sampledata=Thedata.allMaxTemps;
+		console.log(sampledata.length);
+	}
     var flame=Thedata.points;
     var timestep=1/Thedata.step;
     var maxTemps=Thedata.maxTemps;
@@ -30,7 +36,7 @@ var calculate=function(data,steak,meatType,first,totalTime){
         drawFinished(meatType,maxTemps,data,steak[0],1);
     }
     
-    graphSteak(sampledata,flame,timestep,"False",maxTemps);
+    graphSteak(sampledata,flame,timestep,meatType,maxTemps);
 
     
 }
