@@ -1,34 +1,52 @@
-function HeatSolver(startingTemps){//,timestep,spacestep){
+/*
+    HeatSolver objects take in the starting temperatures of a piece of meat (or basically water, since the diffusion constants differ negligibly) and the desired discretization of time and space.
+    Has functionality for computing several iterations of the heat diffusion equation that models the movement of heat through the meat over time.
+    Options for using either the explicit euler method of calculation (which is relatively unstable and eventually yields values on the order of 10^69 °C for a 1000 second cooking at 180°C) or the Crank-Nicolson scheme (which allows greater timesteps while retaining stability)
+*/
+function HeatSolver(startingTemps,timestep,spacestep){
     
     var tempArray = [startingTemps];
 
-    var D = .14; // in units of mm^2/sec
+    var D = .14; // diffusion constant (of water) in units of mm^2/sec
     
-    var timestep = 1//timestep;
-    var spacestep = 1//spacestep;
+    //if the user has not specified space or time discretization values, these are set to 1s and 1mm, respectively
+    if(timestep === undefined){
+        timestep = 1; 
+    }
+    if(spacestep === undefined){
+        spacestep = 1;
+    }
+    var timestep = timestep;
+    var spacestep = spacestep;
     
     var alpha = (D*timestep);
     var alphacn = (D*timestep)/(2*spacestep*spacestep);
     
+    //laplacian for the explicit euler
     var laplacian = makeLaplacian();
-    
+    //laplacian for the crank-nicolson
     var cnLaplacian = makecnLaplacian();
+    //inverse of the cnLaplacian
     var invcn = numeric.inv(cnLaplacian);
     
+    //array that keeps track of which sides are in contact with air -- a value of 1 corresponds to air, as air is "nonconductive" in cooking and does not contribute significantly to heat loss of the steak
     var nonconductive = [0,1];
     
+    /*
+        get_tempArray returns the tempArray, which is the range of values within the steak at each calculated timestep
+    */
     function get_tempArray(){
         return tempArray;
     }
     
     /*
-        makes a laplacian matrix with 0s as the first and last rows because the boundary values (the temps of the pan and the air) do not change
+        makeLaplacian makes a laplacian matrix for the explic with 0s as the first and last rows because the boundary values (the temps of the pan and the air) do not change
         looks like: 
-        0  0  0  0  0
-        1 -2  1  0  0
-        0  1 -2  1  0
-        0  0  1 -2  1
-        0  0  0  0  0 
+        1   0   0   0   0
+        1α -2α  1α  0   0
+        0   1α  -2α 1α  0
+        0   0   1α  -2α 1α
+        0   0   0   0   1 
         for a five-temperature probe system.
         
         this means that the next temperature of each point is simply determined by the difference between this point and its two neighbors
@@ -41,8 +59,8 @@ function HeatSolver(startingTemps){//,timestep,spacestep){
             firstRow.push(0)
         }
         newLaplacian.push(firstRow);
-    //    var lastrow = Array.prototype.slice.call(firstRow)
-    //    lastrow.reverse();
+        var lastrow = Array.prototype.slice.call(firstRow)
+        lastrow.reverse();
         for(var i=1; i<num_of_measurements-1; i++){
             var newRow = [];
             for(var j=1; j<i; j++){
@@ -54,7 +72,7 @@ function HeatSolver(startingTemps){//,timestep,spacestep){
             }
             newLaplacian.push(newRow);
         }
-        newLaplacian.push(firstRow);
+        newLaplacian.push(lastrow);
         
         return newLaplacian;
     }
@@ -85,6 +103,7 @@ function HeatSolver(startingTemps){//,timestep,spacestep){
         
         return newLaplacian;
     }
+    
     /*
         uses the explicit form of Euler's method to calculate the next time step's temperatures based on the most current temperatures
     */
@@ -99,11 +118,16 @@ function HeatSolver(startingTemps){//,timestep,spacestep){
         tempArray.push(nextTemps)
     }
     
+    /*
+        takes in a Crank-Nicolson vector associated with the data and uses the Crank-Nicolson scheme to calculate the next time step's temperatures based on the most recent temperatures
+    */
     function calculate_next_cn(cnVector){
         var nextTemps = numeric.dotMV(invcn,cnVector);
         tempArray.push(nextTemps);
     }
-    
+    /*
+        takes in a Crank-Nicolson vector associated with the data and uses the Crank-Nicolson scheme to calculate the temperatures of the next n timesteps based on the most recent temperatures
+    */
     function calculate_next_n_cn(n){   
         for(var i=0; i<n; i++){
             var cnVector = make_crank_nicolson_vector();
@@ -111,12 +135,18 @@ function HeatSolver(startingTemps){//,timestep,spacestep){
         }
     }
     
+    /*
+        uses the explicit form of Euler's method to calculate the temperatures of the next n timesteps based on the most current temperatures
+    */
     function calculate_next_n_exp(n){   
         for(var i=0; i<n; i++){
             calculate_next_explicit();
         }
     }
     
+    /*
+        takes in an array of length 3 arrays that describe which side(s) is being heated, at what times, and at what temperature. Calculates the progression of the temperatures for the entire cooking period and then returns the data cut into 60 slices of temperatures that are equally spaced in time.
+    */
     function sixty_graph_arrays(time_top_bottom){
         var grapharray = [];
         var graphlabels = [];
@@ -169,8 +199,9 @@ function HeatSolver(startingTemps){//,timestep,spacestep){
                 }                
             }
         }
- var arrays = tempArray.length-1 ;
-var len= tempArray[0].length;
+        
+        var arrays = tempArray.length-1 ;
+        var len= tempArray[0].length;
         var step = arrays/60.0;
         for(var i=0; i<60*step; i+=step){
 
@@ -206,7 +237,9 @@ var len= tempArray[0].length;
 
     }
     
-
+    /*
+        takes in an array of length 3 arrays that describe which side(s) is being heated, for how long, and at what temperature. Calculates the progression of the temperatures for the entire cooking period and then returns the data cut into 60 slices of temperatures that are equally spaced in time.
+    */
     function sixty_graph_arrays_duration(time_top_bottom){
         var grapharray = [];
         var graphlabels = [];
@@ -289,11 +322,17 @@ var len= tempArray[0].length;
 
     }
     
+    /*
+        takes in new values for side 1 and side 2 to account for changing cooking temperatures
+    */
     function change_temp(toptemp,bottomtemp){
         tempArray[tempArray.length-1][0] = bottomtemp;
         tempArray[tempArray.length-1][tempArray[0].length-1] = toptemp;
     }
     
+    /*
+        creates the crank-nicolson vector that is used to calculate the next range of temperatures inside the meat
+    */
     function make_crank_nicolson_vector(){
         var currentTemps = tempArray[tempArray.length-1];
         var cnVector = [];
