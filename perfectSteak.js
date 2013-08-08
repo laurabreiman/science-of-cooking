@@ -219,28 +219,7 @@ var clicked=false;
         var displayDiv = $("<div class='displayDiv'></div>");
 		
         displayDiv.append(inputTable);
-        
-		// displayDiv.change(function(){
-				// model.checkDiv()
-				// model.buildData();
-				// updateTime();
-				// for (var j=0; j<model.currentInfo["numRows"]; j++){
-					// var timeInSecs=$("#row"+j+"time").val().replace(':','.').split('.');
-					// if(timeInSecs.length>1)
-					// {var time=60*parseFloat(timeInSecs[0])+parseFloat(timeInSecs[1]);}
-					// else{var time=parseFloat(timeInSecs[0]);}
-						// $("#row"+j+"time").val(model.convertTime(time))
-					//}
-				// }
 
-				
-				// model.buildData();
-				// updateTime();
-
-				// if(clicked&&model.currentInfo["OKToGraph"]){graph(false)}
-			
-			// else{ d3.selectAll(".containters").remove();
-				 // d3.selectAll(".mysteak").remove();
 var  onoff=function(){
   currentvalue = $(document.getElementById('onoff')).html();
   if(currentvalue == "Protein State"){
@@ -251,6 +230,7 @@ var  onoff=function(){
 	   graph(false,'False');
   }
 }
+
         var addButton;
         var flipButton;
         var cookButton;
@@ -264,18 +244,18 @@ var  onoff=function(){
         var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe <p> <input type="text" id="recipeName"></input><p><button class="btn" data-dismiss="modal" aria-hidden="true">OK</button></div></div>');
         var cookDropdown=$("<div class='dropdown'><select class='cookDropdown'></select></div>");
 
+
         var quickAddModal=$('<div id="quickAdd" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3 id="myModalLabel">Quick Add</h3></div><div class="modal-body"> <p class="cookp">Cook at: </p></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">OK</button></div></div>');
         $(".cookp").append(cookDropdown);
         displayDiv.append(saveModal, quickAddModal)
 
 saveBut.on("click", function(){
  
-///var selectName=$("<div class='selectName'></div>")
-//var name=$("#recipeName").val();
- 
-//model.saveRecipe(name);
+
 
 });
+
+
 
 
         var updateTime=function(){
