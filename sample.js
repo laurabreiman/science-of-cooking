@@ -9,6 +9,6 @@ var maxTemps=Thedata.maxTemps;
 drawFinished(meatType,maxTemps,data,steak[0],0);
 drawFinished(meatType,maxTemps,data,steak[0],1);
 	}
-graphSteak(sampledata,flame,timestep,meatType,maxTemps);
+graphSteak(sampledata,flame,timestep,"False",maxTemps);
     
 }

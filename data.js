@@ -24,7 +24,9 @@ var tempScale={
                 {'info':'Myoglobin denatures 60-70\xB0 C Medium','position':3},
                 {'info':'Actin denatures 70-120\xB0 C Well','position':2},
                 {'info':'Browning reactions 120-180\xB0 C','position':1},
-				{'info':'Charring at 180+\xB0 C','position':0}]
+				{'info':'Charring at 180+\xB0 C','position':0}],
+	"False":[{}]
+	
               };
 
 //color
@@ -42,7 +44,11 @@ var color = {
         "Turkey":
             d3.scale.linear()
             .domain([0,1,3,6,9,11,12])
-            .range(['black','#692901','#FAEEE6','#B56980','#FAEEE6','#692901'],'black')
+            .range(['black','#692901','#FAEEE6','#B56980','#FAEEE6','#692901','black']),
+		"False":
+            d3.scale.linear()
+            .domain([0,.25,.5,.75,1])
+            .range(['blue','limegreen','yellow','red','darkred'])
 };
 //boundaries where color change occurs
-var boundaries= {"Steak":[180,120,70,60,55,40], "Tuna": [180,90,70,60,50,40],"Turkey":[180,120,70,60,55,40]};
+var boundaries= {"Steak":[180,120,70,60,55,40], "Tuna": [180,90,70,60,50,40],"Turkey":[180,120,70,60,55,40],"False":[]};

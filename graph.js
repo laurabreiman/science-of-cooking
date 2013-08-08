@@ -3,6 +3,7 @@ var graph=(function(){
 var setup=function(div,data,flame,timestep,meatType,maxTemps)	
 	{
 	
+
 	
 var dy=.1;	
 var n = boundaries[meatType].length*2+1, // number of layers
@@ -45,14 +46,18 @@ var n = boundaries[meatType].length*2+1, // number of layers
 			}
 		
 			dat.push(moves);
-		}
-		maxTemps=maxTemps.splice(0,maxTemps.length-1);
 			
+		}
 		
-    stack = d3.layout.stack(),
-    layers = stack(d3.range(n).map(function(d,i) { return bumpLayer(i,dat); })),
-    yGroupMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); }),
-    yStackMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y0 + d.y; }); });
+		maxTemps=maxTemps.splice(0,maxTemps.length-1);
+		var tempMax=Math.max.apply( Math, maxTemps);
+		
+    var stack = d3.layout.stack();
+		
+	var layers = stack(d3.range(n).map(function(d,i) { return bumpLayer(i,dat); }));
+		if(meatType=='False'){layers = stack(d3.range(data[0].length).map(function(d,i) { return bumpLayer(i,data); }));}
+    var yGroupMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); });
+   var  yStackMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y0 + d.y; }); });
 
 var margin = {top: 50, right: 10, bottom: 100, left: 50},
     width = 600 - margin.left - margin.right,
@@ -100,7 +105,7 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-
+if(meatType!='False'){
 		var legend = svg.selectAll('g')
 
         .data(tempScale[meatType])
@@ -124,7 +129,8 @@ var svg = d3.select("body").append("svg")
     legend.append('text')
         .attr('x', width+10)
         .attr('y', function(d, i){ return (i *  15+8);})
-        .text(function(d){ return d['info']; });	
+        .text(function(d){ return d['info'];});	
+}
 
 var ttip = d3.select("body").append("div")   
     .attr("class", "tooltip")               
@@ -135,7 +141,7 @@ var layer = svg.selectAll(".layer")
   .enter().append("g")
     .attr("class", "layer")
 
-    .style("fill", function(d, i) { return color[meatType](i); });
+    .style("fill", function(d, i) {return meatType=='False'? color[meatType](data[d[i].x][i]/tempMax):color[meatType](i); });
 
 	
 
@@ -146,7 +152,9 @@ var rect = layer.selectAll("rect")
     .attr("y", height)
     .attr("width", x.rangeBand())
     .attr("height", 0)
+ .style("fill", function(d, i) {return meatType=='False'? color[meatType](data[i][d.y0]/tempMax):this.style("fill")})
 	.on("mouseover", function() {
+		if(meatType!='False'){
 		var rects = d3.select(this);
 		var loc=null;
 		for(var i=n-1;i>=0;i--)
@@ -165,6 +173,7 @@ var rect = layer.selectAll("rect")
 		$(text).text( info +" " +(100*(dat[line][i]+dat[line][12-i])/m).toFixed(0)+ "%" );
 
 		}
+		}
 	})
 .on("mousemove",function(){
 
@@ -182,8 +191,8 @@ var line=parseInt((event.pageX-parseFloat($("body").css('margin-left'))-margin.l
     .style("stroke", "grey");
 	//console.log(d3.event.pageX-parseFloat($("body").css('margin-left')));
 	var ttip=d3.select('.tooltip');
-	   ttip.html(data[line][pos].toFixed(2)+ "\xB0C")  
-	  // ttip.html(pos.toFixed(2)+ "\xB0C") 
+	  // ttip.html(data[line][pos].toFixed(2)+ "\xB0C")  
+	   ttip.html(line.toFixed(2)+ "\xB0C") 
 	//ttip.html("please work")
 	   			.style("opacity", 1)
                 .style("left", (d3.event.pageX-parseFloat($("body").css('margin-left'))+5) + "px")     
@@ -193,6 +202,7 @@ var line=parseInt((event.pageX-parseFloat($("body").css('margin-left'))-margin.l
         
 
 .on("mouseout", function() {
+	if(meatType!='False'){
 		var rects = d3.select(this);
 		var loc=null;
 		for(var i=n-1;i>=0;i--)
@@ -204,7 +214,7 @@ var line=parseInt((event.pageX-parseFloat($("body").css('margin-left'))-margin.l
 
 		$(leg).css("fill","black");
 			
-
+	}
         
 	});	
 var imgstop = svg.selectAll("image").data(flame);
@@ -260,7 +270,7 @@ svg.append("text")
     .attr("x", -height/3)
     .attr("y",-30)
  	.attr("transform", "rotate(-90)")
-    .text(meatType+" Thickness (cm)");
+    .text("Meat Thickness (cm)");
 		
 svg.append("text")
     .attr("class", "y label1")
@@ -329,8 +339,11 @@ function bumpLayer(layer,data) {
 
   var a = [], i;
   for (i = 0; i < m; ++i) {
-	  
-	  a[i] = 1 * data[i][layer];
+	  if(meatType=='False'){
+		 
+		   a[i] = 1;
+	  }
+	 else{ a[i] = 1 * data[i][layer];}
 	
   }
   return a.map(function(d, i) { return {x: i, y: Math.max(0, d)}; });
