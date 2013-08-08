@@ -1,11 +1,11 @@
-function HeatSolver(startingTemps,timestep,spacestep){
+function HeatSolver(startingTemps){//,timestep,spacestep){
     
     var tempArray = [startingTemps];
 
     var D = .14; // in units of mm^2/sec
     
-    var timestep = timestep;
-    var spacestep = spacestep;
+    var timestep = 1//timestep;
+    var spacestep = 1//spacestep;
     
     var alpha = (D*timestep);
     var alphacn = (D*timestep)/(2*spacestep*spacestep);

@@ -15,7 +15,7 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side)
 		var directions=[myMeatType+" starts at "+startingtemp+ "\xB0C"];
 		for(var i=0;i<instructions.length;i++)
 		{
-			directions.push(instructions[i][0]+" seconds at"+instructions[i][1]+"\xB0C and "+instructions[i][2]+"\xB0C"
+			directions.push(instructions[i][0]+" seconds at "+instructions[i][1]+"\xB0C and "+instructions[i][2]+"\xB0C"
 			);
 			
 		}
@@ -62,7 +62,7 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side)
 
 
     legend.append('rect')
-        .attr('x', function(d,i){return (-20+(1-side)*95)+'%'})
+        .attr('x', function(d,i){return (-10+(1-side)*90)+'%'})
         .attr('y', function(d, i){ return -125+i*10 })
         .attr('width', 8)
         .attr('height', 8)
@@ -73,7 +73,7 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side)
 
     legend.append('text')
 	.data(myMaxs)
-        .attr('x', function(d,i){return (-16+(1-side)*83)+'%'})
+        .attr('x', function(d,i){return (-5+(1-side)*80)+'%'})
         .attr('y', function(d, i){ return  -125+8+i*10})
 		.style('font-size','6pt')
         .text(function(d){ return (100*d/(myMaxTemps.length)).toFixed(0) +"%"; });	
@@ -82,7 +82,7 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side)
 var rectangle = svgContainer.selectAll("rect")
     .data([0,0,0,0,0,0,0].concat(myMaxTemps.reverse()))
   .enter().append("rect")
-           .attr("x", (-6+(1-side)*60)+'%')
+           .attr("x", (8+(1-side)*50)+'%')
            .attr("y", function(d,i){return -160+i*4})
            .attr("width", '10%')
            .attr("height", '4px')
@@ -91,7 +91,7 @@ var rectangle = svgContainer.selectAll("rect")
 var texts=svgContainer.selectAll("text")
   .data([0,1,2,3,4,5,6].concat(directions))
 .enter().append("text")
-.attr("x", (-6+(side)*10)+'%')
+.attr("x", ((side)*20)+'%')
 .attr("width", '90%')
 .attr("y", function(d,i){return -120+(i-7)*10})
 .text(function(d){return d})
