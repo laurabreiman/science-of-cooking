@@ -160,8 +160,9 @@ var rect = layer.selectAll("rect")
 		for(var i=0;i<7;i++)
 		{
 		var text=d3.selectAll('.Biglegend text')[0][boundaries[meatType].length-i];
+		var line=parseInt((event.pageX-parseFloat($("body").css('margin-left'))-margin.left)/(x.rangeBand()+1)-4.0);	
 		var info=tempScale[meatType][boundaries[meatType].length-i]['info'];
-		$(text).text( info + (boundaries[meatType].length-i) );
+		$(text).text( info +" " +(100*(dat[line][i]+dat[line][12-i])/m).toFixed(0)+ "%" );
 
 		}
 	})
