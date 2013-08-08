@@ -264,7 +264,6 @@ saveBut.on("click", function(){
 
 
         var updateTime=function(){
-<<<<<<< HEAD
 			var time=0;
 			for(var i=0;i<model.currentInfo["numRows"];i++){
 				//THIS WILL BE TRIGGERED IF THE TIME NEEDS TO BE CONVERTED
@@ -413,56 +412,14 @@ saveBut.on("click", function(){
     // $("#row"+j+"time").val(time)
     // }
     //}
-    
-     
     model.buildData();
     
     if(clicked&&model.currentInfo["OKToGraph"]){graph(false)}
-     
+    
     else{ d3.selectAll(".containers").remove();
     d3.selectAll(".mysteak").remove();
-				
-				model.saveRecipe($("#recipeName").val());
-				var name=$("#recipeName").val();
-								var dropdown1=$("#d1");
-		    var dropdown2=$("#d2");
-				dropdown1.append($('<option>'+name+'</option>'));
-				dropdown2.append($('<option>'+name+'</option>'));
-	var e1 = document.getElementById("d1");
-				var name1 = e1.options[e1.selectedIndex].text;
-					var e2 = document.getElementById("d2");
-				var name2 = e2.options[e2.selectedIndex].text;
-				var info=model.currentInfo['recipe'][name1];
-			d3.selectAll('.finalsteak').remove();
-			drawFinished(info[0],info[1],info[2],info[3],0);
-				var inf=model.currentInfo['recipe'][name2];	
-			drawFinished(inf[0],inf[1],inf[2],inf[3],0);
-			})
-			saveModal.append(nameInp,okModal);
-			
-
-					cookButt.on("click",function(){
-				model.checkDiv()
-				model.buildData();
-				updateTime();
-				// for (var j=0; j<model.currentInfo["numRows"]; j++){
-					// var timeInSecs=$("#row"+j+"time").val().replace(':','.').split('.');
-					// if(timeInSecs.length>1)
-					// {var time=parseFloat(timeInSecs[0])+60*parseFloat(timeInSecs[1]);}
-					// else{var time=parseFloat(timeInSecs[0]);}
-						// $("#row"+j+"time").val(time)
-					// }
-				//}
-
-				
-				model.buildData();
-
-				if(clicked&&model.currentInfo["OKToGraph"]){graph(false)}
-			
-			else{ d3.selectAll(".containers").remove();
-				 d3.selectAll(".mysteak").remove();
-
-                model.dataClear();
+    
+    model.dataClear();
 
 
 }
