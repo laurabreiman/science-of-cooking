@@ -279,22 +279,23 @@ function HeatSolver(startingTemps,timestep,spacestep){
                 }
                 var cnVector = make_crank_nicolson_vector();
                 calculate_next_cn(cnVector);
-                var newMaxTemp = [];
-                for(var n=0; n<maxTemps[maxTemps.length-1].length; n++){
-                    if(tempArray[tempArray.length-1][n] > maxTemps[maxTemps.length-1][n]){
-                        newMaxTemp.push(tempArray[tempArray.length-1][n]);
-                    }
-                    else{
-                        newMaxTemp.push(maxTemps[maxTemps.length-1][n])
-                    }
-                }
-                maxTemps.push(newMaxTemp);
             }
         }	
         var arrays = tempArray.length-1 ;
         var len= tempArray[0].length;
         var step = arrays/60.0;
         for(var i=0; i<60*step; i+=step){
+            
+            var newMaxTemp = [];
+                for(var n=0; n<maxTemps[maxTemps.length-1].length; n++){
+                    if(tempArray[parseInt(i)][n] > maxTemps[maxTemps.length-1][n]){
+                        newMaxTemp.push(tempArray[parseInt(i)][n]);
+                    }
+                    else{
+                        newMaxTemp.push(maxTemps[maxTemps.length-1][n])
+                    }
+                }
+            maxTemps.push(newMaxTemp);
 
             grapharray.push(tempArray[parseInt(i)].slice(1,len-1));
 			

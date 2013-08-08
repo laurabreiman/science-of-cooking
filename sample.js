@@ -17,7 +17,6 @@ var calculate=function(data,steak,meatType,first,totalTime){
     if(timestep > 39){ //39 is basically the maximum timestep for acceptable accuracy (below 1° error)
         timestep = 39;
     }
-    
     var myheatsolver = HeatSolver(steak,timestep,spacestep);
     var Thedata=myheatsolver.sixty_graph_arrays_duration(data);
     var sampledata=Thedata.temps;

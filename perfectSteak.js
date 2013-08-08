@@ -251,7 +251,11 @@ var clicked=false;
         var addQuickButton = $("<button class='btn' id='addQuickButton'>Quick Add</button>");
         var addTextButton = $("<button class='btn' id='addTextButton'>Edit Recipe Text</button>");
         var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe <p> <input type="text" id="recipeName"></input><p><button class="btn" data-dismiss="modal" aria-hidden="true">OK</button></div></div>');
-        displayDiv.append(saveModal)
+        var cookDropdown=$("<div class='dropdown'><select class='cookDropdown'></select></div>");
+
+        var quickAddModal=$('<div id="quickAdd" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3 id="myModalLabel">Quick Add</h3></div><div class="modal-body"> <p class="cookp">Cook at: </p></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">OK</button></div></div>');
+        $(".cookp").append(cookDropdown);
+        displayDiv.append(saveModal, quickAddModal)
 
 saveBut.on("click", function(){
  
