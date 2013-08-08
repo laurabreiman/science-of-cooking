@@ -3,7 +3,7 @@ var perfectSteak = function (div) {
 
     function Model(div) {
 
-		var currentInfo={'meatTemp':23, 'thickness':3, 'data':[], 'numRows':2, 'time':0, 'OKToGraph':true, 'recipe':{}};
+		var currentInfo={'meatTemp':23, 'thickness':3, 'data':[], 'numRows':2, 'time':0, 'OKToGraph':true, 'recipe':{}, totalTime:0};
 
         var timeStep = 15;
         var inputTable = $(".inputTable");
@@ -16,6 +16,10 @@ var perfectSteak = function (div) {
 		
 		var browserInfo=function(M){
 			currentInfo["browser"]=M;
+		}
+		
+		var updateTotalTime=function(secs){
+			currentInfo["totalTime"]=secs;
 		}
 		
 		var checkDiv=function(){
@@ -57,13 +61,21 @@ var perfectSteak = function (div) {
 
 		//CHANGES X SECONDS INTO Y:X WHERE Y IS MINUTES X IS SECONDS
 		var convertTime=function(secs){
+			console.log("calling convertTime")
 			var minutes=Math.floor(parseInt(secs)/60);
 			var seconds=parseInt(secs)%60;
+			console.log("minutes "+minutes+" seconds "+seconds);
 			if (minutes==0 && seconds<10){
+				console.log("1")
+				console.log(String(0)+":0"+String(seconds))
 				return String(0)+":0"+String(seconds);
 			}else if (seconds==0){
+				console.log(2);
+				console.log(String(minutes)+':'+String(seconds)+'0')
 				return String(minutes)+':'+String(seconds)+'0';
 			}else{
+				console.log(3);
+				console.log(String(minutes)+':'+String(seconds))
 				return String(minutes)+':'+String(seconds);
 			}
 		}
@@ -171,7 +183,8 @@ var perfectSteak = function (div) {
 			checkDiv:checkDiv,
 			saveRecipe:saveRecipe,
 			addRecipe:addRecipe,
-			browserInfo:browserInfo
+			browserInfo:browserInfo,
+			updateTotalTime:updateTotalTime
         }
     }
 
@@ -204,42 +217,38 @@ var perfectSteak = function (div) {
 		var clicked=false;
 		
         var displayDiv = $("<div class='displayDiv'></div>");
-
+		
         displayDiv.append(inputTable);
-		displayDiv.change(function(){
-				model.checkDiv()
-				model.buildData();
-				updateTime();
-				for (var j=0; j<model.currentInfo["numRows"]; j++){
-					var timeInSecs=$("#row"+j+"time").val().replace(':','.').split('.');
-					if(timeInSecs.length>1)
-					{var time=60*parseFloat(timeInSecs[0])+parseFloat(timeInSecs[1]);}
-					else{var time=parseFloat(timeInSecs[0]);}
-						$("#row"+j+"time").val(model.convertTime(time))
-//					}
-				}
+        
+		// displayDiv.change(function(){
+				// model.checkDiv()
+				// model.buildData();
+				// updateTime();
+				// for (var j=0; j<model.currentInfo["numRows"]; j++){
+					// var timeInSecs=$("#row"+j+"time").val().replace(':','.').split('.');
+					// if(timeInSecs.length>1)
+					// {var time=60*parseFloat(timeInSecs[0])+parseFloat(timeInSecs[1]);}
+					// else{var time=parseFloat(timeInSecs[0]);}
+						// $("#row"+j+"time").val(model.convertTime(time))
+					//}
+				// }
 
 				
-				model.buildData();
-				updateTime();
+				// model.buildData();
+				// updateTime();
 
-				if(clicked&&model.currentInfo["OKToGraph"]){graph(false)}
+				// if(clicked&&model.currentInfo["OKToGraph"]){graph(false)}
 			
-			else{ d3.selectAll(".containters").remove();
-				 d3.selectAll(".mysteak").remove();
+			// else{ d3.selectAll(".containters").remove();
+				 // d3.selectAll(".mysteak").remove();
 
-                model.dataClear();
-
-
-				}
-
-
-		})
         var addButton;
+		
         var flipButton;
         var cookButton;
 
         var saveBut=$('<a href="#saveBut" role="button" class="btn sBut" data-toggle="modal" id="saveBut">Save</a>');
+		var cookButt=$("<button class='btn'>Cook</button>");
 
 			var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe <p> <input type="text" id="recipeName"></input><p><button class="btn" data-dismiss="modal" aria-hidden="true">OK</button></div></div>');
 			displayDiv.append(saveModal)
@@ -255,20 +264,23 @@ var perfectSteak = function (div) {
 
 
         var updateTime=function(){
-			for(var i=0;i<model.currentInfo["numRows"];i++)
-			{
-		
-				if(i>0){
-				var vals=parseFloat($("#row" + (i-1) + "time").val());
-
-
-				var minSecs=model.convertTime(vals);
+			var time=0;
+			for(var i=0;i<model.currentInfo["numRows"];i++){
+				//THIS WILL BE TRIGGERED IF THE TIME NEEDS TO BE CONVERTED
+				if(String($("#row"+i+"time").val()).indexOf(':')==-1){
+					time+=parseFloat($("#row" + i + "time").val());
+					$("#row"+i+"time").val(model.convertTime(parseFloat($("#row" + i + "time").val())));
+				}else{
+					var colon=String($("#row"+i+"time").val()).indexOf(':');
+					var min=String($("#row"+i+"time").val()).substring(0, colon);
+					var sec=String($("#row"+i+"time").val()).substring(colon+1);
+					time+= 60*min
+					time+=sec;
 				}
-				else{
-					var minSecs=model.convertTime(0);
-				}
-
 			}
+			console.log("totalTime "+time);
+			model.updateTotalTime(time);
+			console.log("updated"+model.currentInfo["totalTime"])
 		}
 
 		var addDropdown=function(){
@@ -389,12 +401,36 @@ var perfectSteak = function (div) {
 			saveModal.append(nameInp,okModal);
 			
 
-			saveBut.on("click", function(){
+					cookButt.on("click",function(){
+				model.checkDiv()
+				model.buildData();
+				updateTime();
+				// for (var j=0; j<model.currentInfo["numRows"]; j++){
+					// var timeInSecs=$("#row"+j+"time").val().replace(':','.').split('.');
+					// if(timeInSecs.length>1)
+					// {var time=parseFloat(timeInSecs[0])+60*parseFloat(timeInSecs[1]);}
+					// else{var time=parseFloat(timeInSecs[0]);}
+						// $("#row"+j+"time").val(time)
+					// }
+				//}
 
-				});
+				
+				model.buildData();
+
+				if(clicked&&model.currentInfo["OKToGraph"]){graph(false)}
+			
+			else{ d3.selectAll(".containers").remove();
+				 d3.selectAll(".mysteak").remove();
+
+                model.dataClear();
 
 
-            inputTable.append(addButton, saveBut, saveModal);
+				}
+
+
+		})
+
+            inputTable.append(addButton, saveBut, cookButt, saveModal);
 					addDropdown();
                 }
 				var sumtime=0;
@@ -571,7 +607,7 @@ var graph=function(isFirst){
 						steak.push(parseFloat($("#steakTemp").val()))
 					}
 					steak.push(model.currentInfo["data"][0][2]);
-					calculate(model.currentInfo["data"], steak,meatType,isFirst)
+					calculate(model.currentInfo["data"], steak,meatType,isFirst,model.currentInfo["totalTime"])
 				}
 }
         var CookButtonFun = function () {
