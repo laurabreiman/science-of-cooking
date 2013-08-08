@@ -319,4 +319,5 @@ var len= tempArray[0].length;
     }
  
     return {get_tempArray: get_tempArray, make_crank_nicolson_vector: make_crank_nicolson_vector, makecnLaplacian: makecnLaplacian, makeLaplacian: makeLaplacian, change_temp: change_temp, calculate_next_cn: calculate_next_cn, calculate_next_explicit: calculate_next_explicit, calculate_next_n_cn: calculate_next_n_cn, sixty_graph_arrays: sixty_graph_arrays, sixty_graph_arrays_duration: sixty_graph_arrays_duration, calculate_next_n_exp: calculate_next_n_exp}
+
 }
