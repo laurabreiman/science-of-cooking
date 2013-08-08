@@ -23,6 +23,7 @@ var calculate=function(data,steak,meatType,first,totalTime){
     var flame=Thedata.points;
     var timestep=1/Thedata.step;
     var maxTemps=Thedata.maxTemps;
+    console.log(Thedata.allMaxTemps);
     if(first){
         drawFinished(meatType,maxTemps,data,steak[0],0);
         drawFinished(meatType,maxTemps,data,steak[0],1);

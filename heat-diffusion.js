@@ -247,7 +247,7 @@ function HeatSolver(startingTemps,timestep,spacestep){
 		var count=0;
 		var maxTemps=[];
         var firstMaxTemp=[];
-		for(var i=tempArray[0].length-1;i>0;i--)
+		for(var i=tempArray[0].length-1;i>-1;i--)
 		{
 			firstMaxTemp.push(tempArray[0][i])
 		}
