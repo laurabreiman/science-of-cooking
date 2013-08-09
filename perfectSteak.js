@@ -164,11 +164,21 @@ var perfectSteak = function (div) {
         }
         
         var parseRecipe = function(recipeStr){
+            var recipeStr = "3 cm Steak starts at 23°C 15 seconds at 180°C and 23°C 15 seconds at 180°C and 23°C"
             var pattTemp = /\d+/g;
+            var pattCelsius = /\°(.+)$/g;
+            
             var numArray = recipeStr.match(pattTemp);
             for(var i=0;i<numArray.length;i++){
                 numArray[i]=parseInt(numArray[i]);
             }
+            //check if it's in celsius (celsius = true) or fahrenheit (celsius = false)
+            var celsius = true;
+            if(recipeStr.match(pattCelsius)[0].charAt(1) == "F"){
+                celsius = false;
+            }
+            console.log(celsius);
+            
             var parsedThickness = numArray.shift();
             var startingTemp = numArray.shift();
             
@@ -234,7 +244,7 @@ var perfectSteak = function (div) {
         var clicked=false;
         var displayDiv = $("<div class='displayDiv'></div>");
         var tableTabs = $('<ul class="nav nav-tabs"><li><a href="#table" data-toggle="tab">Table</a></li><li><a href="#text" data-toggle="tab">Text</a></li></ul>');
-        var tabContent = $("<div class='tab-content'><div class='tab-pane active' id='table'><table class='inputTable table table-striped'><tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr></table></div><div class='tab-pane' id='text'><form><input type='text' id='recipeInput'></input></form></div></div>");
+        var tabContent = $("<div class='tab-content'><div class='tab-pane active' id='table'><table class='inputTable table table-striped'><tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr></table></div><div class='tab-pane' id='text'><input type='text' id='recipeInput'></input></div></div>");
         displayDiv.append(tableTabs,tabContent);
         
         var addButton;
@@ -659,6 +669,8 @@ else{var sumtime=parseFloat(time[0]);}
     var setup = function (div) {
         var model = Model();
         var view = View(div, model);
+        
+        model.parseRecipe();
         
         view.buildDisplay();
         $('.inputTable').offset({top:0});
