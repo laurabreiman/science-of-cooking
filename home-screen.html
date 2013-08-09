@@ -77,12 +77,25 @@ In the first section, you can input the starting values for the meat. The defaul
         <h3 id="myModalLabel">Create Your Meat</h3>
         </div>
         <div class="modal-body">
-            <div id=thickInpDiv>Meat Thickness: <input type='text' id='thicknessInp' value='3'> cm </div>
-            <div id=tempInpDiv>Initial Meat Temperature: <input type='text' id='steakTemp' value='23'>&#176;C</div>
+            <div id="thickInpDiv">Meat Thickness: <input type='text' id='thicknessInp' value='3'> cm </div>
+            <div id="tempInpDiv">Initial Meat Temperature: <input type='text' id='steakTemp' value='23'>&#176;C</div>
             <form id="meatInp">What type of meat are you cooking?<br>
                 <input type="radio" name="meat" id="Steak" checked>Steak<br>
                 <input type="radio" name="meat" id="Tuna">Tuna<br>
                 <input type="radio" name="meat" id="Turkey">Turkey</form>
+        </div>
+        <div class="modal-footer">
+        <button class="btn cookButton" data-dismiss="modal" aria-hidden="true">Let's Get Cooking!</button>
+        </div>
+    </div>
+    
+    <div id="recipe-inp" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Load Recipe</h3>
+        </div>
+        <div class="modal-body">
+            <div id="stringInput"><input class='recipe-input' type='text'></div>
         </div>
         <div class="modal-footer">
         <button class="btn cookButton" data-dismiss="modal" aria-hidden="true">Let's Get Cooking!</button>

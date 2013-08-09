@@ -14,3 +14,10 @@
 .modal-footer{
     text-align:center !important;
 }
+
+.recipe-input{
+    max-height:300;
+    max-width:300;
+    width: 300 !important;
+    height: 300 !important;
+}
