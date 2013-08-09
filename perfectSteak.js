@@ -232,15 +232,13 @@ var perfectSteak = function (div) {
         })();
         
         var inputTable = $("<table class='inputTable table table-striped'></table>");
-var clicked=false;
- 
+        var clicked=false;
         var displayDiv = $("<div class='displayDiv'></div>");
-        
         var tableTabs = $('<ul class="nav nav-tabs"><li><a href="#table" data-toggle="tab">Table</a></li><li><a href="#text" data-toggle="tab">Text</a></li></ul>');
         var inpTabHeader = $("<tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
         inputTable.append(inpTabHeader);
         var tabContent = $("<div class='tab-content'><div class='tab-pane' id='table'></div><div class='tab-pane' id='text'></div></div>");
-        $("#table").append($(".inputTable")); 
+        displayDiv.append(inputTable); 
         displayDiv.append(tableTabs,tabContent);
         
         var addButton;
