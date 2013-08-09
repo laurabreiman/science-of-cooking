@@ -1,17 +1,21 @@
+/*
+    This visualization was created by MIT students Kate Roe, Laura Breiman, and Marissa Stephens for the 2013 edX course <a href='https://www.edx.org/course/harvard-university/spu27x/science-cooking-haute-cuisine/639' target="_newtab">Science & Cooking: From Haute Cuisine to Soft Matter Science</a> taught by Harvard professor Michael Brenner. It demonstrates the heat diffusion through meat over time.
+    The function perfectSteak takes in a div and fills it the "Cook My Steak" app, including relevant UI and visualizations.
+    Consists of a model, which calculates changes keeps track of the current state, and a view, which makes this state visible and clear to the user.
+*/
 var perfectSteak = function (div) {
-
-
+    
     function Model(div) {
 
         var currentInfo = {
-            'meatTemp': 23,
-            'thickness': 3,
-            'data': [],
-            'numRows': 2,
-            'time': 0,
-            'OKToGraph': true,
+            'meatTemp': 23,    //initial temperature of the meat
+            'thickness': 3,    //thickness of the meat in centimeters
+            'data': [],        //timestamps of temperatures
+            'numRows': 2,      //how many steps there are in the recipe
+            'time': 0,         //
+            'OKToGraph': true, //flag for when data is ready to graph
             'recipe': {},
-            totalTime: 0
+            'totalTime': 0
         };
 
         var timeStep = 15;
@@ -172,7 +176,6 @@ var perfectSteak = function (div) {
         }
 
         var parseRecipe = function (recipeStr) {
-            var recipeStr = "3 cm Steak starts at 23°C 15 seconds at 180°C and 23°C 15 seconds at 180°C and 23°C"
             var pattTemp = /\d+/g;
             var pattCelsius = /\°(.+)$/g;
 
@@ -185,7 +188,6 @@ var perfectSteak = function (div) {
             if (recipeStr.match(pattCelsius)[0].charAt(1) == "F") {
                 celsius = false;
             }
-            console.log(celsius);
 
             var parsedThickness = numArray.shift();
             var startingTemp = numArray.shift();
@@ -643,8 +645,6 @@ var perfectSteak = function (div) {
     var setup = function (div) {
         var model = Model();
         var view = View(div, model);
-
-        model.parseRecipe();
 
         view.buildDisplay();
         $('.inputTable').offset({
