@@ -220,16 +220,6 @@ var clicked=false;
 		
         displayDiv.append(inputTable);
 
-var  onoff=function(){
-  currentvalue = $(document.getElementById('onoff')).html();
-  if(currentvalue == "Protein State"){
-    $(document.getElementById("onoff")).html("False Color");
-	  graph(false,'');
-  }else{
-    $(document.getElementById("onoff")).html("Protein State");
-	   graph(false,'False');
-  }
-}
 
         var addButton;
         var flipButton;
@@ -237,10 +227,10 @@ var  onoff=function(){
 
         var saveBut=$('<a href="#saveBut" role="button" class="btn sBut" data-toggle="modal" id="saveBut">Save</a>');
         var cookButt=$("<button class='btn'>Cook</button>");
-        var addQuickButton = $("<button class='btn' id='addQuickButton'>Quick Add</button>");
-		var tog=$('<button class="btn" id="onoff">False Color</button>');
-		tog.on("click",onoff);
-        var addTextButton = $("<button class='btn' id='addTextButton'>Input Text</button>");
+		cookButt.css("width",'100%');
+       
+		
+        
         var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe <p> <input type="text" id="recipeName"></input><p><button class="btn" data-dismiss="modal" aria-hidden="true">OK</button></div></div>');
         var cookDropdown=$("<div class='dropdown'><select class='cookDropdown'></select></div>");
 
@@ -315,6 +305,13 @@ saveBut.on("click", function(){
             var buildDisplay = function () {
     if (model.currentInfo["OKToGraph"]){
     div.append("<div class='row'><div class='container optionBar'></div></div><div class='span3'><div class='container table-container' id='theTable'></div></div><div class='span9'></div></div>");
+		var switches=$('<div class="switch"><input type="radio" class="mytog" id="PS" name="toggle" checked><label for="PS" class="btn" >Protein State</label><input type="radio" class="mytog"id="T" name="toggle"><label for="T" class="btn" >Temperature</label></div>');
+		
+	div.append(switches);		
+	switches.change(function(){
+	console.log($('.mytog:checked').attr('id'))
+	graph(false,$('.mytog:checked').attr('id'));
+	});
     $(".table-container").append(displayDiv);
     
                     $("#startModal").modal("show");
@@ -364,7 +361,7 @@ saveBut.on("click", function(){
                     step1Col.append(inp1);
                     var step2Col = $("<td id='row" + i + "side2' class='row" + i + "'></td>");
                     step2Col.append(inp2);
-                    step1Col.append(flipButton);
+                    //step1Col.append(flipButton);
     
                     row.append(duration, step1Col, step2Col);
                     inputTable.append(row);
@@ -409,7 +406,7 @@ saveBut.on("click", function(){
     //}
     model.buildData();
     
-    if(clicked&&model.currentInfo["OKToGraph"]){graph(false,'')}
+    if(clicked&&model.currentInfo["OKToGraph"]){graph(false,$('.mytog:checked').attr('id'))}
     
     else{ d3.selectAll(".containers").remove();
     d3.selectAll(".mysteak").remove();
@@ -423,7 +420,7 @@ saveBut.on("click", function(){
 })
 
             inputTable.append(addButton);//, saveBut,saveModal);
-							  $(".span3").append(cookButt,addQuickButton,addTextButton,tog);
+							  $(".span3").append(cookButt);
                         addDropdown();
                 }
 var sumtime=0;
@@ -483,7 +480,7 @@ var vals=parseFloat($("#row" + (i-1) + "time").val());
             step1Col.append(inp1);
             var step2Col = $("<td id='row" + i + "side2' class='row" + i + "'><button type='button' class='close closeRow' id='row"+i+"button'>&times;</button></td>");
             step2Col.append(inp2);
-            step1Col.append(flipButton);
+           // step1Col.append(flipButton);
             row.append(duration, step1Col, step2Col);
 $('#theTable').stop().animate({
 scrollTop: $("#theTable")[0].scrollHeight
@@ -591,7 +588,7 @@ else{var sumtime=parseFloat(time[0]);}
 
 				//add to on click and calculate(blah,blah,blah, meatType)
 				var meatType = $("input[type='radio'][name='meat']:checked").attr('id');
-				if(falseColor=='False')
+				if(falseColor=='T')
 				{
 					meatType='False';
 				}
@@ -615,7 +612,7 @@ if (model.currentInfo["OKToGraph"]){
 d3.selectAll("svg").remove();
 
                 model.dataClear();
-graph(true,'');
+graph(true,$('.mytog:checked').attr('id'));
 };
             });
         }
@@ -664,7 +661,7 @@ graph(true,'');
 
         
         view.buildDisplay();
-        $('.inputTable').offset({top:1060});
+        $('.inputTable').offset({top:900});
      
 
 

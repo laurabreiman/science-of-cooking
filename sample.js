@@ -9,7 +9,8 @@ var calculate=function(data,steak,meatType,first,totalTime){
     //sets the parameters for the iterations of the diffusion equations. 
     //parameters are initially set to a timestep of 1 second and a spacestep of 1mm,
     //but these can be increased with minimal error if calculation time is too great
-    var timestep = 1;
+    
+	var timestep = 1;
     var spacestep = 1;
     while(totalTime/timestep > 10000){
         timestep += 9; //adjust the timestep so that no more than 9999 calculations are done
