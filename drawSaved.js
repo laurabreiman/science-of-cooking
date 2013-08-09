@@ -1,5 +1,5 @@
 
-var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side)
+var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,thickness)
 	{
 	
 			var getState=function(temp)

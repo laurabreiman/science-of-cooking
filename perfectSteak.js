@@ -128,41 +128,60 @@ var perfectSteak = function (div) {
  
 
         var buildData=function(){
-        var newData=[];
+            var newData=[];
+            
+            for (var g=0; g<currentInfo["numRows"]; g++){
+                var side1data=parseFloat($("#inp1_"+g).val());
+                var side2data=parseFloat($("#inp2_"+g).val());
+                var timedata=$("#row"+g+"time").val();
+                 
+                if (timedata.length>2){
+                    var timeMin=function(time){
+                     
+                    var timeString='';
+                    for (var x=0; x<time.length; x++){
+                    if (time.charAt(x)==':'){
+                    break;
+                    } else {
+                    timeString += time.charAt(x);
+                    }
+                    }
+                    return parseInt(timeString)
+                    }
+                }
+                else{
+                    var timeMin=function(time){
+                        return 0;
+                }
+                }
+                var timeSec = parseInt(timedata.charAt(timedata.length-2) + timedata.charAt(timedata.length-1));
+                var timeForGraph=60*timeMin(timedata)+timeSec;
+                newData.push([timeForGraph, side1data, side2data]);
+             
+            }
+            
+            dataChange(newData);
         
-        for (var g=0; g<currentInfo["numRows"]; g++){
-        var side1data=parseFloat($("#inp1_"+g).val());
-        var side2data=parseFloat($("#inp2_"+g).val());
-        var timedata=$("#row"+g+"time").val();
-         
-        if (timedata.length>2){
-        var timeMin=function(time){
-         
-        var timeString='';
-        for (var x=0; x<time.length; x++){
-        if (time.charAt(x)==':'){
-        break;
-        } else {
-        timeString += time.charAt(x);
-        }
-        }
-        return parseInt(timeString)
-        }
-        }else{
-        var timeMin=function(time){
-        return 0;
-        }
-        }
-        var timeSec=parseInt(timedata.charAt(timedata.length-2)+timedata.charAt(timedata.length-1));
-         
-         
-        var timeForGraph=60*timeMin(timedata)+timeSec;
-        newData.push([timeForGraph, side1data, side2data]);
-         
         }
         
-        dataChange(newData);
-        
+        var parseRecipe = function(recipeStr){
+            var pattTemp = /\d+/g;
+            var numArray = recipeStr.match(pattTemp);
+            for(var i=0;i<numArray.length;i++){
+                numArray[i]=parseInt(numArray[i]);
+            }
+            var startingTemp = numArray.shift();
+            
+            var parsedData = [];
+            var newRow;
+            for(var i=0;i<numArray.length;i+=3){
+                newRow = [];
+                newRow.push(numArray[i],numArray[i+1],numArray[i+2]);
+                console.log(newRow);
+                parsedData.push(newRow);
+            }
+            currentInfo["meatTemp"] = startingTemp;
+            currentInfo["data"] = parsedData;
         }
 
         return {
@@ -184,7 +203,8 @@ var perfectSteak = function (div) {
             saveRecipe:saveRecipe,
             addRecipe:addRecipe,
             browserInfo:browserInfo,
-            updateTotalTime:updateTotalTime
+            updateTotalTime:updateTotalTime,
+            parseRecipe: parseRecipe
         }
     }
 
@@ -232,12 +252,8 @@ var clicked=false;
 		
         
         var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe <p> <input type="text" id="recipeName"></input><p><button class="btn" data-dismiss="modal" aria-hidden="true">OK</button></div></div>');
-        var cookDropdown=$("<div class='dropdown'><select class='cookDropdown'></select></div>");
 
-
-        var quickAddModal=$('<div id="quickAdd" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3 id="myModalLabel">Quick Add</h3></div><div class="modal-body"> <p class="cookp">Cook at: </p></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">OK</button></div></div>');
-        $(".cookp").append(cookDropdown);
-        displayDiv.append(saveModal, quickAddModal)
+        displayDiv.append(saveModal)
 
 saveBut.on("click", function(){
  
@@ -503,42 +519,37 @@ closeRowFun();
         }
  
 }
-
-// UNUSED FUNCTION - GONNA BE DELETED
-//        var delRow = function () {
-//            $('.inputTable tr:last').remove();
-//        }
-
-        var addButtonFun = function () {
+        
+    var addButtonFun = function () {
             addButton.on("click", function () {
-model.buildData();
-model.numRowsPlus();
+                model.buildData();
+                model.numRowsPlus();
                 addRow($(".inputTable"));
             });
         };
 
 
-var closeRowFun=function(){
-$(".closeRow").on("click", function(){
-var rowNum=String($(this).attr("id").charAt(3))
-$("#row"+rowNum).remove();
-model.numRowsMinus();
+    var closeRowFun=function(){
+        $(".closeRow").on("click", function(){
+        var rowNum=String($(this).attr("id").charAt(3))
+        $("#row"+rowNum).remove();
+        model.numRowsMinus();
+    
+        //NOW WE NEED TO CHANGE THE ROW NUMBER OF ALL THE OTHER ROWS
+        for (var l=rowNum+1; l<model.currentInfo["numRows"]; l++){
+            $("#row"+l).attr("id", "row"+l-1);
+            $("#duration"+l).attr("id", "duration"+l-1);
+            $("#row"+l+"side1").attr("id", "row"+l-1+"side1");
+            $("inp1_"+l).attr("id", "inp1_"+l-1);
+            $("#row"+l+"side2").attr("id", "row"+l-1+"side2");
+            $("#inp2_"+l).attr("id", "inp2_"+l-1);
+            }
+            
+        });
+    }
 
-//NOW WE NEED TO CHANGE THE ROW NUMBER OF ALL THE OTHER ROWS
-for (var l=rowNum+1; l<model.currentInfo["numRows"]; l++){
-$("#row"+l).attr("id", "row"+l-1);
-$("#duration"+l).attr("id", "duration"+l-1);
-$("#row"+l+"side1").attr("id", "row"+l-1+"side1");
-$("inp1_"+l).attr("id", "inp1_"+l-1);
-$("#row"+l+"side2").attr("id", "row"+l-1+"side2");
-$("#inp2_"+l).attr("id", "inp2_"+l-1);
-}
 
-});
-}
-
-
-var graph=function(isFirst,falseColor){
+    var graph=function(isFirst,falseColor){
              d3.selectAll(".mysteak").remove();
   d3.selectAll(".containers").remove();
                 model.dataClear();
@@ -604,6 +615,7 @@ else{var sumtime=parseFloat(time[0]);}
 }
         var CookButtonFun = function () {
             $(".cookButton").on("click", function () {
+
 clicked=true;
 model.checkDiv();
 d3.selectAll(".mysteak").remove();
@@ -614,6 +626,7 @@ d3.selectAll("svg").remove();
                 model.dataClear();
 graph(true,$('.mytog:checked').attr('id'));
 };
+
             });
         }
 
@@ -656,12 +669,12 @@ graph(true,$('.mytog:checked').attr('id'));
     var setup = function (div) {
         var model = Model();
         var view = View(div, model);
-
+        //model.parseRecipe();
 
 
         
         view.buildDisplay();
-        $('.inputTable').offset({top:900});
+        $('.inputTable').offset({top:1020});
      
 
 

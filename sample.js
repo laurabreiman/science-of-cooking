@@ -5,7 +5,6 @@
         with the function graphSteak
 */
 var calculate=function(data,steak,meatType,first,totalTime){
-    
     //sets the parameters for the iterations of the diffusion equations. 
     //parameters are initially set to a timestep of 1 second and a spacestep of 1mm,
     //but these can be increased with minimal error if calculation time is too great
@@ -35,6 +34,7 @@ var calculate=function(data,steak,meatType,first,totalTime){
     var flame=Thedata.points;
     var timestep=1/Thedata.step;
     var maxTemps=Thedata.maxTemps;
+
     if(first){
         drawFinished(meatType,maxTemps,data,steak[0],0);
         drawFinished(meatType,maxTemps,data,steak[0],1);
