@@ -12,10 +12,10 @@ var perfectSteak = function (div) {
             'thickness': 3,    //thickness of the meat in centimeters
             'data': [],        //timestamps of temperatures
             'numRows': 2,      //how many steps there are in the recipe
-            'time': 0,         //
+            'time': 0,         //time
             'OKToGraph': true, //flag for when data is ready to graph
-            'recipe': {},
-            'totalTime': 0
+            'recipe': {},      //recipe
+            'totalTime': 0     //total cooking
         };
 
         var timeStep = 15;
@@ -69,25 +69,19 @@ var perfectSteak = function (div) {
             currentInfo['recipe'][name] = recipe;
         }
 
-
-
-        //CHANGES X SECONDS INTO Y:X WHERE Y IS MINUTES X IS SECONDS
+        /*
+            function convertTime changes "secs" seconds into format Y:X where Y is minutes and X is seconds
+        */
         var convertTime = function (secs) {
-            console.log("calling convertTime")
             var minutes = Math.floor(parseInt(secs) / 60);
             var seconds = parseInt(secs) % 60;
-            console.log("minutes " + minutes + " seconds " + seconds);
             if (minutes == 0 && seconds < 10) {
-                console.log("1")
                 console.log(String(0) + ":0" + String(seconds))
                 return String(0) + ":0" + String(seconds);
             } else if (seconds == 0) {
-                console.log(2);
                 console.log(String(minutes) + ':' + String(seconds) + '0')
                 return String(minutes) + ':' + String(seconds) + '0';
             } else {
-                console.log(3);
-                console.log(String(minutes) + ':' + String(seconds))
                 return String(minutes) + ':' + String(seconds);
             }
         }
@@ -104,18 +98,21 @@ var perfectSteak = function (div) {
             currentInfo["meatTemp"] = newVal;
         }
 
-        //OK THIS WORKS NOW
         var dataClear = function () {
             currentInfo["data"] = [];
         }
 
-        //THIS ADDS AN ELEMENT TO THE DATA ARRAY
+        /*
+            dataAdd adds an element to the data array
+        */
         var dataAdd = function (item) {
 
             currentInfo["data"].push(item);
         }
 
-        //THIS IS FOR CHANGING THE ENTIRE DATA ARRAY
+        /*
+            dataChange changes the entire data array to the array passed in as a parameter
+        */
         var dataChange = function (array) {
             currentInfo["data"] = array;
 
@@ -137,8 +134,10 @@ var perfectSteak = function (div) {
 
         }
 
-
-
+        /*
+            buildData takes the data from the table and arranges it into one array of multiple length 3 arrays, each with the format [duration of cooking, temperature of side 1, temperature of side 2]
+            it then changes the current stored value of "data"
+        */
         var buildData = function () {
             var newData = [];
 
@@ -175,6 +174,9 @@ var perfectSteak = function (div) {
 
         }
 
+        /*
+            parseRecipe takes in a string interpretaion of a recipe for cooking meat and organizes it using regexp into the format stored in the currentInfo variable
+        */
         var parseRecipe = function (recipeStr) {
             var pattTemp = /\d+/g;
             var pattCelsius = /\°(.+)$/g;
