@@ -234,7 +234,7 @@ var perfectSteak = function (div) {
         var clicked=false;
         var displayDiv = $("<div class='displayDiv'></div>");
         var tableTabs = $('<ul class="nav nav-tabs"><li><a href="#table" data-toggle="tab">Table</a></li><li><a href="#text" data-toggle="tab">Text</a></li></ul>');
-        var tabContent = $("<div class='tab-content'><div class='tab-pane active' id='table'><table class='inputTable table table-striped'><tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr></table></div><div class='tab-pane' id='text'></div></div>");
+        var tabContent = $("<div class='tab-content'><div class='tab-pane active' id='table'><table class='inputTable table table-striped'><tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr></table></div><div class='tab-pane' id='text'><form><input type='text' id='recipeInput'></input></form></div></div>");
         displayDiv.append(tableTabs,tabContent);
         
         var addButton;
@@ -314,23 +314,25 @@ saveBut.on("click", function(){
     
     
             var buildDisplay = function () {
-    if (model.currentInfo["OKToGraph"]){
-    div.append("<div class='row'><div class='container optionBar'></div></div><div class='span3'><div class='container table-container' id='theTable'></div></div><div class='span9'></div></div>");
-		var switches=$('<div class="switch"><input type="radio" class="mytog" id="PS" name="toggle" checked><label for="PS" class="btn" >Protein State</label><input type="radio" class="mytog"id="T" name="toggle"><label for="T" class="btn" >Temperature</label></div>');
-	div.append(switches);		
-	switches.change(function(){
-	console.log($('.mytog:checked').attr('id'))
-	graph(false,$('.mytog:checked').attr('id'));
-	});
-                    $("#startModal").modal("show");
-                
-    cookButton = $(".cookButton");
-    $(".table-container").append(displayDiv);
-    buildTable();
-    }
-    else{
-    (".")
-    }
+                if (model.currentInfo["OKToGraph"]){
+                div.append("<div class='row'><div class='container optionBar'></div></div><div class='span3'></div><div class='span9'></div></div>");
+                $(".span3").append(displayDiv);
+//                    <div class='container table-container' id='theTable'></div>
+                var switches=$('<div class="switch"><input type="radio" class="mytog" id="PS" name="toggle" checked><label for="PS" class="btn" >Protein State</label><input type="radio" class="mytog"id="T" name="toggle"><label for="T" class="btn" >Temperature</label></div>');
+                div.append(switches);		
+                switches.change(function(){
+                console.log($('.mytog:checked').attr('id'))
+                graph(false,$('.mytog:checked').attr('id'));
+                });
+                                $("#startModal").modal("show");
+                            
+                cookButton = $(".cookButton");
+//                $(".table-container").append(displayDiv);
+                buildTable();
+                }
+                else{
+                (".")
+                }
     
     
     addDropdown();
@@ -489,8 +491,8 @@ var vals=parseFloat($("#row" + (i-1) + "time").val());
             step2Col.append(inp2);
             step1Col.append(flipButton);
             row.append(duration, step1Col, step2Col);
-$('#theTable').stop().animate({
-scrollTop: $("#theTable")[0].scrollHeight
+$('.displayDiv').stop().animate({
+scrollTop: $(".displayDiv")[0].scrollHeight
 }, 800);
  
             timeFun(i);

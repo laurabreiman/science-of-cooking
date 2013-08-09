@@ -67,7 +67,7 @@ input[type="radio"].toggle-right + label {
 	width: 200px !important;
 }
 
-.table-container{
+.displayDiv{
     overflow-x: auto;
     overflow-y: auto;
     width:100%;
@@ -136,4 +136,11 @@ input[type="text"] {
 	padding:0px!important;
 	margin:0px !important;
 	position: relative !important;
+}
+
+#recipeInput{
+    max-height:300;
+    max-width:300;
+    width: 150 !important;
+    height: 150 !important;
 }
