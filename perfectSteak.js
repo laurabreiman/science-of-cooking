@@ -251,23 +251,10 @@ var perfectSteak = function (div) {
         var flipButton;
         var cookButton;
 
-        var saveBut=$('<a href="#saveBut" role="button" class="btn sBut" data-toggle="modal" id="saveBut">Save</a>');
         var cookButt=$("<button class='btn'>Cook</button>");
-        var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe <p> <input type="text" id="recipeName"></input><p><button class="btn" data-dismiss="modal" aria-hidden="true">OK</button></div></div>');
 		cookButt.css("width",'100%');
        
-		
-        
         displayDiv.append(saveModal)
-
-saveBut.on("click", function(){
- 
-
-
-});
-
-
-
 
         var updateTime=function(){
 			var time=0;
