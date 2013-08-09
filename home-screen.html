@@ -34,7 +34,7 @@
             <div class = "nav-collapse collapse">
                 <a class = "brand about" href="#aboutModal" data-toggle = "modal">About</a>
             </div>
-            <a class = "brand newSteak" href="#startModal" data-toggle = "modal">New Meat</a>
+            
         </div>
     </div>
     
@@ -45,7 +45,7 @@
         </div>
         <div class="modal-body">
             <p>This simulation shows the heat transfer throughout various kinds of meat.  
-In the first section, you can input the starting values for the meat. The default has 3cm piece of steak at room temperature (23 degrees).  The maximum meat thickness is 30 cm since we’re assuming you’re not trying to cook a whole cow. The initial temperature must be above absolute zero(-273 degrees). If the physical steak you’re cooking is starting out at a temperature outside of this range, please contact the National Journal of Physics. 
+In the first section, you can input the starting values for the meat. The default has 3cm piece of steak at room temperature (73&#176;F or 23&#176;C).  The maximum meat thickness is 30 cm since we’re assuming you’re not trying to cook a whole cow. The initial temperature must be above absolute zero(-460 &#176;F or -273&#176;C). If the physical steak you’re cooking is starting out at a temperature outside of this range, please contact the National Journal of Physics. 
 </p>
             <img src="img1.png">
             <p>Next, you can input the specific instructions for the steak. Use the + buttons to add a row to the bottom and the x button to delete the given row.  There is no maximum duration of time, as long as you are patient enough. The runtime of a two days is approximately two seconds. Why you would want to cook something longer than that is beyond us, but it’s up to you. You can cook the steak at any temperature above absolute zero. If you want to explore what a steak below absolute zero would look like, we suggest inventing a new theory of thermodynamics. In this example, the steak was cooked for 60 minutes at 60 degrees on both sides and then seared at 180 degrees on each side for a minute each.  </p>
@@ -76,15 +76,10 @@ In the first section, you can input the starting values for the meat. The defaul
     <div id="startModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
 <!--        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>-->
-        <h3 id="myModalLabel">Create Your Meat</h3>
+        <h3 id="myModalLabel">Make Your Meat</h3>
         </div>
         <div class="modal-body">
-            <div id="thickInpDiv">Meat Thickness: <input type='text' id='thicknessInp' value='3'> cm </div>
-            <div id="tempInpDiv">Initial Meat Temperature: <input type='text' id='steakTemp' value='23'>&#176;C</div>
-            <form id="meatInp">What type of meat are you cooking?<br>
-                <input type="radio" name="meat" id="Steak" checked>Steak<br>
-                <input type="radio" name="meat" id="Tuna">Tuna<br>
-                <input type="radio" name="meat" id="Turkey">Turkey</form>
+			<p>In the age of test-tube grown burgers costing around $300,000 and molecular gastronomy restaraunts charging hundreds of dollars per person, the average person must turn elsewhere to add some science to their food. Using this applet, you can simulate cooking your food for free! Oh, and learn about heat diffusion and whatnot.</p>
         </div>
         <div class="modal-footer">
         <button class="btn cookButton" data-dismiss="modal" aria-hidden="true">Let's Get Cooking!</button>

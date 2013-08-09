@@ -1,5 +1,5 @@
 
-var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,thickness)
+var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,thickness,mode)
 	{
 	
 			var getState=function(temp)
@@ -12,11 +12,21 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,t
 		return 6;
 
 	};
-		var directions=[myMeatType+" starts at "+startingtemp+ "\xB0C"];
+		var toF=function(C)
+    {
+    return (C*(9/5)+32);
+    };
+		
+		var directions=[thickness+ " cm "+myMeatType+" starts at "+startingtemp.toFixed(0)+ "\xB0"+mode];
 		for(var i=0;i<instructions.length;i++)
 		{
-			directions.push(instructions[i][0]+" seconds at "+instructions[i][1]+"\xB0C and "+instructions[i][2]+"\xB0C"
+			if(mode=='F'){
+			directions.push(instructions[i][0]+" seconds at "+toF(instructions[i][1]).toFixed(0)+"\xB0F and "+toF(instructions[i][2]).toFixed(0)+"\xB0F"
 			);
+			}
+			else{
+				directions.push(instructions[i][0]+" seconds at "+instructions[i][1].toFixed(0)+"\xB0C and "+instructions[i][2].toFixed(0)+"\xB0C");
+			}
 			
 		}
 		var myMaxs=[];

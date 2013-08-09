@@ -13,6 +13,18 @@
 .mytog {
   display: none;
 }
+.mytog2 {
+  display: none;
+}
+.mytog2:checked + label {
+  background-image: linear-gradient(to top,#969696,#727272);
+  box-shadow: inset 0 1px 6px rgba(41, 41, 41, 0.2),
+                    0 1px 2px rgba(0, 0, 0, 0.05);
+  cursor: default;
+  color: #E6E6E6;
+  border-color: transparent;
+  text-shadow: 0 1px 1px rgba(40, 40, 40, 0.75);
+}
 .mytog:checked + label {
   background-image: linear-gradient(to top,#969696,#727272);
   box-shadow: inset 0 1px 6px rgba(41, 41, 41, 0.2),
@@ -27,8 +39,22 @@ input[type="radio"].toggle + label {
   width: 3em;
 }
 .switch{
-	position: relative;
+	position: absolute;
 	left:40%;
+	top:350px;
+	height:40px;
+	width:200px;
+	
+}
+#Steak{
+	margin:2px;
+}
+#Tuna{
+	margin:2px;
+}
+#Turkey{
+	margin:2px;
+	padding:1px;
 }
 input[type="radio"].toggle:checked + label.btn:hover {
   background-color: inherit;
@@ -49,7 +75,7 @@ input[type="radio"].toggle-right + label {
 .dropdown{
 	top:100%;
     overflow:auto;
-	height:200px;
+	height:300px;
 }
 
 .btn{
@@ -71,7 +97,7 @@ input[type="radio"].toggle-right + label {
     overflow-x: auto;
     overflow-y: auto;
     width:100%;
-    height:160px;
+    height:260px;
 	font-size: 10px;
 }
 
@@ -93,7 +119,8 @@ td{
 
 .displayDiv{
 	position:relative;
-	width:100%
+	width:100%;
+		
 }
 
 .closeRow{
@@ -112,8 +139,8 @@ td{
 
 #meatInp{
 	position:relative;
-	padding: 20px;
-	margin:5px;
+	padding: 0px;
+	margin-left:15px;
 }
 
 input[type="text"] {

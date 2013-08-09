@@ -1,9 +1,16 @@
-var graphSteak=function(sampledata,flame,timestep,meatType,maxTemps){
+var graphSteak=function(sampledata,flame,timestep,meatType,maxTemps,mode){
 var graph=(function(){
-var setup=function(div,data,flame,timestep,meatType,maxTemps)	
+var setup=function(div,data,flame,timestep,meatType,maxTemps,mode)	
 	{
 	
-
+    var toF=function(C)
+    {
+    return (C*(9/5)+32);
+    }
+	 var toC=function(F)
+    {
+    return ((5/9)*(F-32));
+    }
 	
 var dy=.1;	
 var n = boundaries[meatType].length*2+1, // number of layers
@@ -60,7 +67,7 @@ var n = boundaries[meatType].length*2+1, // number of layers
    var  yStackMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y0 + d.y; }); });
 
 var margin = {top: 50, right: 10, bottom: 100, left: 50},
-    width = 600 - margin.left - margin.right,
+    width = 690 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
 var x = d3.scale.ordinal()
@@ -69,7 +76,7 @@ var x = d3.scale.ordinal()
 		
 var xscaled = d3.scale.linear()
     .domain([0,m/timestep])
-    .range([width/15, width*15/16]);	
+    .range([width/30, width*29/30]);	
 		
 var y = d3.scale.linear()
     .domain([0, yStackMax])
@@ -118,7 +125,7 @@ if(meatType!='False'){
 
     legend.append('rect')
         .attr('x', width)
-        .attr('y', function(d, i){ return i *  15;})
+        .attr('y', function(d, i){ return -10+i *  15;})
         .attr('width', 8)
         .attr('height', 8)
 
@@ -128,13 +135,14 @@ if(meatType!='False'){
 
     legend.append('text')
         .attr('x', width+10)
-        .attr('y', function(d, i){ return (i *  15+8);})
+        .attr('y', function(d, i){ return (i *  15-2);})
         .text(function(d){ return d['info'];});	
 }
 
 var ttip = d3.select("body").append("div")   
     .attr("class", "tooltip")               
     .style("opacity", 0);	
+		
 		
 var layer = svg.selectAll(".layer")
     .data(layers)
@@ -170,7 +178,7 @@ var rect = layer.selectAll("rect")
 		var text=d3.selectAll('.Biglegend text')[0][boundaries[meatType].length-i];
 		var line=parseInt((event.pageX-parseFloat($("body").css('margin-left'))-margin.left)/(x.rangeBand()+1)-4.0);	
 		var info=tempScale[meatType][boundaries[meatType].length-i]['info'];
-		$(text).text( info +" " +(100*(dat[line][i]+dat[line][12-i])/m).toFixed(0)+ "%" );
+		$(text).text( info +" " +(100*(parseFloat(dat[line][i])+parseFloat(dat[line][12-i]))/m).toFixed(0)+ "%" );
 
 		}
 		}
@@ -179,24 +187,29 @@ var rect = layer.selectAll("rect")
 
 
 	var Offset = document.getElementById("graphSteak").offsetTop;
-	var pos=parseInt(data[0].length-(event.pageY-Offset-margin.top-200)/(height/yStackMax));
-var line=parseInt((event.pageX-parseFloat($("body").css('margin-left'))-margin.left)/(x.rangeBand()+1)-4.0);
-
+	var pos=parseInt(data[0].length-(event.pageY-Offset-margin.top-300)/(height/yStackMax));
+var line=parseInt((event.pageX-parseFloat($("body").css('margin-left'))-margin.left)/(x.rangeBand()+1.2)-1.5);
+console.log(line);
 	$("line").remove();
 	var myLine = d3.selectAll(".mysteak").append("svg:line")
     .attr("x1", margin.left)
-    .attr("y1", event.pageY-Offset-200)
-    .attr("x2", width*31/30)
-    .attr("y2", event.pageY-Offset-200)
+    .attr("y1", event.pageY-Offset-295)
+    .attr("x2", width*32/30)
+    .attr("y2", event.pageY-Offset-295)
+	.style("z-index",-1)
     .style("stroke", "grey");
 	//console.log(d3.event.pageX-parseFloat($("body").css('margin-left')));
 	var ttip=d3.select('.tooltip');
-	  ttip.html(data[line][pos].toFixed(2)+ "\xB0C")  
-	  // ttip.html(line.toFixed(2)+ "\xB0C") 
-	//ttip.html("please work")
-	   			.style("opacity", 1)
-                .style("left", (d3.event.pageX-parseFloat($("body").css('margin-left'))+5) + "px")     
-                .style("top", (d3.event.pageY+5) + "px");   
+	if(mode!='C'){
+		
+	ttip.html(toF(parseFloat(data[line][pos])).toFixed(2)+ "\xB0F")  }
+	else{
+		ttip.html(parseFloat(data[line][pos]).toFixed(2)+ "\xB0C")}
+	 //  ttip.html(line.toFixed(2)+ "\xB0C") 
+	
+	   			ttip.style("opacity", 1)
+                .style("left", (d3.event.pageX-parseFloat($("body").css('margin-left'))+10) + "px")     
+                .style("top", (d3.event.pageY+10) + "px");   
 })
 			
         
@@ -223,23 +236,23 @@ var imgstop = svg.selectAll("image").data(flame);
 			.attr("xlink:href", function(d){return d[1]==0? "flamedown.png":"flame.png"})
 			.attr("width", Math.min(x.rangeBand(),30))
             .attr("height", Math.min(x.rangeBand(),30))
-			.attr("x", function(d){return (d[0]+3.75)*(x.rangeBand()+1)})
+			.attr("x", function(d){return (d[0]+1.5)*(x.rangeBand()+1)})
             .attr("y", function(d){return -Math.min(x.rangeBand(),30)+(height+Math.min(x.rangeBand(),30))*d[1]})
 		
 var linktext = svg.selectAll("g.linklabelholder").data(flame);
     linktext.enter().append("g").attr("class", "linklabelholder")
      .append("text")
      .attr("class", "linklabel")
-     .attr("dx", function(d){return (d[0]+3.75)*(x.rangeBand()+1)})
+     .attr("dx", function(d){return (d[0]+1.5)*(x.rangeBand()+1)})
      .attr("dy", function(d){return -Math.min(x.rangeBand(),30)/1.2+(height+2*Math.min(x.rangeBand(),30))*d[1]})
      .attr("text-anchor", "right")
 		.style("font-size", "8px")
      .text(function(d,i) {
 		 
-		 if(i==0){return  d[2].toFixed(0)}
-		if(i==1&&flame[i][0]==flame[i-1][0]){return  d[2].toFixed(0)}
+		 if(i==0){return mode=='C'? d[2].toFixed(0):toF(d[2]).toFixed(0)}
+		if(i==1&&flame[i][0]==flame[i-1][0]){return mode=='C'? d[2].toFixed(0):toF(d[2]).toFixed(0)}
 		if(i==1){return '';}
-		if(flame[i][0]==flame[i-1][0]&&flame[i-2][2]!=flame[i][2]){return  d[2].toFixed(0)}				  
+		if(flame[i][0]==flame[i-1][0]&&flame[i-2][2]!=flame[i][2]){return mode=='C'? d[2].toFixed(0):toF(d[2]).toFixed(0)}				  
 		else return "";});
 
 		
@@ -356,6 +369,6 @@ function bumpLayer(layer,data) {
 
 	$(document).ready(function(){
     $('.graph').each(function(){
-        graph.setup($(this),sampledata,flame,timestep,meatType,maxTemps);});
+        graph.setup($(this),sampledata,flame,timestep,meatType,maxTemps,mode);});
 });
 }
