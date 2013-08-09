@@ -6,8 +6,7 @@ var perfectSteak = function (div) {
         var currentInfo={'meatTemp':23, 'thickness':3, 'data':[], 'numRows':2, 'time':0, 'OKToGraph':true, 'recipe':{}, totalTime:0};
         
         var timeStep = 15;
-        var inputTable = $(".inputTable");
-
+        
         var changeThickness = function (newVal) {
 
             currentInfo["thickness"] = newVal;
@@ -170,6 +169,7 @@ var perfectSteak = function (div) {
             for(var i=0;i<numArray.length;i++){
                 numArray[i]=parseInt(numArray[i]);
             }
+            var parsedThickness = numArray.shift();
             var startingTemp = numArray.shift();
             
             var parsedData = [];
@@ -180,6 +180,7 @@ var perfectSteak = function (div) {
                 console.log(newRow);
                 parsedData.push(newRow);
             }
+            currentInfo["thickness"] = parsedThickness;
             currentInfo["meatTemp"] = startingTemp;
             currentInfo["data"] = parsedData;
         }
@@ -212,33 +213,35 @@ var perfectSteak = function (div) {
 
 
     function View(div, model) {
-navigator.sayswho= (function(){
-var N= navigator.appName, ua= navigator.userAgent, tem;
- var M= ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
- if(M && (tem= ua.match(/version\/([\.\d]+)/i))!= null) M[2]= tem[1];
- M= M? [M[1], M[2]]: [N, navigator.appVersion,'-?'];
- console.log("browserinfo"+M);
- console.log(M[1] +"1" + M[0]+"0");
- if (M[0]=="MSIE"){
-$('input[type=text]').each(function(){
-$(this).css(
-"height", "100px !important"
-)}
- )
- }
- model.browserInfo(M);
-})();
- 
-
- 
- 
- 
+        
+        navigator.sayswho= (function(){
+            var N= navigator.appName, ua= navigator.userAgent, tem;
+            var M= ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
+            if(M && (tem= ua.match(/version\/([\.\d]+)/i))!= null) M[2]= tem[1];
+            M= M? [M[1], M[2]]: [N, navigator.appVersion,'-?'];
+            console.log("browserinfo"+M);
+            console.log(M[1] +"1" + M[0]+"0");
+            if (M[0]=="MSIE"){
+                $('input[type=text]').each(function(){
+                $(this).css(
+                "height", "100px !important"
+            )}
+            )
+            }
+            model.browserInfo(M);
+        })();
+        
         var inputTable = $("<table class='inputTable table table-striped'></table>");
 var clicked=false;
  
         var displayDiv = $("<div class='displayDiv'></div>");
-		
-        displayDiv.append(inputTable);
+        
+        var tableTabs = $('<ul class="nav nav-tabs"><li><a href="#table" data-toggle="tab">Table</a></li><li><a href="#text" data-toggle="tab">Text</a></li></ul>');
+        var inpTabHeader = $("<tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
+        inputTable.append(inpTabHeader);
+        var tabContent = $("<div class='tab-content'><div class='tab-pane' id='table'></div><div class='tab-pane' id='text'></div></div>");
+        $("#table").append($(".inputTable")); 
+        displayDiv.append(tableTabs,tabContent);
         
         var addButton;
         var flipButton;
@@ -345,9 +348,7 @@ saveBut.on("click", function(){
     return (C*(5/9)+32 + "&#176;F");
     }
             var buildTable = function () {
-                var tableTabs = $('<ul class="nav nav-tabs"><li><a href="#home" data-toggle="tab">Home</a></li><li><a href="#profile" data-toggle="tab">Profile</a></li><li><a href="#messages" data-toggle="tab">Messages</a></li><li><a href="#settings" data-toggle="tab">Settings</a></li></ul>');
-                var inpTabHeader = $("<tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
-                inputTable.append(inpTabHeader);
+                
                 var timeStep = model.timeStep;
                 var len = model.currentInfo["data"].length;
                 var newData = []
@@ -664,7 +665,7 @@ else{var sumtime=parseFloat(time[0]);}
         var view = View(div, model);
         
         view.buildDisplay();
-        $('.inputTable').offset({top:1060});
+        $('.inputTable').offset({top:0});
      
 
 
