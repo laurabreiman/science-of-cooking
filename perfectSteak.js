@@ -231,14 +231,10 @@ var perfectSteak = function (div) {
             model.browserInfo(M);
         })();
         
-        var inputTable = $("<table class='inputTable table table-striped'></table>");
         var clicked=false;
         var displayDiv = $("<div class='displayDiv'></div>");
         var tableTabs = $('<ul class="nav nav-tabs"><li><a href="#table" data-toggle="tab">Table</a></li><li><a href="#text" data-toggle="tab">Text</a></li></ul>');
-        var inpTabHeader = $("<tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
-        inputTable.append(inpTabHeader);
-        var tabContent = $("<div class='tab-content'><div class='tab-pane' id='table'></div><div class='tab-pane' id='text'></div></div>");
-        displayDiv.append(inputTable); 
+        var tabContent = $("<div class='tab-content'><div class='tab-pane active' id='table'><table class='inputTable table table-striped'><tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr></table></div><div class='tab-pane' id='text'></div></div>");
         displayDiv.append(tableTabs,tabContent);
         
         var addButton;
@@ -375,7 +371,7 @@ saveBut.on("click", function(){
                     step1Col.append(flipButton);
     
                     row.append(duration, step1Col, step2Col);
-                    inputTable.append(row);
+                    $(".inputTable").append(row);
                     if (i == model.currentInfo["numRows"] - 1) {
     saveBut=$('<a href="#saveBut" role="button" class="btn sBut" data-toggle="modal">Save</a>');
     var saveModal=$('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe</div></div>');
@@ -430,7 +426,7 @@ saveBut.on("click", function(){
 
 })
 
-            inputTable.append(addButton);//, saveBut,saveModal);
+            $(".inputTable").append(addButton);//, saveBut,saveModal);
 							 $(".span3").append(cookButt);
                         addDropdown();
                 }
