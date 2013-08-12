@@ -21,7 +21,7 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,t
 		for(var i=0;i<instructions.length;i++)
 		{
 			if(mode=='F'){
-			directions.push(instructions[i][0]+" seconds at "+toF(instructions[i][1]).toFixed(0)+"\xB0F and "+toF(instructions[i][2]).toFixed(0)+"\xB0F"
+			directions.push(instructions[i][0]+" seconds at "+instructions[i][1].toFixed(0)+"\xB0F and "+instructions[i][2].toFixed(0)+"\xB0F"
 			);
 			}
 			else{

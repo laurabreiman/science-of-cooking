@@ -15,7 +15,8 @@ var perfectSteak = function (div) {
             'time': 0,         //time
             'OKToGraph': true, //flag for when data is ready to graph
             'recipe': {},      //recipe
-            'totalTime': 0     //total cooking
+            'totalTime': 0,     //total cooking
+			'names':{'Steak':0,'Tuna':0,'Turkey':0}
         };
 
         var timeStep = 15;
@@ -178,18 +179,23 @@ var perfectSteak = function (div) {
             parseRecipe takes in a string interpretaion of a recipe for cooking meat and organizes it using regexp into the format stored in the currentInfo variable
         */
         var parseRecipe = function (recipeStr) {
-			console.log(recipeStr.replace(/\n/g,' '));
+			
+			recipeStr=recipeStr.replace(/\n/g,' ');
+	
             var pattTemp = /\d+/g;
             var pattCelsius = /\°(.+)$/g;
-
+			var meatType;
+			if(recipeStr.indexOf("Steak")>-1){meatType="Steak"}
+			if(recipeStr.indexOf("Tuna")>-1){meatType="Tuna"}
+			if(recipeStr.indexOf("Turkey")>-1){meatType="Turkey"}
             var numArray = recipeStr.match(pattTemp);
             for (var i = 0; i < numArray.length; i++) {
                 numArray[i] = parseInt(numArray[i]);
             }
             //check if it's in celsius (celsius = true) or fahrenheit (celsius = false)
-            var celsius = true;
+            var celsius = "C";
             if (recipeStr.match(pattCelsius)[0].charAt(1) == "F") {
-                celsius = false;
+                celsius = "F";
             }
             
             var parsedThickness = numArray.shift();
@@ -203,10 +209,19 @@ var perfectSteak = function (div) {
                 console.log(newRow);
                 parsedData.push(newRow);
             }
-            console.log(celsius,parsedData,parsedThickness,startingTemp);
+			var steak=[];
+			for(var i=0;i<parsedThickness*10;i++)
+			{
+				steak.push(startingTemp);
+			}
+			d3.selectAll(".mysteak").remove();
+            d3.selectAll(".containers").remove();
+			calculate(parsedData, steak, meatType, false, currentInfo["totalTime"], celsius);
+            console.log(steak,celsius,parsedData,parsedThickness,startingTemp);
             currentInfo["thickness"] = parsedThickness;
             currentInfo["meatTemp"] = startingTemp;
             currentInfo["data"] = parsedData;
+	
         }
 
         return {
@@ -391,13 +406,14 @@ var perfectSteak = function (div) {
                 row.append(duration, step1Col, step2Col);
                 $(".inputTable").append(row);
                 if (i == model.currentInfo["numRows"] - 1) {
-                    saveBut = $('<a href="#saveBut" role="button" class="btn sBut" data-toggle="modal">Save</a>');
-                    var saveModal = $('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe</div></div>');
+
                     var nameInp = $('<input type="text" id=recipeName width="150px"></input>');
-                    var okModal = $('<button class="btn" data-dismiss="modal" aria-hidden="true" id="okModal">OK</button>');
-                    okModal.on("click", function () {
-                        model.saveRecipe($("#recipeName").val());
-                        var name = $("#recipeName").val();
+          
+                    cookButt.on("click", function () {
+						 var meatType = $("input[type='radio'][name='meat']:checked").attr('id');
+						model.currentInfo['names'][meatType]=model.currentInfo['names'][meatType]+1;
+                        var name = meatType+model.currentInfo['names'][meatType];
+						model.saveRecipe(name);
                         var dropdown1 = $("#d1");
                         var dropdown2 = $("#d2");
                         dropdown1.append($('<option>' + name + '</option>'));
@@ -412,20 +428,21 @@ var perfectSteak = function (div) {
                         var inf = model.currentInfo['recipe'][name2];
                         drawFinished(inf[0], inf[1], inf[2], inf[3], 0);
                     })
-                    saveModal.append(nameInp, okModal);
+                 
 
                     cookButt.on("click", function () {
                         if($("#recipeInput").closest(".tab-pane").hasClass("active"))
                         {
                             var recipeString = $("#recipeInput").val();
                             model.parseRecipe(recipeString);
+							
                         }
                         else{
                             model.checkDiv()
                             model.buildData();
                             updateTime();
                             model.buildData();
-                        }
+                        
 
                         if (clicked && model.currentInfo["OKToGraph"]) {
                             graph(false, $('.mytog:checked').attr('id'))
@@ -434,6 +451,7 @@ var perfectSteak = function (div) {
                             d3.selectAll(".mysteak").remove();
                             model.dataClear();
                         }
+						}
                     })
 
                     $(".inputTable").append(addButton); //, saveBut,saveModal);
@@ -602,6 +620,7 @@ var perfectSteak = function (div) {
 
             //add to on click and calculate(blah,blah,blah, meatType)
             var meatType = $("input[type='radio'][name='meat']:checked").attr('id');
+		
             if (falseColor == 'T') {
                 meatType = 'False';
             }
@@ -674,9 +693,9 @@ var perfectSteak = function (div) {
         var view = View(div, model);
 
         view.buildDisplay();
-        $('.inputTable').offset({
+       /* $('.inputTable').offset({
             top: 1030
-        });
+        });*/
 
 
 
