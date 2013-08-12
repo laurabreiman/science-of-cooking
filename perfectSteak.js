@@ -283,9 +283,23 @@ var perfectSteak = function (div) {
         var clicked = false;
         var displayDiv = $("<div class='displayDiv'></div>");
         var tableTabs = $('<ul class="nav nav-tabs"><li><a href="#table" data-toggle="tab">Table</a></li><li><a href="#text" data-toggle="tab">Text</a></li></ul>');
-        var tabContent = $("<div class='tab-content'><div class='tab-pane active' id='table'><span class='switcheroo'><input type='radio' class='mytog2' id='C' name='toggle2' checked><label for='C' class='btn' >C</label><input type='radio' class='mytog2'id='F' name='toggle2'><label for='F' class='btn' >F</label></span><span id='thickInpDiv'>Meat Thickness: <input type='text' id='thicknessInp' value='3'> cm </span><span id='tempInpDiv'>Initial Meat Temperature: <input type='text' id='steakTemp' value='23'><span id='work'>&#176;C</span></span><span><form id='meatInp'><b>Meat Type  </b><input type='radio' name='meat' id='Steak' checked>Steak<input type='radio' name='meat' id='Tuna'>Tuna <input type='radio' name='meat' id='Turkey'>Turkey </form></span><table class='inputTable table table-striped'><tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'id='si1'>Side 1 (&#176;C)</th><th class='inpTabHeader'id='si2'>Side 2 (&#176;C)</th></tr></table></div><div class='tab-pane' id='text'><div class='containerm'><textarea id='recipeInput' cols=40 rows=5></textarea></div></div></div>");
+		
+		var tabContent = $("<div class='tab-content'></div>");
+		var tabPaneActive=$("<div class='tab-pane active' id='table'></div>");
+		var thickInpDiv=$("<span id='thickInpDiv'>Meat Thickness: <input type='text' id='thicknessInp' value='3'> cm </span><span id='tempInpDiv'>Initial Meat Temperature: <input type='text' id='steakTemp' value='23'><span id='work'>&#176;C</span></span>");
+		var meatInp=$("<span><form id='meatInp'><b>Meat Type  </b><input type='radio' name='meat' id='Steak' checked>Steak<input type='radio' name='meat' id='Tuna'>Tuna <input type='radio' name='meat' id='Turkey'>Turkey </form></span>");
+		var switcheroo=$('<span class="switcheroo"></span>');
+		var mytog2=$("<input type='radio' class='mytog2' id='C' name='toggle2' checked><label for='C' class='btn'>C</label><input type='radio' class='mytog' id='F' name='toggle2'><label for='F' class='btn'>F</label>");
+		var inputTable=$("<table class='inputTable table table-striped'></table>");
+		var inpTabHeader = $("<tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
+		var containerm = $("<div class='containerm'><textarea id='recipeInput' cols=40 rows=5></textarea></div>");
+		inputTable.append(inpTabHeader)
+		switcheroo.append(mytog2);
+		tabPaneActive.append(switcheroo, thickInpDiv, meatInp, inputTable, containerm);
+		tabContent.append(tabPaneActive)
+		
         displayDiv.append(tableTabs, tabContent);
-      tabContent.change(function () {
+		tabContent.change(function () {
 			
                     $('#si1').html("Side 1 (&#176;" + $('.mytog2:checked').attr('id') + ")");
                     $('#si2').html("Side 2 (&#176;" + $('.mytog2:checked').attr('id') + ")");
@@ -318,7 +332,7 @@ var perfectSteak = function (div) {
                     time += sec;
                 }
             }
-            model.updateTotalTime(time);
+           model.updateTotalTime(time);
         }
 
         /*
@@ -408,15 +422,42 @@ var perfectSteak = function (div) {
                     var vals = parseFloat($("#row" + (i - 1) + "time").val());
                 }
 
-                var duration = $("<td id='duration" + i + "'><input id='row" + i + "time' type='text' value='15'></td>");
+                var duration = $("<td id='duration" + i + "'><input id='row" + i + "time' type='text' value='15'></input></td>");
                 var inp1 = $("<input type='text' id='inp1_" + i + "'>");
-                var inp2 = $("<input type='text' id='inp2_" + i + "'><button type='button' class='close closeRow' id='row" + i + "button'>&times; </button>");
+                var inp2 = $("<span id='inp2row" + i + "span'><input type='text' id='inp2_" + i + "'></span>");
+                var closeButton = $("<button type='button' class='close closeRow' id='row" + i + "button'>&times;</button>");
+                inp2.append(closeButton);
                 var step1Col = $("<td id='row" + i + "side1'></input>");
                 step1Col.append(inp1);
                 var step2Col = $("<td id='row" + i + "side2' class='row" + i + "'></td>");
                 step2Col.append(inp2);
                 step1Col.append(flipButton);
+				
+				  closeButton.on("click", function () {
+                    var rowNum = String($(this).attr("id").charAt(3))
+                    //NOW WE'RE REMOVING THE ROW WITH THE X NEXT TO IT
+                    $("#row" + rowNum).remove();
+                    //REDUCING THE NUMBER OF EXPECTED ROWS
+                    model.numRowsMinus();
+                    console.log("closed" + model.currentInfo["numRows"]);
+                    //NOW WE NEED TO CHANGE THE ROW NUMBER OF ALL THE OTHER ROWS
+                    for (var l = parseInt(rowNum) + 1; l < model.currentInfo["numRows"] + 1; l++) {
+                        console.log("we're in the closeRow loop " + l);
+                        console.log($("#row" + l).attr("id") + "id");
+                        console.log(String("row" + parseInt(l - 1)))
+                        $("#row" + l).attr("id", String("row" + parseInt(l - 1)));
+                        $("#row" + l + "time").attr("id", String("row" + parseInt(l - 1) + "time"))
+                        $("#row" + l + "button").attr("id", String("row" + parseInt(l - 1) + "button"))
+                        $("#duration" + l).attr("id", String("duration" + parseInt(l - 1)));
+                        $("#row" + l + "side1").attr("id", String("row" + parseInt(l - 1) + "side1"));
+                        $("inp1_" + l).attr("id", String("inp1_" + parseInt(l - 1)));
+                        $("#row" + l + "side2").attr("id", String("row" + parseInt(l - 1) + "side2"));
+                        $("#inp2_" + l).attr("id", String("inp2_" + parseInt(l - 1)));
+						$("#addButton"+l).attr("id", String("addButton"+parseInt(l-1)));
+                    }
 
+                });
+				
                 row.append(duration, step1Col, step2Col);
                 $(".inputTable").append(row);
                 if (i == model.currentInfo["numRows"] - 1) {
