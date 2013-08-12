@@ -643,7 +643,7 @@ var importRecipes=function(){
                 addRow($(".inputTable"));
             });
 			
-			$(".span3").append(addButton);
+			inputTable.append(addButton);
 			
 			table.append(row);
 			
@@ -661,6 +661,7 @@ var importRecipes=function(){
 
         var addButtonFun = function () {
             addButton.on("click", function () {
+				addButton.remove();
                 model.buildData();
                 model.numRowsPlus();
                 addRow($(".inputTable"));
