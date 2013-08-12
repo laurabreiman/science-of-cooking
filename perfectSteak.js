@@ -1,13 +1,10 @@
-/*
-    This visualization was created by MIT students Kate Roe, Laura Breiman, and Marissa Stephens for the 2013 edX course <a href='https://www.edx.org/course/harvard-university/spu27x/science-cooking-haute-cuisine/639' target="_newtab">Science & Cooking: From Haute Cuisine to Soft Matter Science</a> taught by Harvard professor Michael Brenner. It demonstrates the heat diffusion through meat over time.
-    The function perfectSteak takes in a div and fills it the "Cook My Steak" app, including relevant UI and visualizations.
-    Consists of a model, which calculates changes keeps track of the current state, and a view, which makes this state visible and clear to the user.
-*/
 var perfectSteak = function (div) {
-    
+
+
     function Model(div) {
 
         var currentInfo = {
+
             'meatTemp': 23,    //initial temperature of the meat
             'thickness': 3,    //thickness of the meat in centimeters
             'data': [],        //timestamps of temperatures
@@ -17,9 +14,11 @@ var perfectSteak = function (div) {
             'recipe': {},      //recipe
             'totalTime': 0,     //total cooking
 			'names':{'Steak':0,'Tuna':0,'Turkey':0}
+
         };
 
         var timeStep = 15;
+        var inputTable = $(".inputTable");
 
         var changeThickness = function (newVal) {
 
@@ -70,19 +69,22 @@ var perfectSteak = function (div) {
             currentInfo['recipe'][name] = recipe;
         }
 
-        /*
-            function convertTime changes "secs" seconds into format Y:X where Y is minutes and X is seconds
-        */
+
+
+        //CHANGES X SECONDS INTO Y:X WHERE Y IS MINUTES X IS SECONDS
         var convertTime = function (secs) {
+            
             var minutes = Math.floor(parseInt(secs) / 60);
             var seconds = parseInt(secs) % 60;
+           
             if (minutes == 0 && seconds < 10) {
-                console.log(String(0) + ":0" + String(seconds))
+     
                 return String(0) + ":0" + String(seconds);
             } else if (seconds == 0) {
-                console.log(String(minutes) + ':' + String(seconds) + '0')
+    
                 return String(minutes) + ':' + String(seconds) + '0';
             } else {
+                
                 return String(minutes) + ':' + String(seconds);
             }
         }
@@ -99,21 +101,18 @@ var perfectSteak = function (div) {
             currentInfo["meatTemp"] = newVal;
         }
 
+        //OK THIS WORKS NOW
         var dataClear = function () {
             currentInfo["data"] = [];
         }
 
-        /*
-            dataAdd adds an element to the data array
-        */
+        //THIS ADDS AN ELEMENT TO THE DATA ARRAY
         var dataAdd = function (item) {
 
             currentInfo["data"].push(item);
         }
 
-        /*
-            dataChange changes the entire data array to the array passed in as a parameter
-        */
+        //THIS IS FOR CHANGING THE ENTIRE DATA ARRAY
         var dataChange = function (array) {
             currentInfo["data"] = array;
 
@@ -130,24 +129,28 @@ var perfectSteak = function (div) {
             var Thedata = myheatsolver.sixty_graph_arrays_duration(currentInfo["data"]);
             var maxTemps = Thedata.maxTemps;
             var meatType = $("input[type='radio'][name='meat']:checked").attr('id');
-            var recipe = [meatType, maxTemps, currentInfo["data"], currentInfo["meatTemp"]];
+            var recipe = [meatType, maxTemps, currentInfo["data"], currentInfo["meatTemp"],currentInfo['thickness'],$('.mytog2:checked').attr('id')];
             addRecipe(name, recipe);
 
         }
 
-        /*
-            buildData takes the data from the table and arranges it into one array of multiple length 3 arrays, each with the format [duration of cooking, temperature of side 1, temperature of side 2]
-            it then changes the current stored value of "data"
-        */
+
+
         var buildData = function () {
             var newData = [];
-
+            //THIS IS BEFORE THE NEXT BUTTON IS ADDED, SO NUMROWS IS ACTUALLY ONE LESS THAN IT DISPLAYS
+    
             for (var g = 0; g < currentInfo["numRows"]; g++) {
+              
                 var side1data = parseFloat($("#inp1_" + g).val());
                 var side2data = parseFloat($("#inp2_" + g).val());
-                var timedata = $("#row" + g + "time").val();
-
-                if (timedata.length > 2) {
+                var timedata = $("#row" + g + "time").val()||1000;
+				
+				
+				if (timedata == 1000){
+					var timeMin=4;
+					return 4;
+                }else if (timedata.length > 2) {
                     var timeMin = function (time) {
 
                         var timeString = '';
@@ -175,10 +178,8 @@ var perfectSteak = function (div) {
 
         }
 
-        /*
-            parseRecipe takes in a string interpretaion of a recipe for cooking meat and organizes it using regexp into the format stored in the currentInfo variable
-        */
         var parseRecipe = function (recipeStr) {
+
 			
 			recipeStr=recipeStr.replace(/\n/g,' ');
 	
@@ -188,10 +189,14 @@ var perfectSteak = function (div) {
 			if(recipeStr.indexOf("Steak")>-1){meatType="Steak"}
 			if(recipeStr.indexOf("Tuna")>-1){meatType="Tuna"}
 			if(recipeStr.indexOf("Turkey")>-1){meatType="Turkey"}
+
+            var pattTemp = /\d+/g;
+
             var numArray = recipeStr.match(pattTemp);
             for (var i = 0; i < numArray.length; i++) {
                 numArray[i] = parseInt(numArray[i]);
             }
+
             //check if it's in celsius (celsius = true) or fahrenheit (celsius = false)
             var celsius = "C";
             if (recipeStr.match(pattCelsius)[0].charAt(1) == "F") {
@@ -199,6 +204,7 @@ var perfectSteak = function (div) {
             }
             
             var parsedThickness = numArray.shift();
+
             var startingTemp = numArray.shift();
 
             var parsedData = [];
@@ -206,9 +212,10 @@ var perfectSteak = function (div) {
             for (var i = 0; i < numArray.length; i += 3) {
                 newRow = [];
                 newRow.push(numArray[i], numArray[i + 1], numArray[i + 2]);
-                console.log(newRow);
+              
                 parsedData.push(newRow);
             }
+
 			var steak=[];
 			for(var i=0;i<parsedThickness*10;i++)
 			{
@@ -217,8 +224,9 @@ var perfectSteak = function (div) {
 			d3.selectAll(".mysteak").remove();
             d3.selectAll(".containers").remove();
 			calculate(parsedData, steak, meatType, false, currentInfo["totalTime"], celsius);
-            console.log(steak,celsius,parsedData,parsedThickness,startingTemp);
+           
             currentInfo["thickness"] = parsedThickness;
+
             currentInfo["meatTemp"] = startingTemp;
             currentInfo["data"] = parsedData;
 	
@@ -238,6 +246,7 @@ var perfectSteak = function (div) {
             convertTime: convertTime,
             changeTime: changeTime,
             addTime: addTime,
+            buildData: buildData,
             checkDiv: checkDiv,
             saveRecipe: saveRecipe,
             addRecipe: addRecipe,
@@ -250,7 +259,7 @@ var perfectSteak = function (div) {
 
 
 
-    function View(div, model) {
+ function View(div, model) {
 
         navigator.sayswho = (function () {
             var N = navigator.appName,
@@ -259,8 +268,8 @@ var perfectSteak = function (div) {
             var M = ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
             if (M && (tem = ua.match(/version\/([\.\d]+)/i)) != null) M[2] = tem[1];
             M = M ? [M[1], M[2]] : [N, navigator.appVersion, '-?'];
-            console.log("browserinfo" + M);
-            console.log(M[1] + "1" + M[0] + "0");
+         
+
             if (M[0] == "MSIE") {
                 $('input[type=text]').each(function () {
                     $(this).css(
@@ -277,13 +286,14 @@ var perfectSteak = function (div) {
         var tabContent = $("<div class='tab-content'><div class='tab-pane active' id='table'><span class='switcheroo'><input type='radio' class='mytog2' id='C' name='toggle2' checked><label for='C' class='btn' >C</label><input type='radio' class='mytog2'id='F' name='toggle2'><label for='F' class='btn' >F</label></span><span id='thickInpDiv'>Meat Thickness: <input type='text' id='thicknessInp' value='3'> cm </span><span id='tempInpDiv'>Initial Meat Temperature: <input type='text' id='steakTemp' value='23'><span id='work'>&#176;C</span></span><span><form id='meatInp'><b>Meat Type  </b><input type='radio' name='meat' id='Steak' checked>Steak<input type='radio' name='meat' id='Tuna'>Tuna <input type='radio' name='meat' id='Turkey'>Turkey </form></span><table class='inputTable table table-striped'><tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'id='si1'>Side 1 (&#176;C)</th><th class='inpTabHeader'id='si2'>Side 2 (&#176;C)</th></tr></table></div><div class='tab-pane' id='text'><div class='containerm'><textarea id='recipeInput' cols=40 rows=5></textarea></div></div></div>");
         displayDiv.append(tableTabs, tabContent);
       tabContent.change(function () {
-					console.log("check");
+			
                     $('#si1').html("Side 1 (&#176;" + $('.mytog2:checked').attr('id') + ")");
                     $('#si2').html("Side 2 (&#176;" + $('.mytog2:checked').attr('id') + ")");
                     $('#work').html("&#176;" + $('.mytog2:checked').attr('id'));
                     graph(false, $('.mytog:checked').attr('id'));
                 });
         var addButton;
+        
         var flipButton;
         var cookButton;
 
@@ -332,10 +342,12 @@ var perfectSteak = function (div) {
                 var e2 = document.getElementById("d2");
                 var name2 = e2.options[e2.selectedIndex].text;
                 var info = model.currentInfo['recipe'][name1];
+				console.log(info);
                 d3.selectAll('.finalsteak').remove();
-                drawFinished(info[0], info[1], info[2], info[3], 0);
+			
+                drawFinished(info[0], info[1], info[2], info[3], 0,info[4],info[4]);
                 var inf = model.currentInfo['recipe'][name2];
-                drawFinished(inf[0], inf[1], inf[2], inf[3], 0);
+                drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],inf[5]);
             });
 
             dropdownDiv.append(dropdown1, dropdown2);
@@ -351,7 +363,7 @@ var perfectSteak = function (div) {
                 var switches = $('<div class="switch"><input type="radio" class="mytog" id="PS" name="toggle" checked><label for="PS" class="btn" >Protein State</label><input type="radio" class="mytog"id="T" name="toggle"><label for="T" class="btn" >Temperature</label></div>');
                 div.append(switches);
                 switches.change(function () {
-                    console.log($('.mytog:checked').attr('id'))
+                    
                     graph(false, $('.mytog:checked').attr('id'));
                 });
           
@@ -376,6 +388,8 @@ var perfectSteak = function (div) {
         var toC = function (F) {
             return ((5 / 9) * (F - 32));
         }
+        
+       
         var buildTable = function () {
 
             var timeStep = model.timeStep;
@@ -407,12 +421,13 @@ var perfectSteak = function (div) {
                 $(".inputTable").append(row);
                 if (i == model.currentInfo["numRows"] - 1) {
 
-                    var nameInp = $('<input type="text" id=recipeName width="150px"></input>');
-          
                     cookButt.on("click", function () {
-						 var meatType = $("input[type='radio'][name='meat']:checked").attr('id');
-						model.currentInfo['names'][meatType]=model.currentInfo['names'][meatType]+1;
-                        var name = meatType+model.currentInfo['names'][meatType];
+						var meat= $("input[type='radio'][name='meat']:checked").attr('id');
+						
+						model.currentInfo['names'][meat]=model.currentInfo['names'][meat]+1;
+						
+                        
+                        var name = meat+model.currentInfo['names'][meat];
 						model.saveRecipe(name);
                         var dropdown1 = $("#d1");
                         var dropdown2 = $("#d2");
@@ -424,25 +439,24 @@ var perfectSteak = function (div) {
                         var name2 = e2.options[e2.selectedIndex].text;
                         var info = model.currentInfo['recipe'][name1];
                         d3.selectAll('.finalsteak').remove();
-                        drawFinished(info[0], info[1], info[2], info[3], 0);
+                        drawFinished(info[0], info[1], info[2], info[3], 0,info[4],info[5]);
                         var inf = model.currentInfo['recipe'][name2];
-                        drawFinished(inf[0], inf[1], inf[2], inf[3], 0);
+                        drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],inf[5]);
                     })
-                 
+                   
 
                     cookButt.on("click", function () {
                         if($("#recipeInput").closest(".tab-pane").hasClass("active"))
                         {
                             var recipeString = $("#recipeInput").val();
                             model.parseRecipe(recipeString);
-							
                         }
                         else{
                             model.checkDiv()
                             model.buildData();
                             updateTime();
                             model.buildData();
-                        
+                
 
                         if (clicked && model.currentInfo["OKToGraph"]) {
                             graph(false, $('.mytog:checked').attr('id'))
@@ -451,7 +465,7 @@ var perfectSteak = function (div) {
                             d3.selectAll(".mysteak").remove();
                             model.dataClear();
                         }
-						}
+							        }
                     })
 
                     $(".inputTable").append(addButton); //, saveBut,saveModal);
@@ -543,7 +557,7 @@ var perfectSteak = function (div) {
 				$('#table').stop().animate({
                     scrollTop: $("#table")[0].scrollHeight
                 }, 800);
-				
+
             });
         };
 
@@ -569,7 +583,7 @@ var perfectSteak = function (div) {
 
 
         var graph = function (isFirst, falseColor) {
-            var mode = $('.mytog2:checked').attr('id');
+			
             d3.selectAll(".mysteak").remove();
             d3.selectAll(".containers").remove();
             model.dataClear();
@@ -620,22 +634,21 @@ var perfectSteak = function (div) {
 
             //add to on click and calculate(blah,blah,blah, meatType)
             var meatType = $("input[type='radio'][name='meat']:checked").attr('id');
+
 		
             if (falseColor == 'T') {
+
                 meatType = 'False';
             }
             //THIS WILL COOK THE STEAK IF WE HAVE VALID INPUTS
             if (OKtoCook == true) {
                 var steak = [model.currentInfo["data"][0][1]];
                 for (var m = 0; m < parseFloat($("#thicknessInp").val()) * 10; m++) {
-                    if (mode == 'F') {
-                        steak.push(toC(parseFloat($("#steakTemp").val())).toFixed(0))
-                    } else {
-                        steak.push(parseFloat($("#steakTemp").val()).toFixed(0))
-                    }
+                    steak.push(parseFloat($("#steakTemp").val()))
                 }
                 steak.push(model.currentInfo["data"][0][2]);
-                calculate(model.currentInfo["data"], steak, meatType, isFirst, model.currentInfo["totalTime"], mode)
+				
+                calculate(model.currentInfo["data"], steak, meatType, isFirst, model.currentInfo["totalTime"],$('.mytog2:checked').attr('id'))
             }
         }
         var CookButtonFun = function () {
@@ -647,7 +660,7 @@ var perfectSteak = function (div) {
                 if (model.currentInfo["OKToGraph"]) {
                     d3.selectAll("svg").remove();
                     model.dataClear();
-                    graph(true, $('.mytog:checked').attr('id'));
+                    graph(true, '');
                 };
             });
         }
@@ -691,11 +704,16 @@ var perfectSteak = function (div) {
     var setup = function (div) {
         var model = Model();
         var view = View(div, model);
+        //model.parseRecipe();
+
+
 
         view.buildDisplay();
+
        /* $('.inputTable').offset({
             top: 1030
         });*/
+
 
 
 
