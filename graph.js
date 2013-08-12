@@ -187,15 +187,15 @@ var rect = layer.selectAll("rect")
 
 
 	var Offset = document.getElementById("graphSteak").offsetTop;
-	var pos=parseInt(data[0].length-(event.pageY-Offset-margin.top-300)/(height/yStackMax));
+	var pos=parseInt(data[0].length-(event.pageY-Offset-margin.top-320)/(height/yStackMax));
 var line=parseInt((event.pageX-parseFloat($("body").css('margin-left'))-margin.left)/(x.rangeBand()+1.2)-1.5);
 console.log(line);
 	$("line").remove();
 	var myLine = d3.selectAll(".mysteak").append("svg:line")
     .attr("x1", margin.left)
-    .attr("y1", event.pageY-Offset-295)
+    .attr("y1", event.pageY-Offset-322)
     .attr("x2", width*32/30)
-    .attr("y2", event.pageY-Offset-295)
+    .attr("y2", event.pageY-Offset-322)
 	.style("z-index",-1)
     .style("stroke", "grey");
 	//console.log(d3.event.pageX-parseFloat($("body").css('margin-left')));
@@ -205,7 +205,7 @@ console.log(line);
 	ttip.html(toF(parseFloat(data[line][pos])).toFixed(2)+ "\xB0F")  }
 	else{
 		ttip.html(parseFloat(data[line][pos]).toFixed(2)+ "\xB0C")}
-	 //  ttip.html(line.toFixed(2)+ "\xB0C") 
+	 //  ttip.html(pos.toFixed(2)+ "\xB0C") 
 	
 	   			ttip.style("opacity", 1)
                 .style("left", (d3.event.pageX-parseFloat($("body").css('margin-left'))+10) + "px")     

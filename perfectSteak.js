@@ -19,13 +19,25 @@ var perfectSteak = function (div) {
 
         var timeStep = 15;
         var inputTable = $(".inputTable");
+		 var toC = function (F) {
+            return ((5 / 9) * (F - 32));
+        }
 var importRecipes=function(){
-		var saved=[{"name":"15 seconds flip for 10 minutes","data":[[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300]],"Temp":73},
-				   {"name":"5 minutes a side","data":[[300,300,73],[300,73,300],[300,73,73]],"Temp":73},
-					   {"name":"sous-vide","data":[[3600,140,140],[60,300,73],[60,73,300]],"Temp":73}];
+		var saved=[{"name":"Heston Blumenthal","data":[[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[300,73,73]],"Temp":73},
+	{"name":"4 minutes a side","data":[[240,300,73],[240,73,300],[300,73,73]],"Temp":73},
+	{"name":"America's Test Kitchen","data":[[15,450,73],[15,73,450],[300,225,225],[900,73,73]],"Temp":73},
+					   {"name":"Nathan Mhyrvold","data":[[3600,125,125],[30,-321,-321],[60,390,390]],"Temp":73}];
 		for (var i=0;i<3;i++){
 				var name=saved[i]["name"];
 				var data=saved[i]["data"];
+				
+		
+	for(var n=0;n<data.length;n++)
+	{
+		data[n][1]=toC(data[n][1]);
+		data[n][2]=toC(data[n][2]);
+	}
+	
 			var steaktemp=saved[i]["Temp"];
 			var steak = [data[0][1]];
             for (var m = 0; m < 30; m++) {
@@ -36,7 +48,7 @@ var importRecipes=function(){
             var Thedata = myheatsolver.sixty_graph_arrays_duration(data);
             var maxTemps = Thedata.maxTemps;
             var meatType = "Steak";
-            var recipe = [meatType, maxTemps, data, steaktemp,30,'F'];
+            var recipe = [meatType, maxTemps, data, steaktemp,3,'F'];
             addRecipe(name, recipe);
 			}
 		}
@@ -366,7 +378,7 @@ var importRecipes=function(){
 				console.log(info);
                 d3.selectAll('.finalsteak').remove();
 			
-                drawFinished(info[0], info[1], info[2], info[3], 0,info[4],info[4]);
+                drawFinished(info[0], info[1], info[2], info[3], 0,info[4],info[5]);
                 var inf = model.currentInfo['recipe'][name2];
                 drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],inf[5]);
             });
