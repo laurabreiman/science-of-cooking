@@ -36,7 +36,6 @@ var calculate=function(data,steak,meatType,first,totalTime,mode){
 	}
 	else{
 		   var sampledata=Thedata.allMaxTemps.slice(1,Thedata.allMaxTemps.length);
-		console.log(sampledata);
 
 	for(var i=0;i<sampledata.length;i++)
 	{
