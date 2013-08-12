@@ -22,12 +22,15 @@ var perfectSteak = function (div) {
 		 var toC = function (F) {
             return ((5 / 9) * (F - 32));
         }
+		    var toC = function (F) {
+            return ((5 / 9) * (F - 32));
+        }
 var importRecipes=function(){
 		var saved=[{"name":"Heston Blumenthal","data":[[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[300,73,73]],"Temp":73},
 	{"name":"4 minutes a side","data":[[240,300,73],[240,73,300],[300,73,73]],"Temp":73},
 	{"name":"America's Test Kitchen","data":[[15,450,73],[15,73,450],[300,225,225],[900,73,73]],"Temp":73},
-					   {"name":"Nathan Mhyrvold","data":[[3600,125,125],[30,-321,-321],[60,390,390]],"Temp":73}];
-		for (var i=0;i<3;i++){
+				 {"name":"Nathan Mhyrvold","data":[[3600,125,125],[30,-321,-321],[120,390,390]],"Temp":73}];
+		for (var i=0;i<4;i++){
 				var name=saved[i]["name"];
 				var data=saved[i]["data"];
 				
@@ -41,7 +44,7 @@ var importRecipes=function(){
 			var steaktemp=saved[i]["Temp"];
 			var steak = [data[0][1]];
             for (var m = 0; m < 30; m++) {
-                steak.push(steaktemp)
+                steak.push(toC(steaktemp))
             }
             steak.push(data[0][2]);
             var myheatsolver = HeatSolver(steak);
@@ -154,7 +157,9 @@ var importRecipes=function(){
 
             var steak = [currentInfo["data"][0][1]];
             for (var m = 0; m < parseFloat($("#thicknessInp").val()) * 10; m++) {
-                steak.push(parseFloat($("#steakTemp").val()))
+				if($('.mytog2:checked').attr('id')=='C'){
+                steak.push(parseFloat($("#steakTemp").val()))}
+				else{steak.push(toC(parseFloat($("#steakTemp").val())))}
             }
             steak.push(currentInfo["data"][0][2]);
             var myheatsolver = HeatSolver(steak);
@@ -251,7 +256,8 @@ var importRecipes=function(){
 			var steak=[];
 			for(var i=0;i<parsedThickness*10;i++)
 			{
-				steak.push(startingTemp);
+				if(celsius=='C'){steak.push(startingTemp)}
+				else{steak.push(toC(startingTemp))}
 			}
 			d3.selectAll(".mysteak").remove();
             d3.selectAll(".containers").remove();
@@ -677,7 +683,9 @@ var importRecipes=function(){
             if (OKtoCook == true) {
                 var steak = [model.currentInfo["data"][0][1]];
                 for (var m = 0; m < parseFloat($("#thicknessInp").val()) * 10; m++) {
-                    steak.push(parseFloat($("#steakTemp").val()))
+                   if($('.mytog2:checked').attr('id')=='C'){
+                steak.push(parseFloat($("#steakTemp").val()))}
+				else{steak.push(toC(parseFloat($("#steakTemp").val())))}
                 }
                 steak.push(model.currentInfo["data"][0][2]);
 				
