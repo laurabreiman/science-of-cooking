@@ -337,9 +337,7 @@ var importRecipes=function(){
 		switcheroo.append(mytog2);
 		tabPaneActive.append(switcheroo, thickInpDiv, meatInp, inputTable);
 		tabPane.append(containerm);
-		tabContent.append(tabPaneActive, tabPane)
-		
-		 var tabContent = $("<div class='tab-content'><div class='tab-pane active' id='table'><span class='switcheroo'><input type='radio' class='mytog2' id='C' name='toggle2' checked><label for='C' class='btn' >C</label><input type='radio' class='mytog2'id='F' name='toggle2'><label for='F' class='btn' >F</label></span><span id='thickInpDiv'>Meat Thickness: <input type='text' id='thicknessInp' value='3'> cm </span><span id='tempInpDiv'>Initial Meat Temperature: <input type='text' id='steakTemp' value='23'><span id='work'>&#176;C</span></span><span><form id='meatInp'><b>Meat Type  </b><input type='radio' name='meat' id='Steak' checked>Steak<input type='radio' name='meat' id='Tuna'>Tuna <input type='radio' name='meat' id='Turkey'>Turkey </form></span><table class='inputTable table table-striped'><tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'id='si1'>Side 1 (&#176;C)</th><th class='inpTabHeader'id='si2'>Side 2 (&#176;C)</th></tr></table></div><div class='tab-pane' id='text'><div class='containerm'><textarea id='recipeInput' cols=40 rows=5></textarea></div></div></div>");
+		tabContent.append(tabPaneActive, tabPane);
 		
         displayDiv.append(tableTabs, tabContent);
 		tabContent.change(function () {
@@ -447,15 +445,15 @@ var importRecipes=function(){
         }
         
        
-        var buildTable = function () {
+        var buildTable = function (inpTable) {
 
             var timeStep = model.timeStep;
-            var len = model.currentInfo["data"].length;
+            var len = model.currentInfo["data"].length||1000;
             var newData = []
             var sumtime = 0;
             for (var i = 0; i < model.currentInfo["numRows"]; i++) {
                 var iminus = i - 1;
-                addButton = $("<button class='btn btn-mini' id='addButton'>+</button>");
+                addButton = $("<button class='btn addButton btnBar' id='addButton" + (i + 1) + "'>+</button>");
 
                 flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
 
@@ -502,17 +500,15 @@ var importRecipes=function(){
                 });
 				
                 row.append(duration, step1Col, step2Col);
-                $(".inputTable").append(row);
+                inputTable.append(row);
                 if (i == model.currentInfo["numRows"] - 1) {
-
-                    cookButt.on("click", function () {
-						var meat= $("input[type='radio'][name='meat']:checked").attr('id');
-						
-						model.currentInfo['names'][meat]=model.currentInfo['names'][meat]+1;
-						
-                        
-                        var name = meat+model.currentInfo['names'][meat];
-						model.saveRecipe(name);
+                    saveBut = $('<a href="#saveBut" role="button" class="btn sBut" data-toggle="modal">Save</a>');
+                    var saveModal = $('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe</div></div>');
+                    var nameInp = $('<input type="text" id=recipeName width="150px"></input>');
+                    var okModal = $('<button class="btn" data-dismiss="modal" aria-hidden="true" id="okModal">OK</button>');
+                    okModal.on("click", function () {
+                        model.saveRecipe($("#recipeName").val());
+                        var name = $("#recipeName").val();
                         var dropdown1 = $("#d1");
                         var dropdown2 = $("#d2");
                         dropdown1.append($('<option>' + name + '</option>'));
@@ -523,9 +519,9 @@ var importRecipes=function(){
                         var name2 = e2.options[e2.selectedIndex].text;
                         var info = model.currentInfo['recipe'][name1];
                         d3.selectAll('.finalsteak').remove();
-                        drawFinished(info[0], info[1], info[2], info[3], 0,info[4],info[5]);
+                        drawFinished(info[0], info[1], info[2], info[3], 0);
                         var inf = model.currentInfo['recipe'][name2];
-                        drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],inf[5]);
+                        drawFinished(inf[0], inf[1], inf[2], inf[3], 0);
                     })
                    
 
@@ -536,8 +532,7 @@ var importRecipes=function(){
                             model.parseRecipe(recipeString);
                         }
                         else{
-                            model.checkDiv()
-                            model.buildData();
+                            model.checkDiv();
                             updateTime();
                             model.buildData();
                 
@@ -562,7 +557,7 @@ var importRecipes=function(){
                     sumtime += parseFloat(time[k]);
                 }
 
-                if (len == 0) {
+                if (len == 0||len==1000) {
 
                     inp1.val(180);
                     inp2.val(23);
@@ -595,42 +590,73 @@ var importRecipes=function(){
 
 
         var addRow = function (table) {
-            flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
-            var i = model.currentInfo["numRows"] - 1;
-            var row = $("<tr id='row" + i + "'></tr>");
-
-
-
-            if (i > 0) {
-                var vals = parseFloat($("#row" + (i - 1) + "time").val());
-
-
-                var duration = $("<td ><input id='row" + i + "time' type='text' value='15'></td>");
-                var inp1 = $("<input type='text' id='inp1_" + i + "'>");
-                var inp2 = $("<input type='text' id='inp2_" + i + "'>");
-                var step1Col = $("<td id='row" + i + "side1'></input>");
-                step1Col.append(inp1);
-                var step2Col = $("<td id='row" + i + "side2' class='row" + i + "'><button type='button' class='close closeRow' id='row" + i + "button'>&times;</button></td>");
-                step2Col.append(inp2);
-                step1Col.append(flipButton);
-                row.append(duration, step1Col, step2Col);
-                
-
-                timeFun(i);
-                flipButtonFun(i);
-                table.append(row);
-                inp1.val($("#inp1_" + (i - 1)).val());
-                inp2.val($("#inp2_" + (i - 1)).val());
-                var sumtime = 0;
-                var time = $("#row" + i + "time").val().replace(':', '.').split('.');
-                for (var k = 0; k < time.length; k++) {
-                    sumtime += parseFloat(60 * k * time[k]);
-                }
-
-                model.dataAdd([sumtime, parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())])
-                closeRowFun();
-            }
-
+            var i = parseInt(model.currentInfo["numRows"])-1;
+			console.log(i+"i");
+			var row = $("<tr id='row"+i+"'></tr>");
+			
+			var durationi= $("<td id='duration"+i+"'></td>");
+			var rowitime=$("<input id='row"+i+"time' type=text></input>");
+			durationi.append(rowitime);
+			
+			var rowiside1=$("<td id='row"+i+"side1'></td>");
+			var inp1_i=$("<input id='inp1_"+i+"' type=text></input>");
+			var flipButtoni=$("<button class='btn btn-mini' id='flipButton"+i+"'><font size=4px>&harr;</font></button>");
+			rowiside1.append(inp1_i, flipButtoni);
+			
+			var rowiside2=$("<td id='row"+i+"side2' class='row"+i+"'></td>");
+			var inp2_i=$("<input id='inp2_"+i+"' type='text'></input>");
+			var rowibutton=$("<button type='button' id=row"+i+"button' class='close closeRow'>&times;</button>")
+			rowiside2.append(inp2_i, rowibutton);
+			
+			rowibutton.on("click", function(){
+				var rowNum = String($(this).attr("id").charAt(3))
+                    //NOW WE'RE REMOVING THE ROW WITH THE X NEXT TO IT
+                    row.remove();
+                    //REDUCING THE NUMBER OF EXPECTED ROWS
+                    model.numRowsMinus();
+                    console.log("closed" + model.currentInfo["numRows"]);
+                    //NOW WE NEED TO CHANGE THE ROW NUMBER OF ALL THE OTHER ROWS
+                    for (var l = i + 1; l < model.currentInfo["numRows"] + 1; l++) {
+                        console.log("we're in the closeRow loop " + l);
+                        console.log($("#row" + l).attr("id") + "id");
+                        console.log(String("row" + parseInt(l - 1)))
+                        $("#row" + l).attr("id", String("row" + parseInt(l - 1)));
+                        $("#row" + l + "time").attr("id", String("row" + parseInt(l - 1) + "time"))
+                        $("#row" + l + "button").attr("id", String("row" + parseInt(l - 1) + "button"))
+                        $("#duration" + l).attr("id", String("duration" + parseInt(l - 1)));
+                        $("#row" + l + "side1").attr("id", String("row" + parseInt(l - 1) + "side1"));
+                        $("inp1_" + l).attr("id", String("inp1_" + parseInt(l - 1)));
+                        $("#row" + l + "side2").attr("id", String("row" + parseInt(l - 1) + "side2"));
+                        $("#inp2_" + l).attr("id", String("inp2_" + parseInt(l - 1)));
+						$("#addButton"+l).attr("id", String("addButton"+parseInt(l-1)));
+                    }
+			})
+			
+			row.append(durationi, rowiside1, rowiside2);
+			
+			var addButton=$("<button class='btn btnBar' id='addButton"+i+"'>+</button>");
+			addButton.on("click", function () {
+				addButton.remove();
+                model.buildData();
+                model.numRowsPlus();
+                console.log("just added a row" + model.currentInfo['numRows']);
+                addRow($(".inputTable"));
+            });
+			
+			$(".span3").append(addButton);
+			
+			table.append(row);
+			
+			if (i==0){
+				rowitime.val("4:00");
+				inp1_i.val(180);
+				inp2_i.val(23)
+			}else{
+				
+				rowitime.val("4:00");
+				inp1_i.val($(String("#inp1_"+parseInt(i-1))).val());
+				inp2_i.val($(String("#inp2_"+parseInt(i-1))).val());
+			}
         }
 
         var addButtonFun = function () {
