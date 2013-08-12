@@ -19,6 +19,25 @@ var perfectSteak = function (div) {
 
         var timeStep = 15;
         var inputTable = $(".inputTable");
+		var importRecipes=function(){
+		var saved={"15 seconds flip":{"data":[[1,2,3],[4,5,6]],"Temp":23}};
+		//for var key in saved{
+				var name=key;
+				var data=saved[key]["data"];
+			var steaktemp=saved[key]["Temp"];
+			var steak = [];
+            for (var m = 0; m < 30; m++) {
+                steak.push(steaktemp)
+            }
+            steak.push(currentInfo["data"][0][2]);
+            var myheatsolver = HeatSolver(steak);
+            var Thedata = myheatsolver.sixty_graph_arrays_duration(data);
+            var maxTemps = Thedata.maxTemps;
+            var meatType = "Steak";
+            var recipe = [meatType, maxTemps, data, steaktemp,30,'F'];
+            addRecipe(name, recipe);
+			//}
+		}
 
         var changeThickness = function (newVal) {
 
@@ -337,6 +356,7 @@ var perfectSteak = function (div) {
             }
 
             dropdownDiv.change(function () {
+				console.log("check");
                 var e1 = document.getElementById("d1");
                 var name1 = e1.options[e1.selectedIndex].text;
                 var e2 = document.getElementById("d2");
