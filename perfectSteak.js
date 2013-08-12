@@ -19,26 +19,27 @@ var perfectSteak = function (div) {
 
         var timeStep = 15;
         var inputTable = $(".inputTable");
-		var importRecipes=function(){
-		var saved={"15 seconds flip":{"data":[[1,2,3],[4,5,6]],"Temp":23}};
-		//for var key in saved{
-				var name=key;
-				var data=saved[key]["data"];
-			var steaktemp=saved[key]["Temp"];
-			var steak = [];
+var importRecipes=function(){
+		var saved=[{"name":"15 seconds flip for 10 minutes","data":[[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300]],"Temp":73},
+				   {"name":"5 minutes a side","data":[[300,300,73],[300,73,300],[300,73,73]],"Temp":73},
+					   {"name":"sous-vide","data":[[3600,140,140],[60,300,73],[60,73,300]],"Temp":73}];
+		for (var i=0;i<3;i++){
+				var name=saved[i]["name"];
+				var data=saved[i]["data"];
+			var steaktemp=saved[i]["Temp"];
+			var steak = [data[0][1]];
             for (var m = 0; m < 30; m++) {
                 steak.push(steaktemp)
             }
-            steak.push(currentInfo["data"][0][2]);
+            steak.push(data[0][2]);
             var myheatsolver = HeatSolver(steak);
             var Thedata = myheatsolver.sixty_graph_arrays_duration(data);
             var maxTemps = Thedata.maxTemps;
             var meatType = "Steak";
             var recipe = [meatType, maxTemps, data, steaktemp,30,'F'];
             addRecipe(name, recipe);
-			//}
+			}
 		}
-
         var changeThickness = function (newVal) {
 
             currentInfo["thickness"] = newVal;
@@ -271,7 +272,8 @@ var perfectSteak = function (div) {
             addRecipe: addRecipe,
             browserInfo: browserInfo,
             updateTotalTime: updateTotalTime,
-            parseRecipe: parseRecipe
+            parseRecipe: parseRecipe,
+			importRecipes:importRecipes
         }
     }
 
@@ -298,7 +300,7 @@ var perfectSteak = function (div) {
             }
             model.browserInfo(M);
         })();
-
+	 model.importRecipes();
         var clicked = false;
         var displayDiv = $("<div class='displayDiv'></div>");
         var tableTabs = $('<ul class="nav nav-tabs"><li><a href="#table" data-toggle="tab">Table</a></li><li><a href="#text" data-toggle="tab">Text</a></li></ul>');
@@ -309,7 +311,7 @@ var perfectSteak = function (div) {
                     $('#si1').html("Side 1 (&#176;" + $('.mytog2:checked').attr('id') + ")");
                     $('#si2').html("Side 2 (&#176;" + $('.mytog2:checked').attr('id') + ")");
                     $('#work').html("&#176;" + $('.mytog2:checked').attr('id'));
-                    graph(false, $('.mytog:checked').attr('id'));
+                    //graph(false, $('.mytog:checked').attr('id'));
                 });
         var addButton;
         
@@ -356,7 +358,6 @@ var perfectSteak = function (div) {
             }
 
             dropdownDiv.change(function () {
-				console.log("check");
                 var e1 = document.getElementById("d1");
                 var name1 = e1.options[e1.selectedIndex].text;
                 var e2 = document.getElementById("d2");
