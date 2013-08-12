@@ -46,11 +46,11 @@ var calculate=function(data,steak,meatType,first,totalTime,mode){
     var timestep=1/Thedata.step;
     var maxTemps=Thedata.maxTemps;
 
-    if(first){
+   /* if(first){
         drawFinished(meatType,maxTemps,data,steak[0],0,(steak.length-2)/10,'C');
         drawFinished(meatType,maxTemps,data,steak[0],1,(steak.length-2)/10,'C');
     }
-    
+    */
     graphSteak(sampledata,flame,timestep,meatType,maxTemps,mode);
 
     
