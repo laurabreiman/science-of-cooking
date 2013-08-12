@@ -2,6 +2,7 @@
 	position: relative;
 	width: 100% !important;
 	text-align: center;
+	top: 0px !important;
 	padding: 0px !important;
 	margin: 0px!important;
 	
@@ -10,6 +11,10 @@
 .displayDiv{
 	position: relative;
 	width: 100%;
+}
+
+.btnBar{
+
 }
 .mytog {
   display: none;
@@ -74,9 +79,8 @@ input[type="radio"].toggle-right + label {
   border-bottom-left-radius: 0;
 }
 .dropdown{
-	top:100%;
     overflow:auto;
-	height:300px;
+	height:200px;
 }
 
 .btn{
@@ -108,12 +112,6 @@ td{
 
 	margin:0!important;
 	padding:1px!important;
-}
-
-#addButton{
-    position:relative;
-	top: 0%;
-	float: left;
 }
 
 .displayDiv{
