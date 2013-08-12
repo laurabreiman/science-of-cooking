@@ -330,12 +330,16 @@ var importRecipes=function(){
 		var switcheroo=$('<span class="switcheroo"></span>');
 		var mytog2=$("<input type='radio' class='mytog2' id='C' name='toggle2' checked><label for='C' class='btn'>C</label><input type='radio' class='mytog' id='F' name='toggle2'><label for='F' class='btn'>F</label>");
 		var inputTable=$("<table class='inputTable table table-striped'></table>");
+		var tabPane=$("<div class='tab-pane' id='text'></div>")
 		var inpTabHeader = $("<tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
 		var containerm = $("<div class='containerm'><textarea id='recipeInput' cols=40 rows=5></textarea></div>");
 		inputTable.append(inpTabHeader)
 		switcheroo.append(mytog2);
-		tabPaneActive.append(switcheroo, thickInpDiv, meatInp, inputTable, containerm);
-		tabContent.append(tabPaneActive)
+		tabPaneActive.append(switcheroo, thickInpDiv, meatInp, inputTable);
+		tabPane.append(containerm);
+		tabContent.append(tabPaneActive, tabPane)
+		
+		 var tabContent = $("<div class='tab-content'><div class='tab-pane active' id='table'><span class='switcheroo'><input type='radio' class='mytog2' id='C' name='toggle2' checked><label for='C' class='btn' >C</label><input type='radio' class='mytog2'id='F' name='toggle2'><label for='F' class='btn' >F</label></span><span id='thickInpDiv'>Meat Thickness: <input type='text' id='thicknessInp' value='3'> cm </span><span id='tempInpDiv'>Initial Meat Temperature: <input type='text' id='steakTemp' value='23'><span id='work'>&#176;C</span></span><span><form id='meatInp'><b>Meat Type  </b><input type='radio' name='meat' id='Steak' checked>Steak<input type='radio' name='meat' id='Tuna'>Tuna <input type='radio' name='meat' id='Turkey'>Turkey </form></span><table class='inputTable table table-striped'><tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'id='si1'>Side 1 (&#176;C)</th><th class='inpTabHeader'id='si2'>Side 2 (&#176;C)</th></tr></table></div><div class='tab-pane' id='text'><div class='containerm'><textarea id='recipeInput' cols=40 rows=5></textarea></div></div></div>");
 		
         displayDiv.append(tableTabs, tabContent);
 		tabContent.change(function () {
