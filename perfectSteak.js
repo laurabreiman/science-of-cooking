@@ -19,7 +19,42 @@ var perfectSteak = function (div) {
 
         var timeStep = 15;
         var inputTable = $(".inputTable");
-
+		 var toC = function (F) {
+            return ((5 / 9) * (F - 32));
+        }
+		    var toC = function (F) {
+            return ((5 / 9) * (F - 32));
+        }
+var importRecipes=function(){
+		var saved=[{"name":"Heston Blumenthal","data":[[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[300,73,73]],"Temp":73},
+	{"name":"4 minutes a side","data":[[240,300,73],[240,73,300],[300,73,73]],"Temp":73},
+	{"name":"America's Test Kitchen","data":[[15,450,73],[15,73,450],[300,225,225],[900,73,73]],"Temp":73},
+				 {"name":"Nathan Mhyrvold","data":[[3600,125,125],[30,-321,-321],[120,390,390]],"Temp":73}];
+		for (var i=0;i<4;i++){
+				var name=saved[i]["name"];
+				var data=saved[i]["data"];
+				
+		
+	for(var n=0;n<data.length;n++)
+	{
+		data[n][1]=toC(data[n][1]);
+		data[n][2]=toC(data[n][2]);
+	}
+	
+			var steaktemp=saved[i]["Temp"];
+			var steak = [data[0][1]];
+            for (var m = 0; m < 30; m++) {
+                steak.push(toC(steaktemp))
+            }
+            steak.push(data[0][2]);
+            var myheatsolver = HeatSolver(steak);
+            var Thedata = myheatsolver.sixty_graph_arrays_duration(data);
+            var maxTemps = Thedata.maxTemps;
+            var meatType = "Steak";
+            var recipe = [meatType, maxTemps, data, steaktemp,3,'F'];
+            addRecipe(name, recipe);
+			}
+		}
         var changeThickness = function (newVal) {
 
             currentInfo["thickness"] = newVal;
@@ -122,7 +157,9 @@ var perfectSteak = function (div) {
 
             var steak = [currentInfo["data"][0][1]];
             for (var m = 0; m < parseFloat($("#thicknessInp").val()) * 10; m++) {
-                steak.push(parseFloat($("#steakTemp").val()))
+				if($('.mytog2:checked').attr('id')=='C'){
+                steak.push(parseFloat($("#steakTemp").val()))}
+				else{steak.push(toC(parseFloat($("#steakTemp").val())))}
             }
             steak.push(currentInfo["data"][0][2]);
             var myheatsolver = HeatSolver(steak);
@@ -219,7 +256,8 @@ var perfectSteak = function (div) {
 			var steak=[];
 			for(var i=0;i<parsedThickness*10;i++)
 			{
-				steak.push(startingTemp);
+				if(celsius=='C'){steak.push(startingTemp)}
+				else{steak.push(toC(startingTemp))}
 			}
 			d3.selectAll(".mysteak").remove();
             d3.selectAll(".containers").remove();
@@ -252,7 +290,8 @@ var perfectSteak = function (div) {
             addRecipe: addRecipe,
             browserInfo: browserInfo,
             updateTotalTime: updateTotalTime,
-            parseRecipe: parseRecipe
+            parseRecipe: parseRecipe,
+			importRecipes:importRecipes
         }
     }
 
@@ -279,7 +318,7 @@ var perfectSteak = function (div) {
             }
             model.browserInfo(M);
         })();
-
+	 model.importRecipes();
         var clicked = false;
         var displayDiv = $("<div class='displayDiv'></div>");
         var tableTabs = $('<ul class="nav nav-tabs"><li><a href="#table" data-toggle="tab">Table</a></li><li><a href="#text" data-toggle="tab">Text</a></li></ul>');
@@ -304,7 +343,7 @@ var perfectSteak = function (div) {
                     $('#si1').html("Side 1 (&#176;" + $('.mytog2:checked').attr('id') + ")");
                     $('#si2').html("Side 2 (&#176;" + $('.mytog2:checked').attr('id') + ")");
                     $('#work').html("&#176;" + $('.mytog2:checked').attr('id'));
-                    graph(false, $('.mytog:checked').attr('id'));
+                    //graph(false, $('.mytog:checked').attr('id'));
                 });
         var addButton;
         
@@ -359,7 +398,7 @@ var perfectSteak = function (div) {
 				console.log(info);
                 d3.selectAll('.finalsteak').remove();
 			
-                drawFinished(info[0], info[1], info[2], info[3], 0,info[4],info[4]);
+                drawFinished(info[0], info[1], info[2], info[3], 0,info[4],info[5]);
                 var inf = model.currentInfo['recipe'][name2];
                 drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],inf[5]);
             });
@@ -685,7 +724,9 @@ var perfectSteak = function (div) {
             if (OKtoCook == true) {
                 var steak = [model.currentInfo["data"][0][1]];
                 for (var m = 0; m < parseFloat($("#thicknessInp").val()) * 10; m++) {
-                    steak.push(parseFloat($("#steakTemp").val()))
+                   if($('.mytog2:checked').attr('id')=='C'){
+                steak.push(parseFloat($("#steakTemp").val()))}
+				else{steak.push(toC(parseFloat($("#steakTemp").val())))}
                 }
                 steak.push(model.currentInfo["data"][0][2]);
 				
