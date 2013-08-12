@@ -353,6 +353,12 @@ var perfectSteak = function (div) {
             addDropdown();
         }
 
+        var toF = function (C) {
+            return (C * (9 / 5) + 32 + "&#176;F");
+        }
+        var toC = function (F) {
+            return ((5 / 9) * (F - 32));
+        }
         var buildTable = function () {
 
             var timeStep = model.timeStep;
@@ -541,6 +547,7 @@ var perfectSteak = function (div) {
 
 
         var graph = function (isFirst, falseColor) {
+            var mode = $('.mytog2:checked').attr('id');
             d3.selectAll(".mysteak").remove();
             d3.selectAll(".containers").remove();
             model.dataClear();
@@ -598,10 +605,14 @@ var perfectSteak = function (div) {
             if (OKtoCook == true) {
                 var steak = [model.currentInfo["data"][0][1]];
                 for (var m = 0; m < parseFloat($("#thicknessInp").val()) * 10; m++) {
-                    steak.push(parseFloat($("#steakTemp").val()))
+                    if (mode == 'F') {
+                        steak.push(toC(parseFloat($("#steakTemp").val())).toFixed(0))
+                    } else {
+                        steak.push(parseFloat($("#steakTemp").val()).toFixed(0))
+                    }
                 }
                 steak.push(model.currentInfo["data"][0][2]);
-                calculate(model.currentInfo["data"], steak, meatType, isFirst, model.currentInfo["totalTime"])
+                calculate(model.currentInfo["data"], steak, meatType, isFirst, model.currentInfo["totalTime"], mode)
             }
         }
         var CookButtonFun = function () {
