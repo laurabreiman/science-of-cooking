@@ -35,11 +35,7 @@ var importRecipes=function(){
 				var data=saved[i]["data"];
 				
 		
-	for(var n=0;n<data.length;n++)
-	{
-		data[n][1]=toC(data[n][1]);
-		data[n][2]=toC(data[n][2]);
-	}
+
 	
 			var steaktemp=saved[i]["Temp"];
 			var steak = [data[0][1]];
