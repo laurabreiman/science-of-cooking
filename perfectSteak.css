@@ -54,6 +54,14 @@ input[type="radio"].toggle + label {
 	width:200px;
 	
 }
+.switcheroo{
+	position: absolute;
+	left:20%;
+	top:80px;
+	height:40px;
+	width:200px;
+	
+}
 #Steak{
 	margin:1px;
 }
@@ -82,7 +90,7 @@ input[type="radio"].toggle-right + label {
 }
 .dropdown{
     overflow:auto;
-	height:50px;
+	height:70px;
 }
 
 #d3{
@@ -175,7 +183,7 @@ input[type="text"] {
 #thickInpDiv, #tempInpDiv, #meatTypeDiv{
 	padding: 5px;
 	margin:0px;
-	width:80px;!important;
+	width:100%;!important;
 	  font-size: 12px;
 }
 

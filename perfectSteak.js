@@ -31,89 +31,32 @@ var perfectSteak = function (div) {
         }
 
         var importRecipes = function () {
-            var saved = [{
-                "name": "Heston Blumenthal",
-                "data": [
-                    [15, 300, 73],
-                    [15, 73, 300],
-                    [15, 300, 73],
-                    [15, 73, 300],
-                    [15, 300, 73],
-                    [15, 73, 300],
-                    [15, 300, 73],
-                    [15, 73, 300],
-                    [15, 300, 73],
-                    [15, 73, 300],
-                    [15, 300, 73],
-                    [15, 73, 300],
-                    [15, 300, 73],
-                    [15, 73, 300],
-                    [15, 300, 73],
-                    [15, 73, 300],
-                    [15, 300, 73],
-                    [15, 73, 300],
-                    [15, 300, 73],
-                    [15, 73, 300],
-                    [15, 300, 73],
-                    [15, 73, 300],
-                    [15, 300, 73],
-                    [15, 73, 300],
-                    [15, 300, 73],
-                    [15, 73, 300],
-                    [15, 300, 73],
-                    [300, 73, 73]
-                ],
-                "Temp": 73
-            }, {
-                "name": "4 minutes a side",
-                "data": [
-                    [240, 300, 73],
-                    [240, 73, 300],
-                    [300, 73, 73]
-                ],
-                "Temp": 73
-            }, {
-                "name": "America's Test Kitchen",
-                "data": [
-                    [15, 450, 73],
-                    [15, 73, 450],
-                    [300, 225, 225],
-                    [900, 73, 73]
-                ],
-                "Temp": 73
-            }, {
-                "name": "Nathan Mhyrvold",
-                "data": [
-                    [3600, 125, 125],
-                    [30, -321, -321],
-                    [120, 390, 390]
-                ],
-                "Temp": 73
-            }];
-            for (var i = 0; i < 4; i++) {
-                var name = saved[i]["name"];
-                var data = saved[i]["data"];
+         
+		var saved=[{"name":"Heston Blumenthal","data":[[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[150,23,23]],"Temp":23},
+	{"name":"4 minutes a side","data":[[240,150,23],[240,23,150],[150,23,23]],"Temp":23},
+	{"name":"America's Test Kitchen","data":[[15,230,23],[15,23,230],[150,110,110],[900,23,23]],"Temp":23},
+				 {"name":"Nathan Myhrvold","data":[[3600,53,53],[30,-200,-200],[120,200,200]],"Temp":23}];
+		for (var i=0;i<4;i++){
+				var name=saved[i]["name"];
+				var data=saved[i]["data"];
 
 
-                for (var n = 0; n < data.length; n++) {
-                    data[n][1] = toC(data[n][1]);
-                    data[n][2] = toC(data[n][2]);
-                }
 
-                var steaktemp = saved[i]["Temp"];
-                var steak = [data[0][1]];
-                for (var m = 0; m < 30; m++) {
-                    steak.push(toC(steaktemp))
-                }
-                steak.push(data[0][2]);
-                var myheatsolver = HeatSolver(steak);
-                var Thedata = myheatsolver.sixty_graph_arrays_duration(data);
-                var maxTemps = Thedata.maxTemps;
-                var meatType = "Steak";
-                var recipe = [meatType, maxTemps, data, steaktemp, 3, 'F'];
-                addRecipe(name, recipe);
+
+			var steaktemp=saved[i]["Temp"];
+			var steak = [data[0][1]];
+            for (var m = 0; m < 30; m++) {
+                steak.push(toC(steaktemp))
             }
-        }
+            steak.push(data[0][2]);
+            var myheatsolver = HeatSolver(steak);
+            var Thedata = myheatsolver.sixty_graph_arrays_duration(data);
+            var maxTemps = Thedata.maxTemps;
+            var meatType = "Steak";
+            var recipe = [meatType, maxTemps, data, steaktemp,3,'C'];
+            addRecipe(name, recipe);
+			}
+		}
 
         var changeThickness = function (newVal) {
 
@@ -402,22 +345,23 @@ var perfectSteak = function (div) {
 
         model.importRecipes();
         var clicked = false;
-        var displayDiv = $("<div class='displayDiv'></div>");
-        var tableTabs = $('<ul class="nav nav-tabs"><li><a href="#table" data-toggle="tab">Table</a></li><li><a href="#text" data-toggle="tab">Text</a></li></ul>');
+        var displayDiv = $("<div class='displayDiv'><h4>Input Recipe</h4></div>");
+        var tableTabs = $('<ul class="nav nav-tabs"><li><a href="#table" data-toggle="tab" class="mytab">As table</a></li><li><a href="#text" data-toggle="tab"class="mytab">As text</a></li></ul>');
 
         var tabContent = $("<div class='tab-content'></div>");
         var tabPaneActive = $("<div class='tab-pane active' id='table'></div>");
-        var thickInpDiv = $("<span id='thickInpDiv'>Meat Thickness: <input type='text' id='thicknessInp' value='3'> cm </span><span id='tempInpDiv'>Initial Meat Temperature: <input type='text' id='steakTemp' value='23'><span id='work'>&#176;C</span></span>");
-        var meatInp = $("<span><form id='meatInp'><b>Meat Type  </b><input type='radio' name='meat' id='Steak' checked>Steak<input type='radio' name='meat' id='Tuna'>Tuna <input type='radio' name='meat' id='Turkey'>Turkey </form></span>");
+        var thickInpDiv = $("<span id='thickInpDiv'>Thickness: <input type='text' id='thicknessInp' value='3'> cm </span>'");
+		var tempInp=$("<div><span id='tempInpDiv'>   Initial Temperature: <input type='text' id='steakTemp' value='23'><span id='work'>&#176;C</span></span></div>");
+        var meatInp = $("<span><form id='meatInp'><b>Meat: </b><input type='radio' name='meat' id='Steak' checked>Steak<input type='radio' name='meat' id='Tuna'>Tuna <input type='radio' name='meat' id='Turkey'>Turkey </form></span>");
         var switcheroo = $('<span class="switcheroo"></span>');
         var mytog2 = $("<input type='radio' class='mytog2' id='C' name='toggle2' checked><label for='C' class='btn'>C</label><input type='radio' class='mytog' id='F' name='toggle2'><label for='F' class='btn'>F</label>");
         var inputTable = $("<table class='inputTable table table-striped'></table>");
         var tabPane = $("<div class='tab-pane' id='text'></div>")
-        var inpTabHeader = $("<tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
+        var inpTabHeader = $("<tr><th class='inpTabHeader'>Duration (mm:ss)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
         var containerm = $("<div class='containerm'><textarea id='recipeInput' cols=40 rows=5></textarea></div>");
         inputTable.append(inpTabHeader)
         switcheroo.append(mytog2);
-        tabPaneActive.append(switcheroo, thickInpDiv, meatInp, inputTable);
+        tabPaneActive.append( meatInp,thickInpDiv,tempInp,inputTable);
         tabPane.append(containerm);
         tabContent.append(tabPaneActive, tabPane);
 
@@ -434,8 +378,8 @@ var perfectSteak = function (div) {
 
         var flipButton;
         var cookButton;
-
-        var cookButt = $("<button class='btn'>Cook</button>");
+		var cookButt=$('<button class="btn" id="Cook"><input type="image" id="myimage" style="height:20px;width:20px;"" src="flame.png"><span>Cook</span><input type="image" id="myimage" style="height:20px;width:20px;" src="flame.png"></button>');
+        //var cookButt = $("<button class='btn' id='Cook'>"+flame+"Cook"+flame+"</button>");
         cookButt.css("width", '100%');
 
         /*
@@ -465,7 +409,7 @@ var perfectSteak = function (div) {
         var addDropdown = function () {
             $(".dropdown").remove();
 
-            var dropdownDiv = $("<div class='dropdown'><div>Saved Methods</div></div>");
+            var dropdownDiv = $("<div class='dropdown'><div><h4>Compare Two Recipes</h4></div></div>");
             var dropdown1 = $('<select class="steakHist" id ="d1"></select>');
             var dropdown2 = $('<select class="steakHist"id ="d2"></select>');
 
@@ -522,7 +466,7 @@ var perfectSteak = function (div) {
             if (model.currentInfo["OKToGraph"]) {
                 div.append("<div class='row'><div class='container optionBar'></div></div><div class='span3'></div><div class='span9'></div><div class='span12'></div></div>");
                 var switches = $('<div class="switch"><input type="radio" class="mytog" id="PS" name="toggle" checked><label for="PS" class="btn" >Protein State</label><input type="radio" class="mytog"id="T" name="toggle"><label for="T" class="btn" >Temperature</label></div>');
-                div.append(switches);
+                div.append(switches,switcheroo);
                 switches.change(function () {
 
                     graph(false, $('.mytog:checked').attr('id'));
