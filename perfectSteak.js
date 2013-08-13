@@ -29,6 +29,7 @@ var perfectSteak = function (div) {
         var toC = function (F) {
             return ((5 / 9) * (F - 32));
         }
+		
         var importRecipes = function () {
             var saved = [{
                 "name": "Heston Blumenthal",
@@ -113,6 +114,7 @@ var perfectSteak = function (div) {
                 addRecipe(name, recipe);
             }
         }
+
         var changeThickness = function (newVal) {
 
             currentInfo["thickness"] = newVal;
@@ -216,16 +218,22 @@ var perfectSteak = function (div) {
         }
 
         var saveRecipe = function (name) {
-
+	
             var steak = [currentInfo["data"][0][1]];
             for (var m = 0; m < parseFloat($("#thicknessInp").val()) * 10; m++) {
+
                 if ($('.mytog2:checked').attr('id') == 'C') {
                     steak.push(parseFloat($("#steakTemp").val()))
                 } else {
                     steak.push(toC(parseFloat($("#steakTemp").val())))
                 }
-            }
-            steak.push(currentInfo["data"][0][2]);
+            
+
+                steak.push(parseFloat($("#steakTemp").val()))
+				
+				}
+				 steak.push(currentInfo["data"][0][2]);
+            
             var myheatsolver = HeatSolver(steak);
             var Thedata = myheatsolver.sixty_graph_arrays_duration(currentInfo["data"]);
             var maxTemps = Thedata.maxTemps;
@@ -391,6 +399,7 @@ var perfectSteak = function (div) {
             }
             model.browserInfo(M);
         })();
+		
         model.importRecipes();
         var clicked = false;
         var displayDiv = $("<div class='displayDiv'></div>");
@@ -411,6 +420,7 @@ var perfectSteak = function (div) {
         tabPaneActive.append(switcheroo, thickInpDiv, meatInp, inputTable);
         tabPane.append(containerm);
         tabContent.append(tabPaneActive, tabPane);
+
 
         displayDiv.append(tableTabs, tabContent);
         tabContent.change(function () {
@@ -469,6 +479,7 @@ var perfectSteak = function (div) {
             }
 
             dropdownDiv.change(function () {
+				
                 var e1 = document.getElementById("d1");
                 var name1 = e1.options[e1.selectedIndex].text;
                 var e2 = document.getElementById("d2");
@@ -528,7 +539,7 @@ var perfectSteak = function (div) {
 
             addDropdown();
         }
-
+		
         var toF = function (C) {
             return (C * (9 / 5) + 32 + "&#176;F");
         }
@@ -598,9 +609,11 @@ var perfectSteak = function (div) {
                     var saveModal = $('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe</div></div>');
                     var nameInp = $('<input type="text" id=recipeName width="150px"></input>');
                     var okModal = $('<button class="btn" data-dismiss="modal" aria-hidden="true" id="okModal">OK</button>');
-                    okModal.on("click", function () {
-                        model.saveRecipe($("#recipeName").val());
-                        var name = $("#recipeName").val();
+                    cookButt.on("click", function () {
+                   var meat= $("input[type='radio'][name='meat']:checked").attr('id');
+						model.currentInfo['names'][meat]=model.currentInfo['names'][meat]+1;
+                        var name =  "My "+meat+" "+ model.currentInfo['names'][meat];
+						model.saveRecipe(name);
                         var dropdown1 = $("#d1");
                         var dropdown2 = $("#d2");
                         dropdown1.append($('<option>' + name + '</option>'));
@@ -616,33 +629,13 @@ var perfectSteak = function (div) {
                         drawFinished(inf[0], inf[1], inf[2], inf[3], 0);
                     })
 
-
-                    cookButt.on("click", function () {
-                        if ($("#recipeInput").closest(".tab-pane").hasClass("active")) {
-                            var recipeString = $("#recipeInput").val();
-                            model.parseRecipe(recipeString);
-                        } else {
-                            model.checkDiv();
-                            updateTime();
-                            model.buildData();
-
-
-                            if (clicked && model.currentInfo["OKToGraph"]) {
-                                graph(false, $('.mytog:checked').attr('id'))
-                            } else {
-                                d3.selectAll(".containers").remove();
-                                d3.selectAll(".mysteak").remove();
-                                model.dataClear();
-                            }
-                        }
-                    })
-
                     $(".inputTable").append(addButton); //, saveBut,saveModal);
                     $(".span3").append(cookButt);
                     addDropdown();
                 }
                 var sumtime = 0;
                 var time = $("#row" + i + "time").val().replace(':', '.').split('.');
+				
                 for (var k = 0; k < time.length; k++) {
                     sumtime += parseFloat(time[k]);
                 }
@@ -757,7 +750,7 @@ var perfectSteak = function (div) {
                 addRow($(".inputTable"));
                 $('#table').stop().animate({
                     scrollTop: $("#table")[0].scrollHeight
-                }, 800);
+                }, 8000);
 
             });
         };
@@ -820,7 +813,7 @@ var perfectSteak = function (div) {
             if (String(parseInt($("#steakTemp").val())) == 'NaN') {
                 $("#tempInpDiv").append(tempAlert);
                 OKtoCook = false;
-            } else if (parseInt($("#steakTemp").val()) < -273 || parseInt($("#steakTemp").val()) > 300) {
+            } else if (parseInt($("#steakTemp").val()) < -223 || parseInt($("#steakTemp").val()) > 300) {
                 $("#tempInpDiv").append(tempAlert);
                 OKtoCook = false;
             } else {

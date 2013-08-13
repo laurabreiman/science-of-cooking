@@ -2,7 +2,12 @@ var graphSteak=function(sampledata,flame,timestep,meatType,maxTemps,mode){
 var graph=(function(){
 var setup=function(div,data,flame,timestep,meatType,maxTemps,mode)	
 	{
-	
+	for (var i=0;i<data.length;i++)
+	{
+		data[i].reverse();
+		
+	}
+		
     var toF=function(C)
     {
     return (C*(9/5)+32);
@@ -58,7 +63,22 @@ var n = boundaries[meatType].length*2+1, // number of layers
 		
 		maxTemps=maxTemps.splice(0,maxTemps.length-1);
 		var tempMax=Math.max.apply( Math, maxTemps);
-		
+	 var convertTime = function (secs) {
+            
+            var minutes = Math.floor(parseInt(secs) / 60);
+            var seconds = parseInt(secs) % 60;
+           
+            if (minutes == 0 && seconds < 10) {
+     
+                return String(0) + ":0" + String(seconds);
+            } else if (seconds == 0) {
+    
+                return String(minutes) + ':' + String(seconds) + '0';
+            } else {
+                
+                return String(minutes) + ':' + String(seconds);
+            }
+        }	
     var stack = d3.layout.stack();
 		
 	var layers = stack(d3.range(n).map(function(d,i) { return bumpLayer(i,dat); }));
@@ -76,7 +96,8 @@ var x = d3.scale.ordinal()
 		
 var xscaled = d3.scale.linear()
     .domain([0,m/timestep])
-    .range([width/30, width*29/30]);	
+    .range([width/30, width*29/30]);
+		
 		
 var y = d3.scale.linear()
     .domain([0, yStackMax])
@@ -90,8 +111,9 @@ var yscaled = d3.scale.linear()
 var xAxis = d3.svg.axis()
     .scale(xscaled)
     .tickSize(0)
-    .tickPadding(30)
-    .orient("bottom");
+    .tickPadding(10)
+    .orient("bottom")
+	.tickFormat(convertTime);
 		
 var yAxis = d3.svg.axis()
     .scale(yscaled)
@@ -104,18 +126,18 @@ var make_y_axis=function() {
         .orient("left")
         
 }		
-var svg = d3.select("body").append("svg")
+var svg = d3.select(".span9").append("svg")
 	.attr("class","mysteak")
 	.attr("id", "mysteak")
    // .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("height", height + margin.top + margin.bottom+60)
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 if(meatType!='False'){
 		var legend = svg.selectAll('g')
 
-        .data(tempScale[meatType])
+        .data(function(){return mode=='C'? CtempScale[meatType]:FtempScale[meatType]})
 
         .enter()
       .append('g')
@@ -124,8 +146,8 @@ if(meatType!='False'){
 
 
     legend.append('rect')
-        .attr('x', width)
-        .attr('y', function(d, i){ return -10+i *  15;})
+        .attr('x', width/3)
+        .attr('y', function(d, i){ return 200+i *  15;})
         .attr('width', 8)
         .attr('height', 8)
 
@@ -134,12 +156,18 @@ if(meatType!='False'){
         });
 
     legend.append('text')
-        .attr('x', width+10)
-        .attr('y', function(d, i){ return (i *  15-2);})
-        .text(function(d){ return d['info'];});	
+		.attr('class','info')
+        .attr('x', width/3+10)
+        .attr('y', function(d, i){ return (i *  15+200+8);})
+        .text(function(d,i){return d['info'];});	
+	 legend.append('text')
+		.attr('class','percents')
+        .attr('x', width/3-30)
+        .attr('y', function(d, i){ return (i *  15+200+8);})
+        .text(function(d,i){return "0%"});
 }
 
-var ttip = d3.select("body").append("div")   
+var ttip = d3.select(".span9").append("div")   
     .attr("class", "tooltip")               
     .style("opacity", 0);	
 		
@@ -175,10 +203,10 @@ var rect = layer.selectAll("rect")
 		$(leg).css("fill","red");
 		for(var i=0;i<7;i++)
 		{
-		var text=d3.selectAll('.Biglegend text')[0][boundaries[meatType].length-i];
+		var text=d3.selectAll('.percents')[0][boundaries[meatType].length-i];
 		var line=parseInt((event.pageX-parseFloat($("body").css('margin-left'))-margin.left)/(x.rangeBand()+1)-4.0);	
-		var info=tempScale[meatType][boundaries[meatType].length-i]['info'];
-		$(text).text( info +" " +(100*(parseFloat(dat[line][i])+parseFloat(dat[line][12-i]))/m).toFixed(0)+ "%" );
+		var info=mode=='C'? CtempScale[meatType][boundaries[meatType].length-i]['info']:FtempScale[meatType][boundaries[meatType].length-i]['info'];
+		$(text).text((100*(parseFloat(dat[line][i])+parseFloat(dat[line][12-i]))/m).toFixed(0)+ "% ");
 
 		}
 		}
@@ -187,15 +215,15 @@ var rect = layer.selectAll("rect")
 
 
 	var Offset = document.getElementById("graphSteak").offsetTop;
-	var pos=parseInt(data[0].length-(event.pageY-Offset-margin.top-340)/(height/yStackMax));
-var line=parseInt((event.pageX-parseFloat($("body").css('margin-left'))-margin.left)/(x.rangeBand()+1.2)-1.5);
+	var pos=parseInt(data[0].length-(d3.event.pageY-margin.top)/(height/yStackMax)+12);
+var line=parseInt((d3.event.pageX-margin.left)/(x.rangeBand()+1.2)-35);
 console.log(line);
 	$("line").remove();
 	var myLine = d3.selectAll(".mysteak").append("svg:line")
     .attr("x1", margin.left)
-    .attr("y1", event.pageY-Offset-342)
+    .attr("y1", d3.event.pageY-margin.top)
     .attr("x2", width*32/30)
-    .attr("y2", event.pageY-Offset-342)
+    .attr("y2", d3.event.pageY-margin.top)
 	.style("z-index",-1)
     .style("stroke", "grey");
 	//console.log(d3.event.pageX-parseFloat($("body").css('margin-left')));
@@ -205,7 +233,7 @@ console.log(line);
 	ttip.html(toF(parseFloat(data[line][pos])).toFixed(2)+ "\xB0F")  }
 	else{
 		ttip.html(parseFloat(data[line][pos]).toFixed(2)+ "\xB0C")}
-	 //  ttip.html(pos.toFixed(2)+ "\xB0C") 
+	  // ttip.html(line.toFixed(2)+ "\xB0C") 
 	
 	   			ttip.style("opacity", 1)
                 .style("left", (d3.event.pageX-parseFloat($("body").css('margin-left'))+10) + "px")     
@@ -215,6 +243,9 @@ console.log(line);
         
 
 .on("mouseout", function() {
+			var ttip=d3.select('.tooltip');
+		ttip.style("opacity", 0);
+		$("line").remove();
 	if(meatType!='False'){
 		var rects = d3.select(this);
 		var loc=null;
@@ -237,14 +268,14 @@ var imgstop = svg.selectAll("image").data(flame);
 			.attr("width", Math.min(x.rangeBand(),30))
             .attr("height", Math.min(x.rangeBand(),30))
 			.attr("x", function(d){return (d[0]+1.5)*(x.rangeBand()+1)})
-            .attr("y", function(d){return -Math.min(x.rangeBand(),30)+(height+Math.min(x.rangeBand(),30))*d[1]})
+            .attr("y", function(d){return -Math.min(x.rangeBand(),30)+(height+Math.min(x.rangeBand(),30))*(1-d[1])})
 		
 var linktext = svg.selectAll("g.linklabelholder").data(flame);
     linktext.enter().append("g").attr("class", "linklabelholder")
      .append("text")
      .attr("class", "linklabel")
      .attr("dx", function(d){return (d[0]+1.5)*(x.rangeBand()+1)})
-     .attr("dy", function(d){return -Math.min(x.rangeBand(),30)/1.2+(height+2*Math.min(x.rangeBand(),30))*d[1]})
+     .attr("dy", function(d){return -Math.min(x.rangeBand(),30)/1.2+(height+2*Math.min(x.rangeBand(),30))*(1-d[1])})
      .attr("text-anchor", "right")
 		.style("font-size", "8px")
      .text(function(d,i) {
@@ -257,7 +288,7 @@ var linktext = svg.selectAll("g.linklabelholder").data(flame);
 
 		
 rect.transition()
-    .delay(function(d, i) { return i * 10; })
+    .delay(function(d, i) { return meatType=='False'? 0:i * 10; })
     .attr("y", function(d) { return y(d.y0 + d.y); })
     .attr("height", function(d) { return y(d.y0) - y(d.y0 + d.y); });
 
@@ -275,32 +306,32 @@ svg.append("text")
     .attr("class", "x label")
     .attr("text-anchor", "end")
     .attr("x", width/2)
-    .attr("y", height+60)
-    .text("Time (seconds)");
+    .attr("y", height+30)
+    .text("Time (minutes:seconds)");
 svg.append("text")
     .attr("class", "y label")
     .attr("text-anchor", "end")
-    .attr("x", -height/3)
+    .attr("x", -height/5)
     .attr("y",-30)
  	.attr("transform", "rotate(-90)")
     .text("Meat Thickness (cm)");
 		
-svg.append("text")
+/*svg.append("text")
     .attr("class", "y label1")
     .attr("text-anchor", "end")
     .attr("y", 6)
     .attr("dy", ".75em")
     .attr("transform", "rotate(-90)")
-    .text("Side 1");
+    .text("Side 2");
 svg.append("text")
     .attr("class", "y label2")
     .attr("text-anchor", "end")
-    .attr("y", 13)
+    .attr("y", 0)
     .attr("x",-height+margin.bottom/3)
     .attr("transform", "rotate(-90)")
-    .text("Side 2");	
+    .text("Side 1");	
 		
-		
+*/		
 /*
  svg.append("g")         
         .attr("class", "grid")
@@ -324,8 +355,8 @@ function transitionGrouped() {
   y.domain([0, yGroupMax]);
 
   rect.transition()
-      .duration(500)
-      .delay(function(d, i) { return i * 10; })
+      .duration(function(d){return meatType=='False'? 0:500})
+      .delay(function(d, i) {return meatType=='False'? 0: i * 10; })
       .attr("x", function(d, i, j) { return x(d.x) + x.rangeBand() / n * j; })
       .attr("width", x.rangeBand() / n)
     .transition()
@@ -337,8 +368,8 @@ function transitionStacked() {
   y.domain([0, yStackMax]);
 
   rect.transition()
-      .duration(500)
-      .delay(function(d, i) { return i * 10; })
+      .duration(function(d){return meatType=='False'? 0:500})
+      .delay(function(d, i) { return meatType=='False'? 0:i * 10; })
       .attr("y", function(d) { return y(d.y0 + d.y); })
       .attr("height", function(d) { return y(d.y0) - y(d.y0 + d.y); })
     .transition()
