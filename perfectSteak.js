@@ -7,7 +7,7 @@ var perfectSteak = function (div) {
 
             'meatTemp': 23, //initial temperature of the meat
             'thickness': 3, //thickness of the meat in centimeters
-            'data': [], //timestamps of temperatures
+            'data': [[240,180,23],[240,23,180],[300,23,23]], //timestamps of temperatures
             'numRows': 2, //how many steps there are in the recipe
             'time': 0, //time
             'OKToGraph': true, //flag for when data is ready to graph
@@ -21,7 +21,7 @@ var perfectSteak = function (div) {
 
         };
 
-        var timeStep = 15;
+        var timeStep = 240;
         var inputTable = $(".inputTable");
         var toC = function (F) {
             return ((5 / 9) * (F - 32));
@@ -515,7 +515,7 @@ var perfectSteak = function (div) {
                     var vals = parseFloat($("#row" + (i - 1) + "time").val());
                 }
 
-                var duration = $("<td id='duration" + i + "'><input id='row" + i + "time' type='text' value='15'></input></td>");
+                var duration = $("<td id='duration" + i + "'><input id='row" + i + "time' type='text' value="+model.convertTime(240)+"></input></td>");
                 var inp1 = $("<input type='text' id='inp1_" + i + "'>");
                 var inp2 = $("<span id='inp2row" + i + "span'><input type='text' id='inp2_" + i + "'></span>");
                 var closeButton = $("<button type='button' class='close closeRow' id='row" + i + "button'>&times;</button>");
@@ -600,7 +600,7 @@ var perfectSteak = function (div) {
                 if (len == 0 || len == 1000) {
 
                     inp1.val(180);
-                    inp2.val(23);
+                    inp2.val(180);
 
 
                     model.dataAdd([sumtime, parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())]);
@@ -683,7 +683,7 @@ var perfectSteak = function (div) {
                 console.log("just added a row" + model.currentInfo['numRows']);
                 addRow($(".inputTable"));
 				$(".inputTableContainer").animate({
-        scrollTop: 100
+        scrollTop: 1000
     }, 300);
 				
             });

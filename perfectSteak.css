@@ -18,6 +18,10 @@
 .btnBar{
 
 }
+.nav-tabs>li>a {
+	height:15px!important;
+	padding:1px!important;
+}
 .header{
 	margin:0px!important;
 }
