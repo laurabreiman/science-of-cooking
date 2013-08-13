@@ -85,6 +85,11 @@ input[type="radio"].toggle-right + label {
 	height:200px;
 }
 
+#d3{
+	position: relative;
+	width: 80%;
+}
+
 .btn{
 	font-size:8pt;
 	padding:2px;
