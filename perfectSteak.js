@@ -609,25 +609,27 @@ var perfectSteak = function (div) {
                     var saveModal = $('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe</div></div>');
                     var nameInp = $('<input type="text" id=recipeName width="150px"></input>');
                     var okModal = $('<button class="btn" data-dismiss="modal" aria-hidden="true" id="okModal">OK</button>');
-                    cookButt.on("click", function () {
-                   var meat= $("input[type='radio'][name='meat']:checked").attr('id');
-						model.currentInfo['names'][meat]=model.currentInfo['names'][meat]+1;
-                        var name =  "My "+meat+" "+ model.currentInfo['names'][meat];
-						model.saveRecipe(name);
-                        var dropdown1 = $("#d1");
-                        var dropdown2 = $("#d2");
-                        dropdown1.append($('<option>' + name + '</option>'));
-                        dropdown2.append($('<option>' + name + '</option>'));
-                        var e1 = document.getElementById("d1");
-                        var name1 = e1.options[e1.selectedIndex].text;
-                        var e2 = document.getElementById("d2");
-                        var name2 = e2.options[e2.selectedIndex].text;
-                        var info = model.currentInfo['recipe'][name1];
-                        d3.selectAll('.finalsteak').remove();
-                        drawFinished(info[0], info[1], info[2], info[3], 0);
-                        var inf = model.currentInfo['recipe'][name2];
-                        drawFinished(inf[0], inf[1], inf[2], inf[3], 0);
+                   
+                                       cookButt.on("click", function () {
+                        if ($("#recipeInput").closest(".tab-pane").hasClass("active")) {
+                            var recipeString = $("#recipeInput").val();
+                            model.parseRecipe(recipeString);
+                        } else {
+                            model.checkDiv();
+                            updateTime();
+                            model.buildData();
+
+
+                            if (clicked && model.currentInfo["OKToGraph"]) {
+                                graph(false, $('.mytog:checked').attr('id'))
+                            } else {
+                                d3.selectAll(".containers").remove();
+                                d3.selectAll(".mysteak").remove();
+                                model.dataClear();
+                            }
+                        }
                     })
+              
 
                     $(".inputTable").append(addButton); //, saveBut,saveModal);
                     $(".span3").append(cookButt);
