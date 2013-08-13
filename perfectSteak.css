@@ -18,6 +18,18 @@
 .btnBar{
 
 }
+.header{
+	margin:0px!important;
+}
+.inputTable{
+	margin:0px!important;
+}
+.inputTableContainer{
+	height:100px;
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+
 .mytog {
   display: none;
 }

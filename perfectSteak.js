@@ -355,13 +355,15 @@ var perfectSteak = function (div) {
         var meatInp = $("<span><form id='meatInp'><b>Meat: </b><input type='radio' name='meat' id='Steak' checked>Steak<input type='radio' name='meat' id='Tuna'>Tuna <input type='radio' name='meat' id='Turkey'>Turkey </form></span>");
         var switcheroo = $('<span class="switcheroo"></span>');
         var mytog2 = $("<input type='radio' class='mytog2' id='C' name='toggle2' checked><label for='C' class='btn'>C</label><input type='radio' class='mytog' id='F' name='toggle2'><label for='F' class='btn'>F</label>");
+		var inputTableContainer=$("<div class='inputTableContainer'></div>");
         var inputTable = $("<table class='inputTable table table-striped'></table>");
+		inputTableContainer.append(inputTable)
         var tabPane = $("<div class='tab-pane' id='text'></div>")
-        var inpTabHeader = $("<tr><th class='inpTabHeader'>Duration (mm:ss)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr>");
+        var inpTabHeader = $("<table class='header table table-striped'><tr><th class='inpTabHeader'>Duration (mm:ss)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr></table>");
         var containerm = $("<div class='containerm'><textarea id='recipeInput' cols=40 rows=5></textarea></div>");
-        inputTable.append(inpTabHeader)
+        inputTableContainer.append(inputTable);
         switcheroo.append(mytog2);
-        tabPaneActive.append( meatInp,thickInpDiv,tempInp,inputTable);
+        tabPaneActive.append( meatInp,thickInpDiv,tempInp,inpTabHeader,inputTableContainer);
         tabPane.append(containerm);
         tabContent.append(tabPaneActive, tabPane);
 
@@ -448,7 +450,7 @@ var perfectSteak = function (div) {
 				model.numRowsChange(model.currentInfo['recipe'][name3].length);
                 buildTable();
 				buildDisplay();
-				graph();
+				graph(false, $('.mytog:checked').attr('id'));
 
 
 
@@ -557,10 +559,11 @@ var perfectSteak = function (div) {
                     var nameInp = $('<input type="text" id=recipeName width="150px"></input>');
                     var okModal = $('<button class="btn" data-dismiss="modal" aria-hidden="true" id="okModal">OK</button>');
                    
-                                       cookButt.on("click", function () {
+                  cookButt.on("click", function () {
                         if ($("#recipeInput").closest(".tab-pane").hasClass("active")) {
                             var recipeString = $("#recipeInput").val();
                             model.parseRecipe(recipeString);
+							
                         } else {
                             model.checkDiv();
                             updateTime();
@@ -582,12 +585,17 @@ var perfectSteak = function (div) {
                     $(".span3").append(cookButt);
                     addDropdown();
                 }
-                var sumtime = 0;
+                
                 var time = $("#row" + i + "time").val().replace(':', '.').split('.');
+                if (time.length > 1) {
+                    var sumtime = parseFloat(time[1]);
 
-                for (var k = 0; k < time.length; k++) {
-                    sumtime += parseFloat(time[k]);
+                    sumtime += parseFloat(60 * time[0]);
+                } else {
+                    var sumtime = parseFloat(time[0]);
                 }
+
+               
 
                 if (len == 0 || len == 1000) {
 
@@ -662,6 +670,7 @@ var perfectSteak = function (div) {
                     $("#inp2_" + l).attr("id", String("inp2_" + parseInt(l - 1)));
                     $("#addButton" + l).attr("id", String("addButton" + parseInt(l - 1)));
                 }
+				
             })
 
             row.append(durationi, rowiside1, rowiside2);
@@ -673,6 +682,10 @@ var perfectSteak = function (div) {
                 model.numRowsPlus();
                 console.log("just added a row" + model.currentInfo['numRows']);
                 addRow($(".inputTable"));
+				$(".inputTableContainer").animate({
+        scrollTop: 100
+    }, 300);
+				
             });
 
             inputTable.append(addButton);
@@ -697,9 +710,7 @@ var perfectSteak = function (div) {
                 model.buildData();
                 model.numRowsPlus();
                 addRow($(".inputTable"));
-                $('#table').stop().animate({
-                    scrollTop: $("#table")[0].scrollHeight
-                }, 8000);
+
 
             });
         };
