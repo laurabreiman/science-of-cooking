@@ -164,7 +164,7 @@ if(meatType!='False'){
 		.attr('class','percents')
         .attr('x', width/3-30)
         .attr('y', function(d, i){ return (i *  15+200+8);})
-        .text(function(d,i){return "0%"});
+        .text(function(d,i){return (100*(parseFloat(dat[59][(6-i)])+parseFloat(dat[59][12-(6-i)]))/m).toFixed(0)+ "% "});
 }
 
 var ttip = d3.select(".span9").append("div")   
@@ -204,9 +204,9 @@ var rect = layer.selectAll("rect")
 		for(var i=0;i<7;i++)
 		{
 		var text=d3.selectAll('.percents')[0][boundaries[meatType].length-i];
-		var line=parseInt((event.pageX-parseFloat($("body").css('margin-left'))-margin.left)/(x.rangeBand()+1)-4.0);	
+		var line=parseInt((d3.event.pageX-margin.left)/(x.rangeBand()+1.2)-35);
 		var info=mode=='C'? CtempScale[meatType][boundaries[meatType].length-i]['info']:FtempScale[meatType][boundaries[meatType].length-i]['info'];
-		$(text).text((100*(parseFloat(dat[line][i])+parseFloat(dat[line][12-i]))/m).toFixed(0)+ "% ");
+		$(text).text((100*(parseFloat(dat[line][(i)])+parseFloat(dat[line][12-(i)]))/m).toFixed(0)+ "% ");
 
 		}
 		}
@@ -264,7 +264,7 @@ console.log(line);
 var imgstop = svg.selectAll("image").data(flame);
             imgstop.enter()
             .append("svg:image")
-			.attr("xlink:href", function(d){return d[1]==0? "flamedown.png":"flame.png"})
+			.attr("xlink:href", function(d){return d[1]==1? "flamedown.png":"flame.png"})
 			.attr("width", Math.min(x.rangeBand(),30))
             .attr("height", Math.min(x.rangeBand(),30))
 			.attr("x", function(d){return (d[0]+1.5)*(x.rangeBand()+1)})
@@ -316,7 +316,7 @@ svg.append("text")
  	.attr("transform", "rotate(-90)")
     .text("Meat Thickness (cm)");
 		
-/*svg.append("text")
+svg.append("text")
     .attr("class", "y label1")
     .attr("text-anchor", "end")
     .attr("y", 6)
@@ -326,12 +326,12 @@ svg.append("text")
 svg.append("text")
     .attr("class", "y label2")
     .attr("text-anchor", "end")
-    .attr("y", 0)
+    .attr("y", 13)
     .attr("x",-height+margin.bottom/3)
     .attr("transform", "rotate(-90)")
     .text("Side 1");	
 		
-*/		
+		
 /*
  svg.append("g")         
         .attr("class", "grid")

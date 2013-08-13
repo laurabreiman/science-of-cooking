@@ -48,21 +48,21 @@ input[type="radio"].toggle + label {
 }
 .switch{
 	position: absolute;
-	left:40%;
-	top:350px;
+	left:80%;
+	top:80px;
 	height:40px;
 	width:200px;
 	
 }
 #Steak{
-	margin:2px;
+	margin:1px;
 }
 #Tuna{
-	margin:2px;
+	margin:1px;
 }
 #Turkey{
-	margin:2px;
-	padding:1px;
+	margin-right:1px;
+
 }
 input[type="radio"].toggle:checked + label.btn:hover {
   background-color: inherit;
@@ -82,12 +82,17 @@ input[type="radio"].toggle-right + label {
 }
 .dropdown{
     overflow:auto;
-	height:200px;
+	height:50px;
 }
 
 .btn{
-	font-size:8pt;
+	font-size:12pt;
 	padding:2px;
+}
+#Cook{
+	font-size:20pt;
+	padding:2px;
+	width:66%;
 }
 
 .selectName{
@@ -108,11 +113,12 @@ height:260px;
 
 
 th{
-	font-size: 8px;
+	font-size: 12px;
+	line-height:90%!important;
 }
 
 td{
-
+	width:32% !important;
 	margin:0!important;
 	padding:1px!important;
 }
@@ -126,12 +132,14 @@ td{
 .closeRow{
 	margin-right:10px;
 }
-
+.span12{
+	margin-top:40px;
+}
 .steakHist
 {
 	width:40%;
 	height:20px;
-	margin-left:5%;
+	margin-left:0%;
 	margin-right:5%;
 	margin-top:0%;
 	margin-bottom:0%;
@@ -140,8 +148,8 @@ td{
 #meatInp{
 	position:relative;
 	padding: 0px;
-	font-size:10px; 
-	margin-left:15px;
+	font-size:12px; 
+	margin-left:7px!important;
 }
 
 input[type="text"] {
@@ -161,7 +169,7 @@ input[type="text"] {
 
 #thickInpDiv, #tempInpDiv, #meatTypeDiv{
 	padding: 5px;
-	margin:5px;
+	margin:0px;
 	width:80px;!important;
 	  font-size: 12px;
 }

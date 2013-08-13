@@ -69,8 +69,8 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,t
 		var dropdown=$('<select id="steakHist"></select>');
 		dropdown.append($('<option>Current</option>'));
 		//$(".span6").append(dropdown);
-		var svgContainer = d3.select(".dropdown").append("svg")
-                                   .attr("width", '50%')
+		var svgContainer = d3.select(".span12").append("svg")
+                                   .attr("width", '42%')
                                    .attr("class", 'finalsteak')
 									.append("g")
 	.attr("class",'savedInfo')
@@ -79,7 +79,7 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,t
 		
 		var legend = svgContainer.selectAll('g')
 
-        .data(function(){return mode=='C'? CtempScale[myMeatType]:FtempScale[myMmeatType]})
+        .data(function(){return mode=='C'? CtempScale[myMeatType]:FtempScale[myMeatType]})
 
         .enter()
       .append('g')
@@ -89,7 +89,7 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,t
 
 
     legend.append('rect')
-        .attr('x', function(d,i){return (-10+(1-side)*90)+'%'})
+        .attr('x', function(d,i){return (5+(1-side)*72)+'%'})
         .attr('y', function(d, i){ return -125+i*10 })
         .attr('width', 8)
         .attr('height', 8)
@@ -100,7 +100,7 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,t
 
     legend.append('text')
 	.data(myMaxs)
-        .attr('x', function(d,i){return (-5+(1-side)*80)+'%'})
+        .attr('x', function(d,i){return (0+(1-side)*80)+'%'})
         .attr('y', function(d, i){ return  -125+8+i*10})
 		.style('font-size','6pt')
         .text(function(d){ return (100*d/(myMaxTemps.length)).toFixed(0) +"%"; });	
@@ -109,7 +109,7 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,t
 var rectangle = svgContainer.selectAll("rect")
     .data([0,0,0,0,0,0,0].concat(myMaxTemps.reverse()))
   .enter().append("rect")
-           .attr("x", (8+(1-side)*50)+'%')
+           .attr("x", (20+(1-side)*30)+'%')
            .attr("y", function(d,i){return -160+i*4})
            .attr("width", '10%')
            .attr("height", '4px')
@@ -118,7 +118,7 @@ var rectangle = svgContainer.selectAll("rect")
 var texts=svgContainer.selectAll("text")
   .data([0,1,2,3,4,5,6].concat(directions))
 .enter().append("text")
-.attr("x", ((side)*20)+'%')
+.attr("x", ((side)*40)+'%')
 .attr("width", '90%')
 .attr("y", function(d,i){return -120+(i-7)*10})
 .text(function(d){return d})
