@@ -26,10 +26,10 @@ var perfectSteak = function (div) {
             return ((5 / 9) * (F - 32));
         }
 var importRecipes=function(){
-		var saved=[{"name":"Heston Blumenthal","data":[[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[15,73,300],[15,300,73],[300,73,73]],"Temp":73},
-	{"name":"4 minutes a side","data":[[240,300,73],[240,73,300],[300,73,73]],"Temp":73},
-	{"name":"America's Test Kitchen","data":[[15,450,73],[15,73,450],[300,225,225],[900,73,73]],"Temp":73},
-				 {"name":"Nathan Mhyrvold","data":[[3600,125,125],[30,-321,-321],[120,390,390]],"Temp":73}];
+		var saved=[{"name":"Heston Blumenthal","data":[[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[150,23,23]],"Temp":23},
+	{"name":"4 minutes a side","data":[[240,150,23],[240,23,150],[150,23,23]],"Temp":23},
+	{"name":"America's Test Kitchen","data":[[15,230,23],[15,23,230],[150,110,110],[900,23,23]],"Temp":23},
+				 {"name":"Nathan Myhrvold","data":[[3600,53,53],[30,-200,-200],[120,200,200]],"Temp":23}];
 		for (var i=0;i<4;i++){
 				var name=saved[i]["name"];
 				var data=saved[i]["data"];
@@ -51,7 +51,7 @@ var importRecipes=function(){
             var Thedata = myheatsolver.sixty_graph_arrays_duration(data);
             var maxTemps = Thedata.maxTemps;
             var meatType = "Steak";
-            var recipe = [meatType, maxTemps, data, steaktemp,3,'F'];
+            var recipe = [meatType, maxTemps, data, steaktemp,3,'C'];
             addRecipe(name, recipe);
 			}
 		}
@@ -154,14 +154,24 @@ var importRecipes=function(){
         }
 
         var saveRecipe = function (name) {
-
+			if($('.mytog2:checked').attr('id')=='C'){
             var steak = [currentInfo["data"][0][1]];
             for (var m = 0; m < parseFloat($("#thicknessInp").val()) * 10; m++) {
-				if($('.mytog2:checked').attr('id')=='C'){
+				
                 steak.push(parseFloat($("#steakTemp").val()))}
-				else{steak.push(toC(parseFloat($("#steakTemp").val())))}
+				 steak.push(currentInfo["data"][0][2]);
             }
-            steak.push(currentInfo["data"][0][2]);
+           
+	
+		else{
+		var steak = [toC(currentInfo["data"][0][1])];
+            for (var m = 0; m < parseFloat($("#thicknessInp").val()) * 10; m++) {
+				
+                steak.push(toC(parseFloat($("#steakTemp").val())))}
+				
+           
+            steak.push(toC(currentInfo["data"][0][2]));
+		}
             var myheatsolver = HeatSolver(steak);
             var Thedata = myheatsolver.sixty_graph_arrays_duration(currentInfo["data"]);
             var maxTemps = Thedata.maxTemps;
@@ -322,7 +332,7 @@ var importRecipes=function(){
         var clicked = false;
         var displayDiv = $("<div class='displayDiv'></div>");
         var tableTabs = $('<ul class="nav nav-tabs"><li><a href="#table" data-toggle="tab">Table</a></li><li><a href="#text" data-toggle="tab">Text</a></li></ul>');
-        var tabContent = $("<div class='tab-content'><div class='tab-pane active' id='table'><span class='switcheroo'><input type='radio' class='mytog2' id='C' name='toggle2' checked><label for='C' class='btn' >C</label><input type='radio' class='mytog2'id='F' name='toggle2'><label for='F' class='btn' >F</label></span><span id='thickInpDiv'>Meat Thickness: <input type='text' id='thicknessInp' value='3'> cm </span><span id='tempInpDiv'>Initial Meat Temperature: <input type='text' id='steakTemp' value='23'><span id='work'>&#176;C</span></span><span><form id='meatInp'><b>Meat Type  </b><input type='radio' name='meat' id='Steak' checked>Steak<input type='radio' name='meat' id='Tuna'>Tuna <input type='radio' name='meat' id='Turkey'>Turkey </form></span><table class='inputTable table table-striped'><tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'id='si1'>Side 1 (&#176;C)</th><th class='inpTabHeader'id='si2'>Side 2 (&#176;C)</th></tr></table></div><div class='tab-pane' id='text'><div class='containerm'><textarea id='recipeInput' cols=40 rows=5></textarea></div></div></div>");
+        var tabContent = $("<div class='tab-content'><div class='tab-pane active' id='table'><span class='switcheroo'><input type='radio' class='mytog2' id='C' name='toggle2' checked><label for='C' class='btn' >C</label><input type='radio' class='mytog2'id='F' name='toggle2'><label for='F' class='btn' >F</label></span><span id='thickInpDiv'>Thickness: <input type='text' id='thicknessInp' value='3'> cm </span><span id='tempInpDiv'>Initial Temperature: <input type='text' id='steakTemp' value='23'><span id='work'>&#176;C</span></span><span><form id='meatInp'><b>Meat  </b><input type='radio' name='meat' id='Steak' checked>Steak<input type='radio' name='meat' id='Tuna'>Tuna <input type='radio' name='meat' id='Turkey'>Turkey </form></span><table class='inputTable table table-striped'><tr><th class='inpTabHeader'>Duration (m:s)</th><th class='inpTabHeader'id='si1'>Side 1 (&#176;C)</th><th class='inpTabHeader'id='si2'>Side 2 (&#176;C)</th></tr></table></div><div class='tab-pane' id='text'><div class='containerm'><textarea id='recipeInput' cols=40 rows=5></textarea></div></div></div>");
         displayDiv.append(tableTabs, tabContent);
       tabContent.change(function () {
 			
@@ -376,6 +386,7 @@ var importRecipes=function(){
             }
 
             dropdownDiv.change(function () {
+				
                 var e1 = document.getElementById("d1");
                 var name1 = e1.options[e1.selectedIndex].text;
                 var e2 = document.getElementById("d2");
@@ -383,10 +394,15 @@ var importRecipes=function(){
                 var info = model.currentInfo['recipe'][name1];
 				console.log(info);
                 d3.selectAll('.finalsteak').remove();
-			
-                drawFinished(info[0], info[1], info[2], info[3], 0,info[4],info[5]);
+					if($('.mytog2:checked').attr('id')=='C'){
+                drawFinished(info[0], info[1], info[2], info[3], 0,info[4],'C');
                 var inf = model.currentInfo['recipe'][name2];
-                drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],inf[5]);
+                drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],'C');}
+				else{
+					drawFinished(info[0], info[1], info[2], info[3], 0,info[4],'F');
+                var inf = model.currentInfo['recipe'][name2];
+                drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],'F');}
+				
             });
 
             dropdownDiv.append(dropdown1, dropdown2);
@@ -478,9 +494,14 @@ var importRecipes=function(){
                         var name2 = e2.options[e2.selectedIndex].text;
                         var info = model.currentInfo['recipe'][name1];
                         d3.selectAll('.finalsteak').remove();
-                        drawFinished(info[0], info[1], info[2], info[3], 0,info[4],info[5]);
-                        var inf = model.currentInfo['recipe'][name2];
-                        drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],inf[5]);
+                        if($('.mytog2:checked').attr('id')=='C'){
+                drawFinished(info[0], info[1], info[2], info[3], 0,info[4],'C');
+                var inf = model.currentInfo['recipe'][name2];
+                drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],'C');}
+				else{
+					drawFinished(info[0], info[1], info[2], info[3], 0,info[4],'F');
+                var inf = model.currentInfo['recipe'][name2];
+                drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],'F');}
                     })
                    
 
@@ -654,7 +675,7 @@ var importRecipes=function(){
             if (String(parseInt($("#steakTemp").val())) == 'NaN') {
                 $("#tempInpDiv").append(tempAlert);
                 OKtoCook = false;
-            } else if (parseInt($("#steakTemp").val()) < -273 || parseInt($("#steakTemp").val()) > 300) {
+            } else if (parseInt($("#steakTemp").val()) < -223 || parseInt($("#steakTemp").val()) > 300) {
                 $("#tempInpDiv").append(tempAlert);
                 OKtoCook = false;
             } else {
