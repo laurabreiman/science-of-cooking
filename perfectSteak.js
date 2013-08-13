@@ -478,8 +478,8 @@ var perfectSteak = function (div) {
                 dropdown3.append($('<option>' + key + '</option>'));
             }
 
-            dropdownDiv.change(function () {
-        
+     dropdownDiv.change(function () {
+
                 var e1 = document.getElementById("d1");
                 var name1 = e1.options[e1.selectedIndex].text;
                 var e2 = document.getElementById("d2");
@@ -491,6 +491,8 @@ var perfectSteak = function (div) {
                 drawFinished(info[0], info[1], info[2], info[3], 0,info[4],$('.mytog2:checked').attr('id'));
                 var inf = model.currentInfo['recipe'][name2];
                 drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],$('.mytog2:checked').attr('id'));}
+
+
             );
 
             dropdown3.change(function () {
@@ -540,7 +542,7 @@ var perfectSteak = function (div) {
 
             addDropdown();
         }
-
+		
         var toF = function (C) {
             return (C * (9 / 5) + 32 + "&#176;F");
         }
@@ -779,9 +781,11 @@ var perfectSteak = function (div) {
         }
 
 
+
 		var loadRecipe=function(recipe){
 
 		}
+
 
         var graph = function (isFirst, falseColor) {
 
