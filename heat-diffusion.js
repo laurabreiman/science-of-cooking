@@ -16,8 +16,8 @@ function HeatSolver(startingTemps,timestep,spacestep){
     if(spacestep === undefined){
         spacestep = 1;
     }
-    var timestep = timestep;
-    var spacestep = spacestep;
+    var timestep = 1;
+    var spacestep = 1;
     
     var alpha = (D*timestep);
     var alphacn = (D*timestep)/(2*spacestep*spacestep);

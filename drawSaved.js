@@ -12,21 +12,37 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,t
 		return 6;
 
 	};
+		 var convertTime = function (secs) {
+            
+            var minutes = Math.floor(parseInt(secs) / 60);
+            var seconds = parseInt(secs) % 60;
+           
+            if (minutes == 0 && seconds < 10) {
+     
+                return String(0) + ":0" + String(seconds);
+            } else if (seconds == 0) {
+    
+                return String(minutes) + ':' + String(seconds) + '0';
+            } else {
+                
+                return String(minutes) + ':' + String(seconds);
+            }
+        }	
 		var toF=function(C)
     {
     return (C*(9/5)+32);
     };
 		
-		if(mode=='F'){var directions=[thickness+ " cm "+myMeatType+" starts at "+startingtemp.toFixed(0)+ "\xB0"+mode];}
+		if(mode=='F'){var directions=[thickness+ " cm "+myMeatType+" starts at "+toF(startingtemp.toFixed(0))+ "\xB0"+mode];}
 		else{var directions=[thickness+ " cm "+myMeatType+" starts at "+startingtemp.toFixed(0)+ "\xB0"+mode];}
 		for(var i=0;i<instructions.length;i++)
 		{
 			if(mode!='C'){
-			directions.push(instructions[i][0]+" seconds at "+toF(instructions[i][1]).toFixed(0)+"\xB0F and "+toF(instructions[i][2]).toFixed(0)+"\xB0F"
+			directions.push(convertTime(instructions[i][0])+" at "+toF(instructions[i][1]).toFixed(0)+"\xB0F and "+toF(instructions[i][2]).toFixed(0)+"\xB0F"
 			);
 			}
 			else{
-				directions.push(instructions[i][0]+" seconds at "+instructions[i][1].toFixed(0)+"\xB0C and "+instructions[i][2].toFixed(0)+"\xB0C");
+				directions.push(convertTime(instructions[i][0])+" at  "+instructions[i][1].toFixed(0)+"\xB0C and "+instructions[i][2].toFixed(0)+"\xB0C");
 			}
 			
 		}
@@ -63,7 +79,7 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,t
 		
 		var legend = svgContainer.selectAll('g')
 
-        .data(tempScale[myMeatType])
+        .data(function(){return mode=='C'? CtempScale[myMeatType]:FtempScale[myMmeatType]})
 
         .enter()
       .append('g')

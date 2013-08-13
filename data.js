@@ -1,30 +1,60 @@
-var tempScale={
+var CtempScale={
 			   "Steak":
-                [{'info':'No protein denaturization below 100\xB0F (40\xB0C) Raw','position':6},
-                {'info':'Myosin denatures 100-130\xB0F (40-55\xB0C) Rare','position':5},
-                {'info':'Glycogen denatures 130-140\xB0F (55-60\xB0C) Med. Rare','position':4},
-                {'info':'Myoglobin denatures 140-150\xB0F (60-70\xB0C) Medium','position':3},
-                {'info':'Actin denatures 150-250\xB0F (70-120\xB0C) Well','position':2},
-                {'info':'Browning reactions 250-350\xB0F  (120-180\xB0C)','position':1},
-				{'info':'Charring at +350\xB0F (+180\xB0C)','position':0}],
+                [{'info':'Raw: No protein denaturization below 40\xB0C ','position':6},
+                {'info':'Rare: Myosin denatures 40-55\xB0C ','position':5},
+                {'info':'Medium Rare: Glycogen denatures 55-60\xB0C ','position':4},
+                {'info':'Medium: Myoglobin denatures 60-70\xB0C ','position':3},
+                {'info':'Well: Actin denatures 70-120\xB0C ','position':2},
+                {'info':'Browning reactions 120-180\xB0C','position':1},
+				{'info':'Charring at >180\xB0C','position':0}],
 
               "Tuna":
 
-                [{'info':'No protein denaturization below 100\xB0F (40\xB0C)','position':6},
-                {'info':'Myosin denatures 100-120\xB0F (40-50\xB0C)','position':5},
-                {'info':'Myocommata rupture 120-140\xB0F (50-60\xB0C)','position':4},
-                {'info':'Myoglobin denatures 140-150\xB0F (60-70\xB0C)','position':3},
-                {'info':'Actin denatures 150-200\xB0F(70-90\xB0C)','position':2},
-                {'info':'Fibers disintegrate +200\xB0F(+90\xB0C)','position':1},
-				{'info':'Charring at +350\xB0F (+180\xB0C)','position':0}],
+                [{'info':'No protein denaturization below 40\xB0C','position':6},
+                {'info':'Myosin denatures 40-50\xB0C','position':5},
+                {'info':'Myocommata rupture 50-60\xB0C','position':4},
+                {'info':'Myoglobin denatures 60-70\xB0C','position':3},
+                {'info':'Actin denatures 70-90\xB0C','position':2},
+                {'info':'Fibers disintegrate +90\xB0C','position':1},
+				{'info':'Charring at >180\xB0C','position':0}],
 			   "Turkey":
-                   [{'info':'No protein denaturization below 100\xB0F (40\xB0C) Raw','position':6},
-                {'info':'Myosin denatures 100-130\xB0F (40-55\xB0C) Rare','position':5},
-                {'info':'Glycogen denatures 130-140\xB0F (55-60\xB0C) Med. Rare','position':4},
-                {'info':'Myoglobin denatures 140-150\xB0F (60-70\xB0C) Medium','position':3},
-                {'info':'Actin denatures 150-250\xB0F (70-120\xB0C) Well','position':2},
-                {'info':'Browning reactions 250-350\xB0F  (120-180\xB0C)','position':1},
-				{'info':'Charring at +350\xB0F (+180\xB0C)','position':0}],
+			    [{'info':'Raw: No protein denaturization below 40\xB0C ','position':6},
+                {'info':'Rare: Myosin denatures 40-55\xB0C ','position':5},
+                {'info':'Medium Rare: Glycogen denatures 55-60\xB0C ','position':4},
+                {'info':'Medium: Myoglobin denatures 60-70\xB0C ','position':3},
+                {'info':'Well: Actin denatures 70-120\xB0C ','position':2},
+                {'info':'Browning reactions 120-180\xB0C','position':1},
+				{'info':'Charring at >180\xB0C','position':0}],
+	"False":[{}]
+	
+              };
+var FtempScale={
+			   "Steak":
+                [{'info':'Raw: No protein denaturization below 100\xB0F ','position':6},
+                {'info':'Rare: Myosin denatures 100-130\xB0F ','position':5},
+                {'info':'Medium Rare: Glycogen denatures 130-140\xB0F ','position':4},
+                {'info':'Medium: Myoglobin denatures 140-150\xB0F ','position':3},
+                {'info':'Well: Actin denatures 150-250\xB0F ','position':2},
+                {'info':'Browning reactions 250-350\xB0F ','position':1},
+				{'info':'Charring at >350\xB0F','position':0}],
+
+              "Tuna":
+
+                [{'info':'No protein denaturization below 100\xB0F','position':6},
+                {'info':'Myosin denatures 100-120\xB0F','position':5},
+                {'info':'Myocommata rupture 120-140\xB0F','position':4},
+                {'info':'Myoglobin denatures 140-150\xB0F ','position':3},
+                {'info':'Actin denatures 150-200\xB0F','position':2},
+                {'info':'Fibers disintegrate +200\xB0F','position':1},
+				{'info':'Charring at >350\xB0F ','position':0}],
+			   "Turkey":
+			   [{'info':'Raw: No protein denaturization below 100\xB0F ','position':6},
+                {'info':'Rare: Myosin denatures 100-130\xB0F ','position':5},
+                {'info':'Medium Rare: Glycogen denatures 130-140\xB0F ','position':4},
+                {'info':'Medium: Myoglobin denatures 140-150\xB0F ','position':3},
+                {'info':'Well: Actin denatures 150-250\xB0F ','position':2},
+                {'info':'Browning reactions 250-350\xB0F ','position':1},
+				{'info':'Charring at >350\xB0F','position':0}],
 	"False":[{}]
 	
               };
