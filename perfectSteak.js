@@ -22,7 +22,6 @@ var perfectSteak = function (div) {
         };
 
         var timeStep = 240;
-        var inputTable = $(".inputTable");
         var toF = function (C) {
             return C*(9 / 5) + 32;
         }
@@ -70,29 +69,6 @@ var perfectSteak = function (div) {
 
         var updateTotalTime = function (secs) {
             currentInfo["totalTime"] = secs;
-        }
-
-        var checkDiv = function () {
-            currentInfo["OKToGraph"] = true;
-            $(".alert").remove();
-            for (var h = 0; h < currentInfo["numRows"]; h++) {
-
-                if (parseFloat($("#inp1_" + h).val()) < 0) {
-                    var side1Alert = $("<div class='alert alert-danger' id='row" + h + "side1alert'>Too low!</div>");
-                    $("#row" + h + "side1").append(side1Alert);
-                    currentInfo["OKToGraph"] = false;
-                }
-                if (parseFloat($("#inp2_" + h).val()) < 0) {
-                    var side2Alert = $("<div class='alert alert-danger' id='row" + h + "side2alert'>Too low!</div>");
-                    $("#row" + h + "side2").append(side2Alert);
-                    currentInfo["OKToGraph"] = false;
-                }
-                if (parseFloat($("#row" + h + "time").val()) < 0) {
-                    var timeAlert = $("<div class='alert alert-danger' id='row" + h + "timeAlert'>Negative time</div>");
-                    $("#duration" + h).append(timeAlert);
-                    currentInfo["OKToGraph"] = false;
-                }
-            }
         }
 
         var addTime = function (value) {
@@ -335,15 +311,12 @@ var perfectSteak = function (div) {
             dataClear: dataClear,
             dataChange: dataChange,
             changeMeatTemp: changeMeatTemp,
-            buildData: buildData,
             numRowsPlus: numRowsPlus,
             numRowsMinus: numRowsMinus,
 			numRowsChange: numRowsChange,
             convertTime: convertTime,
             changeTime: changeTime,
             addTime: addTime,
-            buildData: buildData,
-            checkDiv: checkDiv,
             saveRecipe: saveRecipe,
             addRecipe: addRecipe,
             browserInfo: browserInfo,
@@ -581,10 +554,10 @@ var perfectSteak = function (div) {
                             model.parseRecipe(recipeString);
 							
                         } else {
-                            model.checkDiv();
+                            checkTableForImpossibleValues();
                             updateTime();
 				$('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
-                            model.buildData();
+                            storeTableIntoModel();
 
 
                             if (clicked && model.currentInfo["OKToGraph"]) {
@@ -733,10 +706,85 @@ var perfectSteak = function (div) {
             });
         }
 
+        var checkTableForImpossibleValues = function () {
+            model.currentInfo["OKToGraph"] = true;
+            $(".alert").remove();
+            for (var h = 0; h < model.currentInfo["numRows"]; h++) {
+
+                if (parseFloat($("#inp1_" + h).val()) < 0) {
+                    var side1Alert = $("<div class='alert alert-danger' id='row" + h + "side1alert'>Too low!</div>");
+                    $("#row" + h + "side1").append(side1Alert);
+                    model.currentInfo["OKToGraph"] = false;
+                }
+                if (parseFloat($("#inp2_" + h).val()) < 0) {
+                    var side2Alert = $("<div class='alert alert-danger' id='row" + h + "side2alert'>Too low!</div>");
+                    $("#row" + h + "side2").append(side2Alert);
+                    model.currentInfo["OKToGraph"] = false;
+                }
+                if (parseFloat($("#row" + h + "time").val()) < 0) {
+                    var timeAlert = $("<div class='alert alert-danger' id='row" + h + "timeAlert'>Negative time</div>");
+                    $("#duration" + h).append(timeAlert);
+                    model.currentInfo["OKToGraph"] = false;
+                }
+            }
+        }
+
+        var storeTableIntoModel = function () {
+            var newData = [];
+            //THIS IS BEFORE THE NEXT BUTTON IS ADDED, SO NUMROWS IS ACTUALLY ONE LESS THAN IT DISPLAYS
+
+            for (var g = 0; g < model.currentInfo["numRows"]; g++) {
+
+                var side1data = parseFloat($("#inp1_" + g).val());
+                var side2data = parseFloat($("#inp2_" + g).val());
+                var timedata = $("#row" + g + "time").val() || 1000;
 
 
-		var loadRecipe=function(recipe){
+                if (timedata == 1000) {
+                    var timeMin = 4;
+                    return 4;
+                } else if (timedata.length > 2) {
+                    var timeMin = function (time) {
 
+                        var timeString = '';
+                        for (var x = 0; x < time.length; x++) {
+                            if (time.charAt(x) == ':') {
+                                break;
+                            } else {
+                                timeString += time.charAt(x);
+                            }
+                        }
+                        return parseInt(timeString)
+                    }
+                } else {
+                    var timeMin = function (time) {
+                        return 0;
+                    }
+                }
+                var timeSec = parseInt(timedata.charAt(timedata.length - 2) + timedata.charAt(timedata.length - 1));
+                var timeForGraph = 60 * timeMin(timedata) + timeSec;
+                newData.push([timeForGraph, side1data, side2data]);
+
+            }
+
+            model.dataChange(newData);
+
+            loadTextRecipeFromModel();
+        };
+
+        var loadTableFromModel = function() {
+
+        };
+
+
+        var storeTextRecipeIntoModel = function() {
+            model.parseRecipe($("recipeInput"));
+            loadTableFromModel();
+        }
+
+
+		var loadTextRecipeFromModel = function() {
+            $("recipeInput").text(model.printRecipe());
 		}
 
 
@@ -824,7 +872,7 @@ var perfectSteak = function (div) {
             cookButton.on("click", function () {
 		
                 clicked = true;
-                model.checkDiv();
+                checkTableForImpossibleValues();
                 d3.selectAll(".mysteak").remove();
                 d3.selectAll(".containers").remove();
                 if (model.currentInfo["OKToGraph"]) {
@@ -875,6 +923,8 @@ var perfectSteak = function (div) {
         var model = Model();
         var view = View(div, model);
 
+        // export the model and the view so we can find them and inspect them
+        // in the Chrome debugging console 
         perfectSteak.model = model;
         perfectSteak.view = view;
         //model.parseRecipe();
