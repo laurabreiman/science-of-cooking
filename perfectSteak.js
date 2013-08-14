@@ -695,18 +695,12 @@ var perfectSteak = function (div) {
 		var addAddButton=function(){
 			$('.addButton').remove();
 			var addButton = $("<button class='btn btnBar addButton' id='addButton" + model.currentInfo['numRows'] + "'>+</button>");
-            addButton.on("click", function () {
-                addButton.remove();
-                model.buildData();
-                model.numRowsPlus();
-                console.log("just added a row" + model.currentInfo['numRows']);
-                addRow($(".inputTable"));
-            });
+            addButtonFun(addButton)
 
             inputTable.append(addButton);
 		}
 		
-        var addButtonFun = function () {
+        var addButtonFun = function (addButton) {
             addButton.on("click", function () {
                 addButton.remove();
                 model.buildData();
@@ -880,7 +874,7 @@ var perfectSteak = function (div) {
 
         view.buildDisplay();
 
-        /* $('.inputTable').offset({
+        /* $('.inputTable').offset(
             top: 1030
         });*/
 
