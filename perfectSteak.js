@@ -594,7 +594,7 @@ var perfectSteak = function (div) {
             var rowiside1 = $("<td id='row" + i + "side1'></td>");
             var inp1_i = $("<input id='inp1_" + i + "' type=text></input>");
 		
-			var label=$("<span> "+i+"</span>");
+			var label=$("<span> "+(i+1)+"</span>");
 			if(i<10){label.css("margin-left","8px");}
 			label.css("margin-right","3px");
 			label.css("font-size",'12px');
