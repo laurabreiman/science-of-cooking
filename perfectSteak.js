@@ -23,8 +23,8 @@ var perfectSteak = function (div) {
 
         var timeStep = 240;
         var inputTable = $(".inputTable");
-        var toC = function (F) {
-            return ((5 / 9) * (F - 32));
+        var toF = function (C) {
+            return C*(9 / 5) + 32;
         }
         var toC = function (F) {
             return ((5 / 9) * (F - 32));
@@ -230,67 +230,101 @@ var perfectSteak = function (div) {
 
         }
 
+        // returns a human-readable string containing a temperature
+        // temperature: temperature value in Celsius
+        // mode: "C" if the result should be in Celsius, "F" if it should be in Fahrenheit
+        // returns e.g. "5°C"
+        var printTemperature = function(temperature, mode) {
+            var value = temperature;
+            if (mode == "F") {
+                value = toF(value);
+            }
+            return value.toFixed(0) + "\xB0" + mode;
+        }
+
+        // returns a temperature value in Celsius, given the value as a string and a mode which is either "C" or "F". 
+        var parseTemperature = function(temperatureStr, mode) {
+            var value = parseInt(temperatureStr);
+            if (mode == "F") {
+                value = toC(value);
+            }
+            return value;
+        }
+
+
+        // Returns the recipe in currentInfo as a human-readable string, for display in the "as text" tab and
+        // for the user to copy-and-paste and share with other people.
+        // mode is "F" for Fahrenheit/inches, and "C" for Celsius/cm.
+        // The format of the string is this (separated by newlines:
+        //      <thickness> <meat> starts at <starting-temp>
+        //      <time> at <side1-temp> and <side2-temp>
+        //      ...
+        //      <time> at <side1-temp> and <side2-temp>
+        // where
+        //     <thickness> ::= <number> [cm|in]
+        //     <meat> ::= Steak | Tuna | Turkey | ...
+        //     <temp> ::= <number> °[C|F]
+        var printRecipe = function(mode) {
+            var recipe = []; // make a list of lines that we'll then join into a string
+            recipe.push(currentInfo["thickness"] + "cm "// TODO: convert to inches if mode=="F" 
+                        + "Steak " // TODO: need to store meat type in currentInfo
+                        + "starts at " + printTemperature(currentInfo["meatTemp"], mode));
+            var data = currentInfo["data"];
+            for(var i=0; i<data.length; i++) {
+                var step = data[i];
+                recipe.push(convertTime(step[0])
+                            + " at "
+                            + printTemperature(step[1], mode)
+                            + " and "
+                            + printTemperature(step[2], mode));
+            }
+            return recipe.join("\n");
+        }
+
+        // capitalizes first character of s and lowercases the rest
+        var toTitleCase = function(s) {
+            return s[0].toUpperCase() + s.substring(1).toLowerCase();
+        }
+
+        // Parses the human-readable string returned by printRecipe() and stores the recipe in currentInfo.
+        // Needs to be very tolerant of whitespace, alphabetic case changes, and extra words entered into the recipe, since
+        // the user may edit the string before parseRecipe() gets to it.
         var parseRecipe = function (recipeStr) {
+            var lines = recipeStr.split(/[\r\n]/);
 
-
-            recipeStr = recipeStr.replace(/\n/g, ' ');
-
-            var pattTemp = /\d+/g;
-            var pattCelsius = /\°(.+)$/g;
+            var data = [];
             var meatType;
-            if (recipeStr.indexOf("Steak") > -1) {
-                meatType = "Steak"
-            }
-            if (recipeStr.indexOf("Tuna") > -1) {
-                meatType = "Tuna"
-            }
-            if (recipeStr.indexOf("Turkey") > -1) {
-                meatType = "Turkey"
-            }
+            for (var i = 0; i < lines.length; ++i) {
+                var line = lines[i];
 
-            var pattTemp = /\d+/g;
-
-            var numArray = recipeStr.match(pattTemp);
-            for (var i = 0; i < numArray.length; i++) {
-                numArray[i] = parseInt(numArray[i]);
-            }
-
-            //check if it's in celsius (celsius = true) or fahrenheit (celsius = false)
-            var celsius = "C";
-            if (recipeStr.match(pattCelsius)[0].charAt(1) == "F") {
-                celsius = "F";
-            }
-
-            var parsedThickness = numArray.shift();
-
-            var startingTemp = numArray.shift();
-
-            var parsedData = [];
-            var newRow;
-            for (var i = 0; i < numArray.length; i += 3) {
-                newRow = [];
-                newRow.push(numArray[i], numArray[i + 1], numArray[i + 2]);
-
-                parsedData.push(newRow);
-            }
-
-            var steak = [];
-            for (var i = 0; i < parsedThickness * 10; i++) {
-                if (celsius == 'C') {
-                    steak.push(startingTemp)
-                } else {
-                    steak.push(toC(startingTemp))
+                // try to parse starting conditions
+                var m = line.match(/(\d+)\s*(in|cm).*?(steak|tuna|turkey).*?(\d+)\xB0\s*([CF])/i);
+                if (m) {
+                    console.log(m);
+                    currentInfo["thickness"] = parseInt(m[1]); // TODO: handle inches
+                    currentInfo["meatTemp"] = parseTemperature(m[4], m[5]);
+                    meatType = toTitleCase(m[4]); // so that "steak" becomes "Steak"
+                    continue; // don't parse the line as a step
                 }
+
+                // otherwise try to parse a recipe step
+                var m = line.match(/((\d)+:)?(\d+)?.*?(\d+)\xB0\s*([CF]).*?(\d+)\xB0\s*([CF])/i);
+                if (m) {
+                    console.log(m);
+                    var time = parseInt(m[3]); // seconds field
+                    if (m[2]) time += 60*parseInt(m[2]); // optional minutes field
+                    var side1Temp = parseTemperature(m[4], m[5]);
+                    var side2Temp = parseTemperature(m[6], m[7]);
+                    data.push([time, side1Temp, side2Temp]);
+                    continue;
+                }
+
+                console.log("ignored " + line);
+
             }
-            d3.selectAll(".mysteak").remove();
-            d3.selectAll(".containers").remove();
-            calculate(parsedData, steak, meatType, false, currentInfo["totalTime"], celsius);
-
-            currentInfo["thickness"] = parsedThickness;
-
-            currentInfo["meatTemp"] = startingTemp;
-            currentInfo["data"] = parsedData;
-
+            currentInfo["data"] = data;
+            currentInfo["numRows"] = data.length;
+            // TODO: need to update currentInfo["totalTime"]
         }
 
         return {
@@ -314,6 +348,7 @@ var perfectSteak = function (div) {
             addRecipe: addRecipe,
             browserInfo: browserInfo,
             updateTotalTime: updateTotalTime,
+            printRecipe: printRecipe,
             parseRecipe: parseRecipe,
             importRecipes: importRecipes
         }
@@ -346,7 +381,7 @@ var perfectSteak = function (div) {
         model.importRecipes();
         var clicked = false;
         var displayDiv = $("<div class='displayDiv'><h4>Input Recipe</h4></div>");
-        var tableTabs = $('<ul class="nav nav-tabs"><li><a href="#table" data-toggle="tab" class="mytab">As table</a></li><li><a href="#text" data-toggle="tab"class="mytab">As text</a></li></ul>');
+        var tableTabs = $('<ul class="nav nav-tabs"><li><a href="#table" data-toggle="tab" class="mytab">As table</a></li><li><a href="#text" data-toggle="tab" class="mytab">As text</a></li></ul>');
 
         var tabContent = $("<div class='tab-content'></div>");
         var tabPaneActive = $("<div class='tab-pane active' id='table'></div>");
@@ -810,6 +845,9 @@ console.log(model.currentInfo["numRows"]);
     var setup = function (div) {
         var model = Model();
         var view = View(div, model);
+
+        perfectSteak.model = model;
+        perfectSteak.view = view;
         //model.parseRecipe();
 
 
