@@ -604,7 +604,7 @@ var perfectSteak = function (div) {
 		
                 addButton.remove();
 			
-                model.buildData();
+                //model.buildData();
                 model.numRowsPlus();
                 addRow(model.currentInfo['numRows']-1, $(".inputTable"));
 				addAddButton();
