@@ -70,10 +70,11 @@ input[type="radio"].toggle + label {
 }
 .switch{
 	position: absolute;
-	left:80%;
+	left:81.5%;
 	top:80px;
 	height:40px;
 	width:200px;
+	
 	
 }
 .switcheroo{
@@ -123,6 +124,10 @@ input[type="radio"].toggle-right + label {
 .btn{
 	font-size:12pt;
 	padding:2px;
+}
+#state{
+	font-size:12px;
+	padding:0px;
 }
 #lastrow{
 		font-size:12px;

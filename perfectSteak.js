@@ -711,6 +711,7 @@ var perfectSteak = function (div) {
             $(".alert").remove();
             for (var h = 0; h < model.currentInfo["numRows"]; h++) {
 
+
                 if (parseFloat($("#inp1_" + h).val()) < 0) {
                     var side1Alert = $("<div class='alert alert-danger' id='row" + h + "side1alert'>Too low!</div>");
                     $("#row" + h + "side1").append(side1Alert);
@@ -732,6 +733,7 @@ var perfectSteak = function (div) {
         var storeTableIntoModel = function () {
             var newData = [];
             //THIS IS BEFORE THE NEXT BUTTON IS ADDED, SO NUMROWS IS ACTUALLY ONE LESS THAN IT DISPLAYS
+
 
             for (var g = 0; g < model.currentInfo["numRows"]; g++) {
 
