@@ -354,7 +354,7 @@ var perfectSteak = function (div) {
         model.importRecipes();
         var clicked = false;
         var displayDiv = $("<div class='displayDiv'><h4>Input Recipe</h4></div>");
-        var tableTabs = $('<ul class="nav nav-tabs"><li><a href="#table" data-toggle="tab" class="mytab">As table</a></li><li><a href="#text" data-toggle="tab" class="mytab">As text</a></li></ul>');
+        var tableTabs = $('<ul class="nav nav-tabs"><li><a id="table-tab" href="#table" data-toggle="tab" class="mytab">As table</a></li><li><a id="text-tab" href="#text" data-toggle="tab" class="mytab">As text</a></li></ul>');
 
         var tabContent = $("<div class='tab-content'></div>");
         var tabPaneActive = $("<div class='tab-pane active' id='table'></div>");
@@ -384,6 +384,13 @@ var perfectSteak = function (div) {
         tabPane.append(containerm);
         tabContent.append(tabPaneActive, tabPane);
 
+        $("#table-tab", tableTabs).on("click", function() {
+            storeTextRecipeIntoModel();
+        });
+
+        $("#text-tab", tableTabs).on("click", function() {
+            storeTableIntoModel();
+        });
 
         displayDiv.append(tableTabs, tabContent);
     
@@ -778,13 +785,13 @@ var perfectSteak = function (div) {
 
 
         var storeTextRecipeIntoModel = function() {
-            model.parseRecipe($("recipeInput"));
+            model.parseRecipe($("#recipeInput").text());
             loadTableFromModel();
         }
 
 
 		var loadTextRecipeFromModel = function() {
-            $("recipeInput").text(model.printRecipe());
+            $("#recipeInput").text(model.printRecipe($('.mytog2:checked').attr('id')));
 		}
 
 
