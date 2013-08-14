@@ -1,7 +1,7 @@
 #table{
 	position: relative;
 	width: 95% !important;
-	text-align: center;
+	text-align: left;
 	top: 0px !important;
 	padding: 0px !important;
 	margin: 0px!important;
@@ -16,7 +16,9 @@
 }
 
 .btnBar{
-
+position:relative;
+	left:2px!important;
+	width:25px!important;
 }
 .nav-tabs>li>a {
 	height:15px!important;
@@ -122,6 +124,9 @@ input[type="radio"].toggle-right + label {
 	font-size:12pt;
 	padding:2px;
 }
+#lastrow{
+		font-size:12px;
+}
 #Cook{
 	font-size:20pt;
 	padding:2px;
@@ -151,9 +156,11 @@ th{
 }
 
 td{
-	max-width:30% !important;
+	position:relative;
+	max-width:32% !important;
 	margin:0!important;
 	padding:1px!important;
+	left:0px!important;
 }
 
 .displayDiv{
@@ -182,7 +189,7 @@ td{
 	position:relative;
 	padding: 0px;
 	font-size:12px; 
-	margin-left:7px!important;
+	margin-left:10px!important;
 }
 
 input[type="text"] {
@@ -201,7 +208,7 @@ input[type="text"] {
 }
 
 #thickInpDiv, #tempInpDiv, #meatTypeDiv{
-	padding: 5px;
+	
 	margin:0px;
 	width:100%;!important;
 	  font-size: 12px;
