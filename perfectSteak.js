@@ -591,14 +591,14 @@ var perfectSteak = function (div) {
                     addDropdown();
                 //}
                 
-                var time = $("#row" + i + "time").val().replace(':', '.').split('.');
-                if (time.length > 1) {
-                    var sumtime = parseFloat(time[1]);
+                // var time = $("#row" + i + "time").val().replace(':', '.').split('.');
+                // if (time.length > 1) {
+                    // var sumtime = parseFloat(time[1]);
 
-                    sumtime += parseFloat(60 * time[0]);
-                } else {
-                    var sumtime = parseFloat(time[0]);
-                }
+                    // sumtime += parseFloat(60 * time[0]);
+                // } else {
+                    // var sumtime = parseFloat(time[0]);
+                // }
 
                
 
@@ -623,13 +623,13 @@ var perfectSteak = function (div) {
 
                     // model.dataAdd([sumtime, parseFloat($("#inp1_" + iminus).val()), parseFloat($("#inp2_" + iminus).val())])
                 // }
-                timeFun(i);
-                flipButtonFun(i);
+                //timeFun(i);
+                //flipButtonFun(i);
             
 
             model.dataClear();
 			addAddButton();
-            CookButtonFun();
+            CookButtonFun(cookButton);
             closeRowFun();
         };
 
@@ -645,7 +645,7 @@ var perfectSteak = function (div) {
 
             var rowiside1 = $("<td id='row" + i + "side1'></td>");
             var inp1_i = $("<input id='inp1_" + i + "' type=text></input>");
-            var flipButtoni = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
+            var flipButtoni = $("<button class='btn btn-mini flipButton' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
             rowiside1.append(inp1_i, flipButtoni);
 
             var rowiside2 = $("<td id='row" + i + "side2' class='row" + i + "'></td>");
@@ -752,7 +752,8 @@ var perfectSteak = function (div) {
             model.dataClear();
 
             for (var e = 0; e < model.currentInfo["numRows"]; e++) {
-                var curTime = $("#row" + e + "time").val();
+                var curTime = String($("#row" + e + "time").val());
+				console.log("curTime"+curTime+$("#row"+e+"time"));
                 var cur1 = parseFloat($("#inp1_" + e).val());
                 var cur2 = parseFloat($("#inp2_" + e).val());
 
@@ -818,8 +819,9 @@ var perfectSteak = function (div) {
                 calculate(model.currentInfo["data"], steak, meatType, isFirst, model.currentInfo["totalTime"], $('.mytog2:checked').attr('id'))
             }
         }
-        var CookButtonFun = function () {
-            $(".cookButton").on("click", function () {
+        var CookButtonFun = function (cookButton) {
+            cookButton.on("click", function () {
+				console.log("clicked");
                 clicked = true;
                 model.checkDiv();
                 d3.selectAll(".mysteak").remove();
@@ -848,7 +850,7 @@ var perfectSteak = function (div) {
         };
 
         var flipButtonFun = function (k) {
-            flipButton.on("click", function () {
+            $(".flipButton").on("click", function () {
                 side1data = 0
                 side1data += parseInt(parseFloat($('#inp1_' + k).val())) || 0;
                 side2data = parseInt(parseFloat($('#inp2_' + k).val()));
