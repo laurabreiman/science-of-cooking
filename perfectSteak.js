@@ -7,8 +7,8 @@ var perfectSteak = function (div) {
 
             'meatTemp': 23, //initial temperature of the meat
             'thickness': 3, //thickness of the meat in centimeters
-            'data': [[240,180,23],[240,23,180],[300,23,23]], //timestamps of temperatures
-            'numRows': 2, //how many steps there are in the recipe
+            'data': [[240,150,23],[240,23,150],[150,23,23]], //timestamps of temperatures
+            'numRows': 3, //how many steps there are in the recipe
             'time': 0, //time
             'OKToGraph': true, //flag for when data is ready to graph
             'recipe': {}, //recipes -- THIS HAS ALL SAVED RECIPES, INCLUDING THE ONES THAT WE SAVED
@@ -502,66 +502,69 @@ var perfectSteak = function (div) {
         }
 
 //I'M NOT CONVINCED WE NEED THIS FUNCTION AT ALL. WE REALLY SHOULD JUST BE USING ADDROW I THINK --KATE
-        var buildTable = function (inpTable) {
+        var buildTable = function () {
+			
+			$("tr").remove();
+			for (var i=0; i<model.currentInfo['data'].length;i++){
+				addRow(i, inputTable)
+			}
+            // var timeStep = model.timeStep;
+            // var len = model.currentInfo["data"].length || 1000;
+            // var newData = []
+            // var sumtime = 0;
+            // for (var i = 0; i < model.currentInfo["numRows"]; i++) {
+                // var iminus = i - 1;
 
-            var timeStep = model.timeStep;
-            var len = model.currentInfo["data"].length || 1000;
-            var newData = []
-            var sumtime = 0;
-            for (var i = 0; i < model.currentInfo["numRows"]; i++) {
-                var iminus = i - 1;
+                // flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
 
-                flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
+                // var row = $("<tr id='row" + i + "'></tr>");
 
-                var row = $("<tr id='row" + i + "'></tr>");
+                // if (i > 0) {
+                    // var vals = parseFloat($("#row" + (i - 1) + "time").val());
+                // }
 
-                if (i > 0) {
-                    var vals = parseFloat($("#row" + (i - 1) + "time").val());
-                }
+                // var duration = $("<td id='duration" + i + "'><input id='row" + i + "time' type='text' value="+model.convertTime(240)+"></input></td>");
+                // var inp1 = $("<input type='text' id='inp1_" + i + "'>");
+                // var inp2 = $("<span id='inp2row" + i + "span'><input type='text' id='inp2_" + i + "'></span>");
+                // var closeButton = $("<button type='button' class='close closeRow' id='row" + i + "button'>&times;</button>");
+                // inp2.append(closeButton);
+                // var step1Col = $("<td id='row" + i + "side1'></input>");
+                // step1Col.append(inp1);
+                // var step2Col = $("<td id='row" + i + "side2' class='row" + i + "'></td>");
+                // step2Col.append(inp2);
+                // step1Col.append(flipButton);
 
-                var duration = $("<td id='duration" + i + "'><input id='row" + i + "time' type='text' value="+model.convertTime(240)+"></input></td>");
-                var inp1 = $("<input type='text' id='inp1_" + i + "'>");
-                var inp2 = $("<span id='inp2row" + i + "span'><input type='text' id='inp2_" + i + "'></span>");
-                var closeButton = $("<button type='button' class='close closeRow' id='row" + i + "button'>&times;</button>");
-                inp2.append(closeButton);
-                var step1Col = $("<td id='row" + i + "side1'></input>");
-                step1Col.append(inp1);
-                var step2Col = $("<td id='row" + i + "side2' class='row" + i + "'></td>");
-                step2Col.append(inp2);
-                step1Col.append(flipButton);
-
-                closeButton.on("click", function () {
-                    var rowNum = String($(this).attr("id").charAt(3))
+                // closeButton.on("click", function () {
+                    // var rowNum = String($(this).attr("id").charAt(3))
                     //NOW WE'RE REMOVING THE ROW WITH THE X NEXT TO IT
-                    $("#row" + rowNum).remove();
-                    //REDUCING THE NUMBER OF EXPECTED ROWS
-                    model.numRowsMinus();
-                    console.log("closed" + model.currentInfo["numRows"]);
+                    // $("#row" + rowNum).remove();
+                   // REDUCING THE NUMBER OF EXPECTED ROWS
+                    // model.numRowsMinus();
+                    // console.log("closed" + model.currentInfo["numRows"]);
                     //NOW WE NEED TO CHANGE THE ROW NUMBER OF ALL THE OTHER ROWS
-                    for (var l = parseInt(rowNum) + 1; l < model.currentInfo["numRows"] + 1; l++) {
-                        console.log("we're in the closeRow loop " + l);
-                        console.log($("#row" + l).attr("id") + "id");
-                        console.log(String("row" + parseInt(l - 1)))
-                        $("#row" + l).attr("id", String("row" + parseInt(l - 1)));
-                        $("#row" + l + "time").attr("id", String("row" + parseInt(l - 1) + "time"))
-                        $("#row" + l + "button").attr("id", String("row" + parseInt(l - 1) + "button"))
-                        $("#duration" + l).attr("id", String("duration" + parseInt(l - 1)));
-                        $("#row" + l + "side1").attr("id", String("row" + parseInt(l - 1) + "side1"));
-                        $("inp1_" + l).attr("id", String("inp1_" + parseInt(l - 1)));
-                        $("#row" + l + "side2").attr("id", String("row" + parseInt(l - 1) + "side2"));
-                        $("#inp2_" + l).attr("id", String("inp2_" + parseInt(l - 1)));
-                    }
+                    // for (var l = parseInt(rowNum) + 1; l < model.currentInfo["numRows"] + 1; l++) {
+                        // console.log("we're in the closeRow loop " + l);
+                        // console.log($("#row" + l).attr("id") + "id");
+                        // console.log(String("row" + parseInt(l - 1)))
+                        // $("#row" + l).attr("id", String("row" + parseInt(l - 1)));
+                        // $("#row" + l + "time").attr("id", String("row" + parseInt(l - 1) + "time"))
+                        // $("#row" + l + "button").attr("id", String("row" + parseInt(l - 1) + "button"))
+                        // $("#duration" + l).attr("id", String("duration" + parseInt(l - 1)));
+                        // $("#row" + l + "side1").attr("id", String("row" + parseInt(l - 1) + "side1"));
+                        // $("inp1_" + l).attr("id", String("inp1_" + parseInt(l - 1)));
+                        // $("#row" + l + "side2").attr("id", String("row" + parseInt(l - 1) + "side2"));
+                        // $("#inp2_" + l).attr("id", String("inp2_" + parseInt(l - 1)));
+                    // }
 
-                });
+                // });
 
-                row.append(duration, step1Col, step2Col);
-                inputTable.append(row);
-                if (i == model.currentInfo["numRows"] - 1) {
-                    saveBut = $('<a href="#saveBut" role="button" class="btn sBut" data-toggle="modal">Save</a>');
-                    var saveModal = $('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe</div></div>');
+                // row.append(duration, step1Col, step2Col);
+                // inputTable.append(row);
+                saveBut = $('<a href="#saveBut" role="button" class="btn sBut" data-toggle="modal">Save</a>');
+                var saveModal = $('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe</div></div>');
                     var nameInp = $('<input type="text" id=recipeName width="150px"></input>');
                     var okModal = $('<button class="btn" data-dismiss="modal" aria-hidden="true" id="okModal">OK</button>');
-                   
+             
                   cookButt.on("click", function () {
                         if ($("#recipeInput").closest(".tab-pane").hasClass("active")) {
                             var recipeString = $("#recipeInput").val();
@@ -586,7 +589,7 @@ var perfectSteak = function (div) {
 
                     $(".span3").append(cookButt);
                     addDropdown();
-                }
+                //}
                 
                 var time = $("#row" + i + "time").val().replace(':', '.').split('.');
                 if (time.length > 1) {
@@ -599,30 +602,30 @@ var perfectSteak = function (div) {
 
                
 
-                if (len == 0 || len == 1000) {
+                // if (len == 0 || len == 1000) {
 
-                    inp1.val(180);
-                    inp2.val(180);
+                    // inp1.val(180);
+                    // inp2.val(180);
 
 
-                    model.dataAdd([sumtime, parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())]);
+                    // model.dataAdd([sumtime, parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())]);
 
-                } else if (i <= len) {
+                // } else if (i <= len) {
 
-                    inp1.val(model.currentInfo["data"][i][1]);
-                    inp2.val(model.currentInfo["data"][i][2]);
+                    // inp1.val(model.currentInfo["data"][i][1]);
+                    // inp2.val(model.currentInfo["data"][i][2]);
 
-                    model.dataAdd([sumtime, parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())])
-                } else {
+                    // model.dataAdd([sumtime, parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())])
+                // } else {
 
-                    inp1.val(model.currentInfo["data"][i - 1][1]);
-                    inp2.val(model.currentInfo["data"][i - 1][2]);
+                    // inp1.val(model.currentInfo["data"][i - 1][1]);
+                    // inp2.val(model.currentInfo["data"][i - 1][2]);
 
-                    model.dataAdd([sumtime, parseFloat($("#inp1_" + iminus).val()), parseFloat($("#inp2_" + iminus).val())])
-                }
+                    // model.dataAdd([sumtime, parseFloat($("#inp1_" + iminus).val()), parseFloat($("#inp2_" + iminus).val())])
+                // }
                 timeFun(i);
                 flipButtonFun(i);
-            }
+            
 
             model.dataClear();
 			addAddButton();
@@ -634,7 +637,7 @@ var perfectSteak = function (div) {
 		
 		//THIS FUNCTION JUST HAS A BARREL OF ISSUES
         var addRow = function (i, table) {
-            var row = $("<tr id='row" + i + "'></tr>");
+            var row = $("<tr class ='row' id='row" + i + "'></tr>");
 
             var durationi = $("<td id='duration" + i + "'></td>");
             var rowitime = $("<input id='row" + i + "time' type=text></input>");
