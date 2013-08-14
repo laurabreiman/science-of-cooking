@@ -161,7 +161,7 @@ var perfectSteak = function (div) {
         }
 
         var saveRecipe = function (name) {
-
+			console.log(currentInfo["data"])
             var steak = [currentInfo["data"][0][1]];
             for (var m = 0; m < parseFloat($("#thicknessInp").val()) * 10; m++) {
 
@@ -404,7 +404,7 @@ var perfectSteak = function (div) {
             $('#si1').html("Side 1 (&#176;" + $('.mytog2:checked').attr('id') + ")");
             $('#si2').html("Side 2 (&#176;" + $('.mytog2:checked').attr('id') + ")");
             $('#work').html("&#176;" + $('.mytog2:checked').attr('id'));
-            //graph(false, $('.mytog:checked').attr('id'));
+            graph(false, $('.mytog:checked').attr('id'));
         });
         tabPaneActive.append( meatInp,thickInpDiv,tempInp,inpTabHeader,inputTableContainer);
 		 // tabPaneActive.append( inpTabHeader);
@@ -510,9 +510,9 @@ var perfectSteak = function (div) {
         */
         var buildDisplay = function () {
             if (model.currentInfo["OKToGraph"]) {
-                div.append("<div class='row'><div class='container optionBar'></div></div><div class='span3'></div><div class='span9'></div><div class='span12'></div></div>");
-                var switches = $('<div class="switch"><input type="radio" class="mytog" id="PS" name="toggle" checked><label for="PS" class="btn" >Protein State</label><input type="radio" class="mytog"id="T" name="toggle"><label for="T" class="btn" >Temperature</label></div>');
-                div.append(switches,switcheroo);
+                div.append("<div class='row'><div class='container optionBar'></div></div><div class='span3'></div><div class='span9' style='visibility:hidden;'></div><div class='span12'></div></div>");
+                var switches = $('<div class="switch"><input type="radio" class="mytog" id="PS" name="toggle" checked><label for="PS" class="btn" id ="state">Protein State</label><input type="radio" class="mytog"id="T" name="toggle"><label for="T" class="btn" id ="state">Temperature</label></div>');
+                div.append(switcheroo);
                 switches.change(function () {
 
                     graph(false, $('.mytog:checked').attr('id'));
@@ -520,7 +520,7 @@ var perfectSteak = function (div) {
 
                 $(".span3").append(displayDiv);
 				
-
+				$(".span9").append(switches);
                 $("#startModal").modal("show");
 
                 cookButton = $(".cookButton");
@@ -555,7 +555,7 @@ var perfectSteak = function (div) {
                     var okModal = $('<button class="btn" data-dismiss="modal" aria-hidden="true" id="okModal">OK</button>');
              
                   cookButt.on("click", function () {
-					  
+					  $(".span9").css("visibility","visible");
 					  var meat= $("input[type='radio'][name='meat']:checked").attr('id');
 						model.currentInfo['names'][meat]=model.currentInfo['names'][meat]+1;
                         var name =  "My "+meat+" "+ model.currentInfo['names'][meat];
