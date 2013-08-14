@@ -354,28 +354,31 @@ var perfectSteak = function (div) {
 		var tempInp=$("<div><span id='tempInpDiv'>   Initial Temperature: <input type='text' id='steakTemp' value='23'><span id='work'>&#176;C</span></span></div>");
         var meatInp = $("<span><form id='meatInp'><b>Meat: </b><input type='radio' name='meat' id='Steak' checked>Steak<input type='radio' name='meat' id='Tuna'>Tuna <input type='radio' name='meat' id='Turkey'>Turkey </form></span>");
         var switcheroo = $('<span class="switcheroo"></span>');
-        var mytog2 = $("<input type='radio' class='mytog2' id='C' name='toggle2' checked><label for='C' class='btn'>C</label><input type='radio' class='mytog' id='F' name='toggle2'><label for='F' class='btn'>F</label>");
+        var mytog2 = $("<input type='radio' class='mytog2' id='C' name='toggle2' checked><label for='C' class='btn'>C</label><input type='radio' class='mytog2' id='F' name='toggle2'><label for='F' class='btn'>F</label>");
 		var inputTableContainer=$("<div class='inputTableContainer'></div>");
         var inputTable = $("<table class='inputTable table table-striped'></table>");
 		inputTableContainer.append(inputTable)
         var tabPane = $("<div class='tab-pane' id='text'></div>")
-        var inpTabHeader = $("<table class='header table table-striped'><tr><th class='inpTabHeader'>Duration (mm:ss)</th><th class='inpTabHeader'>Side 1 (&#176;C)</th><th class='inpTabHeader'>Side 2 (&#176;C)</th></tr></table>");
+        var inpTabHeader = $("<table class='header table table-striped'><tr><th class='inpTabHeader'>Duration (mm:ss)</th><th class='inpTabHeader' id= 'si1'>Side 1 (&#176;C)</th><th class='inpTabHeader' id='si2'>Side 2 (&#176;C)</th></tr></table>");
         var containerm = $("<div class='containerm'><textarea id='recipeInput' cols=40 rows=5></textarea></div>");
+		
         inputTableContainer.append(inputTable);
         switcheroo.append(mytog2);
-        tabPaneActive.append( meatInp,thickInpDiv,tempInp,inpTabHeader,inputTableContainer);
-        tabPane.append(containerm);
-        tabContent.append(tabPaneActive, tabPane);
-
-
-        displayDiv.append(tableTabs, tabContent);
-        tabContent.change(function () {
+		switcheroo.change(function () {
 
             $('#si1').html("Side 1 (&#176;" + $('.mytog2:checked').attr('id') + ")");
             $('#si2').html("Side 2 (&#176;" + $('.mytog2:checked').attr('id') + ")");
             $('#work').html("&#176;" + $('.mytog2:checked').attr('id'));
             //graph(false, $('.mytog:checked').attr('id'));
         });
+        tabPaneActive.append( meatInp,thickInpDiv,tempInp,inpTabHeader,inputTableContainer);
+		 // tabPaneActive.append( inpTabHeader);
+        tabPane.append(containerm);
+        tabContent.append(tabPaneActive, tabPane);
+
+
+        displayDiv.append(tableTabs, tabContent);
+    
         var addButton;
 
         var flipButton;
@@ -431,7 +434,7 @@ var perfectSteak = function (div) {
                 var e2 = document.getElementById("d2");
                 var name2 = e2.options[e2.selectedIndex].text;
                 var info = model.currentInfo['recipe'][name1];
-				console.log(info);
+			
                 d3.selectAll('.finalsteak').remove();
 
                 drawFinished(info[0], info[1], info[2], info[3], 0,info[4],$('.mytog2:checked').attr('id'));
@@ -448,8 +451,7 @@ var perfectSteak = function (div) {
 				var newNum=model.currentInfo['data'].length;
 				//REMOVING ALL THE ROWS THAT CURRENTLY EXIST
 				for (var i =0; i<model.currentInfo['numRows']; i++){
-					console.log("current i ", model.currentInfo['numRows']);
-					console.log("this is the number of rows" + model.currentInfo['numRows'])
+				
 					$("#row"+i).remove();	
 				}
 				model.numRowsChange(0);
@@ -480,6 +482,7 @@ var perfectSteak = function (div) {
                 });
 
                 $(".span3").append(displayDiv);
+				
 
                 $("#startModal").modal("show");
 
@@ -504,68 +507,38 @@ var perfectSteak = function (div) {
 //I'M NOT CONVINCED WE NEED THIS FUNCTION AT ALL. WE REALLY SHOULD JUST BE USING ADDROW I THINK --KATE
         var buildTable = function () {
 			
-			$("tr").remove();
+			$(".inputTable tr").remove();
 			for (var i=0; i<model.currentInfo['data'].length;i++){
 				addRow(i, inputTable)
 			}
-            // var timeStep = model.timeStep;
-            // var len = model.currentInfo["data"].length || 1000;
-            // var newData = []
-            // var sumtime = 0;
-            // for (var i = 0; i < model.currentInfo["numRows"]; i++) {
-                // var iminus = i - 1;
-
-                // flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
-
-                // var row = $("<tr id='row" + i + "'></tr>");
-
-                // if (i > 0) {
-                    // var vals = parseFloat($("#row" + (i - 1) + "time").val());
-                // }
-
-                // var duration = $("<td id='duration" + i + "'><input id='row" + i + "time' type='text' value="+model.convertTime(240)+"></input></td>");
-                // var inp1 = $("<input type='text' id='inp1_" + i + "'>");
-                // var inp2 = $("<span id='inp2row" + i + "span'><input type='text' id='inp2_" + i + "'></span>");
-                // var closeButton = $("<button type='button' class='close closeRow' id='row" + i + "button'>&times;</button>");
-                // inp2.append(closeButton);
-                // var step1Col = $("<td id='row" + i + "side1'></input>");
-                // step1Col.append(inp1);
-                // var step2Col = $("<td id='row" + i + "side2' class='row" + i + "'></td>");
-                // step2Col.append(inp2);
-                // step1Col.append(flipButton);
-
-                // closeButton.on("click", function () {
-                    // var rowNum = String($(this).attr("id").charAt(3))
-                    //NOW WE'RE REMOVING THE ROW WITH THE X NEXT TO IT
-                    // $("#row" + rowNum).remove();
-                   // REDUCING THE NUMBER OF EXPECTED ROWS
-                    // model.numRowsMinus();
-                    // console.log("closed" + model.currentInfo["numRows"]);
-                    //NOW WE NEED TO CHANGE THE ROW NUMBER OF ALL THE OTHER ROWS
-                    // for (var l = parseInt(rowNum) + 1; l < model.currentInfo["numRows"] + 1; l++) {
-                        // console.log("we're in the closeRow loop " + l);
-                        // console.log($("#row" + l).attr("id") + "id");
-                        // console.log(String("row" + parseInt(l - 1)))
-                        // $("#row" + l).attr("id", String("row" + parseInt(l - 1)));
-                        // $("#row" + l + "time").attr("id", String("row" + parseInt(l - 1) + "time"))
-                        // $("#row" + l + "button").attr("id", String("row" + parseInt(l - 1) + "button"))
-                        // $("#duration" + l).attr("id", String("duration" + parseInt(l - 1)));
-                        // $("#row" + l + "side1").attr("id", String("row" + parseInt(l - 1) + "side1"));
-                        // $("inp1_" + l).attr("id", String("inp1_" + parseInt(l - 1)));
-                        // $("#row" + l + "side2").attr("id", String("row" + parseInt(l - 1) + "side2"));
-                        // $("#inp2_" + l).attr("id", String("inp2_" + parseInt(l - 1)));
-                    // }
-
-                // });
-
-                // row.append(duration, step1Col, step2Col);
-                // inputTable.append(row);
+          
                 saveBut = $('<a href="#saveBut" role="button" class="btn sBut" data-toggle="modal">Save</a>');
                 var saveModal = $('<div id="saveBut" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-body">Please select a name for your recipe</div></div>');
                     var nameInp = $('<input type="text" id=recipeName width="150px"></input>');
                     var okModal = $('<button class="btn" data-dismiss="modal" aria-hidden="true" id="okModal">OK</button>');
              
                   cookButt.on("click", function () {
+					  
+					  var meat= $("input[type='radio'][name='meat']:checked").attr('id');
+						model.currentInfo['names'][meat]=model.currentInfo['names'][meat]+1;
+                        var name =  "My "+meat+" "+ model.currentInfo['names'][meat];
+						model.saveRecipe(name);
+                        var dropdown1 = $("#d1");
+                        var dropdown2 = $("#d2");
+                        dropdown1.append($('<option>' + name + '</option>'));
+                        dropdown2.append($('<option>' + name + '</option>'));
+                        var e1 = document.getElementById("d1");
+                        var name1 = e1.options[e1.selectedIndex].text;
+                        var e2 = document.getElementById("d2");
+                        var name2 = e2.options[e2.selectedIndex].text;
+                        var info = model.currentInfo['recipe'][name1];
+                        d3.selectAll('.finalsteak').remove();
+
+                       
+                   drawFinished(info[0], info[1], info[2], info[3], 0,info[4],$('.mytog2:checked').attr('id'));
+                var inf = model.currentInfo['recipe'][name2];
+                drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],$('.mytog2:checked').attr('id'));
+							  
                         if ($("#recipeInput").closest(".tab-pane").hasClass("active")) {
                             var recipeString = $("#recipeInput").val();
                             model.parseRecipe(recipeString);
@@ -584,47 +557,13 @@ var perfectSteak = function (div) {
                                 model.dataClear();
                             }
                         }
-                    })
+                    });
               
 
                     $(".span3").append(cookButt);
                     addDropdown();
-                //}
-                
-                // var time = $("#row" + i + "time").val().replace(':', '.').split('.');
-                // if (time.length > 1) {
-                    // var sumtime = parseFloat(time[1]);
-
-                    // sumtime += parseFloat(60 * time[0]);
-                // } else {
-                    // var sumtime = parseFloat(time[0]);
-                // }
-
-               
-
-                // if (len == 0 || len == 1000) {
-
-                    // inp1.val(180);
-                    // inp2.val(180);
-
-
-                    // model.dataAdd([sumtime, parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())]);
-
-                // } else if (i <= len) {
-
-                    // inp1.val(model.currentInfo["data"][i][1]);
-                    // inp2.val(model.currentInfo["data"][i][2]);
-
-                    // model.dataAdd([sumtime, parseFloat($("#inp1_" + i).val()), parseFloat($("#inp2_" + i).val())])
-                // } else {
-
-                    // inp1.val(model.currentInfo["data"][i - 1][1]);
-                    // inp2.val(model.currentInfo["data"][i - 1][2]);
-
-                    // model.dataAdd([sumtime, parseFloat($("#inp1_" + iminus).val()), parseFloat($("#inp2_" + iminus).val())])
-                // }
-                //timeFun(i);
-                //flipButtonFun(i);
+          
+     
             
 
             model.dataClear();
@@ -660,12 +599,10 @@ var perfectSteak = function (div) {
                 row.remove();
                 //REDUCING THE NUMBER OF EXPECTED ROWS
                 model.numRowsMinus();
-                console.log("closed" + model.currentInfo["numRows"]);
+              
                 //NOW WE NEED TO CHANGE THE ROW NUMBER OF ALL THE OTHER ROWS
                 for (var l = i + 1; l < model.currentInfo["numRows"] + 1; l++) {
-                    console.log("we're in the closeRow loop " + l);
-                    console.log($("#row" + l).attr("id") + "id");
-                    console.log(String("row" + parseInt(l - 1)))
+
                     $("#row" + l).attr("id", String("row" + parseInt(l - 1)));
                     $("#row" + l + "time").attr("id", String("row" + parseInt(l - 1) + "time"))
                     $("#row" + l + "button").attr("id", String("row" + parseInt(l - 1) + "button"))
@@ -681,7 +618,7 @@ var perfectSteak = function (div) {
             row.append(durationi, rowiside1, rowiside2)
             table.append(row);
             if (i < model.currentInfo['data'].length) {
-				console.log(model.currentInfo['data'])
+
                 rowitime.val(model.convertTime(model.currentInfo['data'][i][0]));
                 inp1_i.val(model.currentInfo['data'][i][1]);
                 inp2_i.val(model.currentInfo['data'][i][2])
@@ -710,9 +647,9 @@ var perfectSteak = function (div) {
                 model.numRowsPlus();
                 addRow(model.currentInfo['numRows']-1, $(".inputTable"));
 				addAddButton();
-                $('#table').stop().animate({
-                    scrollTop: $("#table")[0].scrollHeight
-                }, 8000);
+				$(".inputTableContainer").animate({
+        scrollTop: 1000
+    }, 300);
 
 
             });
@@ -750,18 +687,17 @@ var perfectSteak = function (div) {
             d3.selectAll(".mysteak").remove();
             d3.selectAll(".containers").remove();
             model.dataClear();
-
+console.log(model.currentInfo["numRows"]);
             for (var e = 0; e < model.currentInfo["numRows"]; e++) {
+				 
                 var curTime = String($("#row" + e + "time").val());
-				console.log("curTime"+curTime+$("#row"+e+"time"));
+
                 var cur1 = parseFloat($("#inp1_" + e).val());
                 var cur2 = parseFloat($("#inp2_" + e).val());
 
                 var time = curTime.replace(':', '.').split('.');
                 if (time.length > 1) {
-                    var sumtime = parseFloat(time[1]);
-
-                    sumtime += parseFloat(60 * time[0]);
+                    var sumtime = parseFloat(time[1])+ 60*parseFloat(time[0]);
                 } else {
                     var sumtime = parseFloat(time[0]);
                 }
@@ -779,7 +715,8 @@ var perfectSteak = function (div) {
             if (String(parseInt($("#steakTemp").val())) == 'NaN') {
                 $("#tempInpDiv").append(tempAlert);
                 OKtoCook = false;
-            } else if (parseInt($("#steakTemp").val()) < -223 || parseInt($("#steakTemp").val()) > 300) {
+            } else if (($('.mytog2:checked').attr('id') == 'C')&&(parseInt($("#steakTemp").val()) < -273 )||
+				($('.mytog2:checked').attr('id') == 'F')&&(parseInt($("#steakTemp").val()) < -459)) {
                 $("#tempInpDiv").append(tempAlert);
                 OKtoCook = false;
             } else {
@@ -821,7 +758,7 @@ var perfectSteak = function (div) {
         }
         var CookButtonFun = function (cookButton) {
             cookButton.on("click", function () {
-				console.log("clicked");
+		
                 clicked = true;
                 model.checkDiv();
                 d3.selectAll(".mysteak").remove();

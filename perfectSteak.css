@@ -28,6 +28,10 @@
 .inputTable{
 	margin:0px!important;
 }
+#inpTabHeader{
+	margin:0px!important;
+	position:relative;
+}
 .inputTableContainer{
 	height:100px;
 	overflow-y:auto;
@@ -147,7 +151,7 @@ th{
 }
 
 td{
-	width:32% !important;
+	max-width:30% !important;
 	margin:0!important;
 	padding:1px!important;
 }
