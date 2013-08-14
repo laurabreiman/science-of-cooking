@@ -9,7 +9,7 @@ var calculate=function(data,steak,meatType,first,totalTime,mode){
     //sets the parameters for the iterations of the diffusion equations. 
     //parameters are initially set to a timestep of 1 second and a spacestep of 1mm,
     //but these can be increased with minimal error if calculation time is too great
-
+console.log("calc");
     var toC=function(F)
     {
     return ((5/9)*(F-32));
@@ -26,12 +26,7 @@ var calculate=function(data,steak,meatType,first,totalTime,mode){
 	
 	var timestep = 1;
     var spacestep = 1;
-    while(totalTime/timestep > 10000){
-        timestep += 9; //adjust the timestep so that no more than 9999 calculations are done
-    }
-    if(timestep > 39){ //39 is basically the maximum timestep for acceptable accuracy (below 1° error)
-        timestep = 39;
-    }
+   
     var myheatsolver = HeatSolver(steak,timestep,spacestep);
     var Thedata=myheatsolver.sixty_graph_arrays_duration(data);
 	if(meatType=='False'){
