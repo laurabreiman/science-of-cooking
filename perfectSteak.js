@@ -436,24 +436,29 @@ var perfectSteak = function (div) {
 
                 drawFinished(info[0], info[1], info[2], info[3], 0,info[4],$('.mytog2:checked').attr('id'));
                 var inf = model.currentInfo['recipe'][name2];
-                drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],$('.mytog2:checked').attr('id'));}
 
-
-            );
-
+                drawFinished(inf[0], inf[1], inf[2], inf[3], 1, inf[4], inf[5]);
+            });
+			
+			//NOW THIS DELETES EVERY ROW AND ADDS THEIR OWN LITTLE ROWS
             dropdown3.change(function () {
-                var e3 = document.getElementById("d3");
-                var name3 = e3.options[e3.selectedIndex].text;
-                console.log(name3 + " name3")
-                console.log(model.currentInfo['recipe'][name3]);
-                model.dataChange(model.currentInfo['recipe'][name3]);
-				model.numRowsChange(model.currentInfo['recipe'][name3].length);
-                buildTable();
-				buildDisplay();
-				graph(false, $('.mytog:checked').attr('id'));
+				var e3=document.getElementById("d3");
+				var name3=e3.options[e3.selectedIndex].text;
+				model.dataChange(model.currentInfo['recipe'][name3][2]);
+				var newNum=model.currentInfo['data'].length;
+				//REMOVING ALL THE ROWS THAT CURRENTLY EXIST
+				for (var i =0; i<model.currentInfo['numRows']; i++){
+					console.log("current i ", model.currentInfo['numRows']);
+					console.log("this is the number of rows" + model.currentInfo['numRows'])
+					$("#row"+i).remove();	
+				}
+				model.numRowsChange(0);
 
-
-
+				//NOW ADDING THEM ALL AGAIN
+				for (var j=0; j<newNum; j++){
+					addRow(j, inputTable);
+				}
+				addAddButton();
             })
 
             dropdownDiv.append(dropdown1, dropdown2);
@@ -496,7 +501,7 @@ var perfectSteak = function (div) {
             return ((5 / 9) * (F - 32));
         }
 
-
+//I'M NOT CONVINCED WE NEED THIS FUNCTION AT ALL. WE REALLY SHOULD JUST BE USING ADDROW I THINK --KATE
         var buildTable = function (inpTable) {
 
             var timeStep = model.timeStep;
@@ -505,7 +510,6 @@ var perfectSteak = function (div) {
             var sumtime = 0;
             for (var i = 0; i < model.currentInfo["numRows"]; i++) {
                 var iminus = i - 1;
-                addButton = $("<button class='btn addButton btnBar' id='addButton" + (i + 1) + "'>+</button>");
 
                 flipButton = $("<button class='btn btn-mini' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
 
@@ -546,7 +550,6 @@ var perfectSteak = function (div) {
                         $("inp1_" + l).attr("id", String("inp1_" + parseInt(l - 1)));
                         $("#row" + l + "side2").attr("id", String("row" + parseInt(l - 1) + "side2"));
                         $("#inp2_" + l).attr("id", String("inp2_" + parseInt(l - 1)));
-                        $("#addButton" + l).attr("id", String("addButton" + parseInt(l - 1)));
                     }
 
                 });
@@ -581,7 +584,6 @@ var perfectSteak = function (div) {
                     })
               
 
-                    $(".inputTable").append(addButton); //, saveBut,saveModal);
                     $(".span3").append(cookButt);
                     addDropdown();
                 }
@@ -623,15 +625,15 @@ var perfectSteak = function (div) {
             }
 
             model.dataClear();
-            addButtonFun();
+			addAddButton();
             CookButtonFun();
             closeRowFun();
         };
 
-
-        var addRow = function (table) {
-            var i = parseInt(model.currentInfo["numRows"]) - 1;
-            console.log(i + "i");
+		
+		
+		//THIS FUNCTION JUST HAS A BARREL OF ISSUES
+        var addRow = function (i, table) {
             var row = $("<tr id='row" + i + "'></tr>");
 
             var durationi = $("<td id='duration" + i + "'></td>");
@@ -649,6 +651,7 @@ var perfectSteak = function (div) {
             rowiside2.append(inp2_i, rowibutton);
 
             rowibutton.on("click", function () {
+				$(".addButton").remove();
                 var rowNum = String($(this).attr("id").charAt(3))
                 //NOW WE'RE REMOVING THE ROW WITH THE X NEXT TO IT
                 row.remove();
@@ -668,48 +671,51 @@ var perfectSteak = function (div) {
                     $("inp1_" + l).attr("id", String("inp1_" + parseInt(l - 1)));
                     $("#row" + l + "side2").attr("id", String("row" + parseInt(l - 1) + "side2"));
                     $("#inp2_" + l).attr("id", String("inp2_" + parseInt(l - 1)));
-                    $("#addButton" + l).attr("id", String("addButton" + parseInt(l - 1)));
                 }
-				
+				addAddButton();
             })
 
-            row.append(durationi, rowiside1, rowiside2);
-
-            var addButton = $("<button class='btn btnBar' id='addButton" + i + "'>+</button>");
-            addButton.on("click", function () {
-                addButton.remove();
-                model.buildData();
-                model.numRowsPlus();
-                console.log("just added a row" + model.currentInfo['numRows']);
-                addRow($(".inputTable"));
-				$(".inputTableContainer").animate({
-        scrollTop: 1000
-    }, 300);
-				
-            });
-
-            inputTable.append(addButton);
-
+            row.append(durationi, rowiside1, rowiside2)
             table.append(row);
-
-            if (i == 0) {
-                rowitime.val("4:00");
-                inp1_i.val(23);
-                inp2_i.val(180)
+            if (i < model.currentInfo['data'].length) {
+				console.log(model.currentInfo['data'])
+                rowitime.val(model.convertTime(model.currentInfo['data'][i][0]));
+                inp1_i.val(model.currentInfo['data'][i][1]);
+                inp2_i.val(model.currentInfo['data'][i][2])
             } else {
 
                 rowitime.val("4:00");
                 inp1_i.val($(String("#inp1_" + parseInt(i - 1))).val() || 23);
                 inp2_i.val($(String("#inp2_" + parseInt(i - 1))).val() || 180);
             }
+			
+			model.numRowsPlus();
         }
 
+		var addAddButton=function(){
+			$('.addButton').remove();
+			var addButton = $("<button class='btn btnBar addButton' id='addButton" + model.currentInfo['numRows'] + "'>+</button>");
+            addButton.on("click", function () {
+                addButton.remove();
+                model.buildData();
+                model.numRowsPlus();
+                console.log("just added a row" + model.currentInfo['numRows']);
+                addRow($(".inputTable"));
+            });
+
+            inputTable.append(addButton);
+		}
+		
         var addButtonFun = function () {
             addButton.on("click", function () {
                 addButton.remove();
                 model.buildData();
                 model.numRowsPlus();
-                addRow($(".inputTable"));
+                addRow(model.currentInfo['numRows']-1, $(".inputTable"));
+				addAddButton();
+                $('#table').stop().animate({
+                    scrollTop: $("#table")[0].scrollHeight
+                }, 8000);
 
 
             });
