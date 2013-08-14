@@ -721,25 +721,28 @@ var perfectSteak = function (div) {
 
             d3.selectAll(".mysteak").remove();
             d3.selectAll(".containers").remove();
+		
             model.dataClear();
-console.log(model.currentInfo["numRows"]);
+
             for (var e = 0; e < model.currentInfo["numRows"]; e++) {
 				 
                 var curTime = String($("#row" + e + "time").val());
 
                 var cur1 = parseFloat($("#inp1_" + e).val());
                 var cur2 = parseFloat($("#inp2_" + e).val());
-
+			
                 var time = curTime.replace(':', '.').split('.');
                 if (time.length > 1) {
                     var sumtime = parseFloat(time[1])+ 60*parseFloat(time[0]);
                 } else {
                     var sumtime = parseFloat(time[0]);
                 }
-
-
+				
+			
                 model.dataAdd([sumtime, cur1, cur2]);
+					
             }
+			
             var OKtoCook = true; //IF WE HAVE INVALID INPUTS, IT WILL BE CHANGED TO FALSE
 
             //THIS BIT IS CHECKING WHETHER THE THICKNESS AND INITIAL TEMP INPUTS ARE VALID
@@ -776,6 +779,7 @@ console.log(model.currentInfo["numRows"]);
 
                 meatType = 'False';
             }
+		
             //THIS WILL COOK THE STEAK IF WE HAVE VALID INPUTS
             if (OKtoCook == true) {
                 var steak = [model.currentInfo["data"][0][1]];
@@ -787,7 +791,7 @@ console.log(model.currentInfo["numRows"]);
                     }
                 }
                 steak.push(model.currentInfo["data"][0][2]);
-
+				
                 calculate(model.currentInfo["data"], steak, meatType, isFirst, model.currentInfo["totalTime"], $('.mytog2:checked').attr('id'))
             }
         }
