@@ -31,8 +31,8 @@ var perfectSteak = function (div) {
 
         var importRecipes = function () {
          
-		var saved=[{"name":"Heston Blumenthal","data":[[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[150,23,23]],"Temp":23},
-	{"name":"4 minutes a side","data":[[240,150,23],[240,23,150],[150,23,23]],"Temp":23},
+		var saved=[{"name":"Heston Blumenthal","data":[[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150]],"Temp":23},
+	{"name":"4 minutes a side","data":[[240,150,23],[240,23,150],[300,23,23]],"Temp":23},
 	{"name":"America's Test Kitchen","data":[[15,230,23],[15,23,230],[150,110,110],[900,23,23]],"Temp":23},
 				 {"name":"Nathan Myhrvold","data":[[3600,53,53],[30,-200,-200],[120,200,200]],"Temp":23}];
 		for (var i=0;i<4;i++){
@@ -45,7 +45,7 @@ var perfectSteak = function (div) {
 			var steaktemp=saved[i]["Temp"];
 			var steak = [data[0][1]];
             for (var m = 0; m < 30; m++) {
-                steak.push(toC(steaktemp))
+                steak.push(steaktemp)
             }
             steak.push(data[0][2]);
             var myheatsolver = HeatSolver(steak);
@@ -139,7 +139,7 @@ var perfectSteak = function (div) {
         var saveRecipe = function (name) {
 			console.log(currentInfo["data"])
             var steak = [currentInfo["data"][0][1]];
-            for (var m = 0; m < parseFloat($("#thicknessInp").val()) * 10; m++) {
+            for (var m = 0; m < parseFloat($("#thicknessInp").val()) * 5; m++) {
 
                 if ($('.mytog2:checked').attr('id') == 'C') {
                     steak.push(parseFloat($("#steakTemp").val()))
@@ -157,7 +157,7 @@ var perfectSteak = function (div) {
             var Thedata = myheatsolver.sixty_graph_arrays_duration(currentInfo["data"]);
             var maxTemps = Thedata.maxTemps;
             var meatType = $("input[type='radio'][name='meat']:checked").attr('id');
-            var recipe = [meatType, maxTemps, currentInfo["data"], currentInfo["meatTemp"], currentInfo['thickness'], $('.mytog2:checked').attr('id')];
+            var recipe = [meatType, maxTemps, currentInfo["data"], currentInfo["meatTemp"], parseFloat($("#thicknessInp").val()), $('.mytog2:checked').attr('id')];
             addRecipe(name, recipe);
 
         }
@@ -310,6 +310,7 @@ var perfectSteak = function (div) {
             dataAdd: dataAdd,
             dataClear: dataClear,
             dataChange: dataChange,
+			buildData:buildData,
             changeMeatTemp: changeMeatTemp,
             numRowsPlus: numRowsPlus,
             numRowsMinus: numRowsMinus,
@@ -369,7 +370,7 @@ var perfectSteak = function (div) {
         var tabPane = $("<div class='tab-pane' id='text'></div>")
         var inpTabHeader = $("<table class='header table table-striped'><tr><th class='inpTabHeader' id= 'si1'>Side 1 (&#176;C)</th><th class='inpTabHeader' id='si2'>Side 2 (&#176;C)</th><th class='inpTabHeader'>Duration (mm:ss)</th></tr></table>");
         var containerm = $("<div class='containerm'><textarea id='recipeInput' cols=40 rows=5></textarea></div>");
-		
+
         inputTableContainer.append(inputTable);
         switcheroo.append(mytog2);
 		switcheroo.change(function () {
@@ -406,9 +407,9 @@ var perfectSteak = function (div) {
             var time = 0;
             for (var i = 0; i < model.currentInfo["numRows"]; i++) {
                 //THIS WILL BE TRIGGERED IF THE TIME NEEDS TO BE CONVERTED
-				
+
                 if (String($("#row" + i + "time").val()).indexOf(':') == -1) {
-					
+
                     time += isNaN(parseFloat($("#row" + i + "time").val()))?0:parseFloat($("#row" + i + "time").val());
                    // $("#row" + i + "time").val(model.convertTime(parseFloat($("#row" + i + "time").val())));
                 } else {
@@ -417,7 +418,7 @@ var perfectSteak = function (div) {
                     var sec = String($("#row" + i + "time").val()).substring(colon + 1);
                     time += 60 * parseFloat(min)+parseFloat(sec);
                 }
-				
+
             }
             model.updateTotalTime(time);
         }
@@ -448,7 +449,7 @@ var perfectSteak = function (div) {
                 var e2 = document.getElementById("d2");
                 var name2 = e2.options[e2.selectedIndex].text;
                 var info = model.currentInfo['recipe'][name1];
-			
+
                 d3.selectAll('.finalsteak').remove();
 
                 drawFinished(info[0], info[1], info[2], info[3], 0,info[4],$('.mytog2:checked').attr('id'));
@@ -456,25 +457,28 @@ var perfectSteak = function (div) {
 
                 drawFinished(inf[0], inf[1], inf[2], inf[3], 1, inf[4], inf[5]);
             });
-			
+
 			//NOW THIS DELETES EVERY ROW AND ADDS THEIR OWN LITTLE ROWS
             dropdown3.change(function () {
 				var e3=document.getElementById("d3");
 				var name3=e3.options[e3.selectedIndex].text;
+				
 				model.dataChange(model.currentInfo['recipe'][name3][2]);
+
 				var newNum=model.currentInfo['data'].length;
 				//REMOVING ALL THE ROWS THAT CURRENTLY EXIST
-				for (var i =0; i<model.currentInfo['numRows']; i++){
+				$('.recipe-step').remove();
+				model.numRowsChange(newNum);
 				
-					$("#row"+i).remove();	
-				}
-				model.numRowsChange(0);
-
 				//NOW ADDING THEM ALL AGAIN
 				for (var j=0; j<newNum; j++){
 					addRow(j);
 				}
+			
+				//model.buildData();
+				console.log(model.currentInfo["numRows"]);
 				addAddButton();
+				
             })
 
             dropdownDiv.append(dropdown1, dropdown2);
@@ -508,7 +512,7 @@ var perfectSteak = function (div) {
             // lastly, load up the recipe that's predefined in the model
             loadTableFromModel();
         }
-		
+
         var toF = function (C) {
             return (C * (9 / 5) + 32 + "&#176;F");
         }
@@ -516,8 +520,8 @@ var perfectSteak = function (div) {
             return ((5 / 9) * (F - 32));
         }
 
-		
-		
+
+
 		//THIS FUNCTION JUST HAS A BARREL OF ISSUES
         var addRow = function (i) {
             var row = $("<tr class='row recipe-step' id='row" + i + "'></tr>");
@@ -526,7 +530,7 @@ var perfectSteak = function (div) {
 
             var rowiside1 = $("<td id='row" + i + "side1'></td>");
             var inp1_i = $("<input id='inp1_" + i + "' type=text></input>");
-		
+
 			var label=$("<span> "+(i+1)+"</span>");
 			if(i<10){label.css("margin-left","8px");}
 			label.css("margin-right","3px");
@@ -555,7 +559,7 @@ var perfectSteak = function (div) {
               
                 //NOW WE NEED TO CHANGE THE ROW NUMBER OF ALL THE OTHER ROWS
                 for (var l = i + 1; l < model.currentInfo["numRows"] + 1; l++) {
-					
+
                     $("#row" + l).attr("id", String("row" + parseInt(l - 1)));
                     $("#row" + l + "time").attr("id", String("row" + parseInt(l - 1) + "time"))
                     $("#row" + l + "button").attr("id", String("row" + parseInt(l - 1) + "button"))
@@ -581,17 +585,17 @@ var perfectSteak = function (div) {
                 inp1_i.val($(String("#inp1_" + parseInt(i - 1))).val() || 23);
                 inp2_i.val($(String("#inp2_" + parseInt(i - 1))).val() || 180);
             }
-			
+
 			//model.numRowsPlus();
         }
 
 		var addAddButton=function(){
 			$('#lastrow').remove();
-		
+
 			var row = $("<tr class ='row' id='lastrow'></tr>");
 			var addButton = $("<td><button class='btn btnBar addButton' id='addButton" + model.currentInfo['numRows'] + "'>+</button></td>");
             addButtonFun(addButton)
-	
+
 			var label=$('<td><span>Total:</span></td>');
 			label.css("text-align","right");
 			updateTime();
@@ -599,12 +603,12 @@ var perfectSteak = function (div) {
 			row.append(addButton,label,info);
             inputTable.append(row);
 		}
-		
+
         var addButtonFun = function (addButton) {
             addButton.on("click", function () {
-		
+
                 //addButton.remove();
-			
+
                 //model.buildData();
                 model.numRowsPlus();
                 addRow(model.currentInfo['numRows']-1);
@@ -741,28 +745,28 @@ var perfectSteak = function (div) {
 
             d3.selectAll(".mysteak").remove();
             d3.selectAll(".containers").remove();
-		
+
             model.dataClear();
 
             for (var e = 0; e < model.currentInfo["numRows"]; e++) {
-				 
+
                 var curTime = String($("#row" + e + "time").val());
 
                 var cur1 = parseFloat($("#inp1_" + e).val());
                 var cur2 = parseFloat($("#inp2_" + e).val());
-			
+
                 var time = curTime.replace(':', '.').split('.');
                 if (time.length > 1) {
                     var sumtime = parseFloat(time[1])+ 60*parseFloat(time[0]);
                 } else {
                     var sumtime = parseFloat(time[0]);
                 }
-				
-			
+
+
                 model.dataAdd([sumtime, cur1, cur2]);
-					
+
             }
-			
+
             var OKtoCook = true; //IF WE HAVE INVALID INPUTS, IT WILL BE CHANGED TO FALSE
 
             //THIS BIT IS CHECKING WHETHER THE THICKNESS AND INITIAL TEMP INPUTS ARE VALID
@@ -799,7 +803,7 @@ var perfectSteak = function (div) {
 
                 meatType = 'False';
             }
-		
+
             //THIS WILL COOK THE STEAK IF WE HAVE VALID INPUTS
             if (OKtoCook == true) {
                 var steak = [model.currentInfo["data"][0][1]];
@@ -813,7 +817,7 @@ var perfectSteak = function (div) {
                 steak.push(model.currentInfo["data"][0][2]);
                   updateTime();
 				$('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
-				
+
                 calculate(model.currentInfo["data"], steak, meatType, isFirst, model.currentInfo["totalTime"], $('.mytog2:checked').attr('id'))
             }
         }
