@@ -430,8 +430,8 @@ var perfectSteak = function (div) {
             $(".dropdown").remove();
 
             var dropdownDiv = $("<div class='dropdown'><div><h4>Compare Two Recipes</h4></div></div>");
-            var dropdown1 = $('<select class="steakHist" id ="d1"></select>');
-            var dropdown2 = $('<select class="steakHist"id ="d2"></select>');
+            var dropdown1 = $('<select class="steakHist" id ="d1"><option></option></select>');
+            var dropdown2 = $('<select class="steakHist"id ="d2"><option></option></select>');
 
             var dropdown3 = $('<select class="steakHist dropdown" id="d3" name="dropdown3"></select><br class="dropdown">')
             dropdown3.append('<option></option>');
@@ -537,6 +537,7 @@ var perfectSteak = function (div) {
 			label.css("font-size",'12px');
 			label.css("text-anchor",'end');
             var flipButtoni = $("<button class='btn btn-mini flipButton' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
+			
             rowiside1.append(label,inp1_i);
 
             var rowiside2 = $("<td id='row" + i + "side2' class='row" + i + "'></td>");
@@ -570,6 +571,7 @@ var perfectSteak = function (div) {
                     $("#inp2_" + l).attr("id", String("inp2_" + parseInt(l - 1)));
                 }
 				addAddButton();
+				
             })
 
             row.append( rowiside1, rowiside2,durationi)
@@ -585,7 +587,7 @@ var perfectSteak = function (div) {
                 inp1_i.val($(String("#inp1_" + parseInt(i - 1))).val() || 23);
                 inp2_i.val($(String("#inp2_" + parseInt(i - 1))).val() || 180);
             }
-
+flipButtonFun(i);
 			//model.numRowsPlus();
         }
 
@@ -849,9 +851,9 @@ var perfectSteak = function (div) {
                 d3.selectAll('.finalsteak').remove();
 
 
-                drawFinished(info[0], info[1], info[2], info[3], 0,info[4],$('.mytog2:checked').attr('id'));
-                var inf = model.currentInfo['recipe'][name2];
-                drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],$('.mytog2:checked').attr('id'));
+                //drawFinished(info[0], info[1], info[2], info[3], 0,info[4],$('.mytog2:checked').attr('id'));
+                //var inf = model.currentInfo['recipe'][name2];
+                //drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],$('.mytog2:checked').attr('id'));
 
                 // if we're viewing the text view, store it back to model so that the table view becomes consistent too
                 if ($("#recipeInput").closest(".tab-pane").hasClass("active")) {
@@ -890,6 +892,7 @@ var perfectSteak = function (div) {
 
         var flipButtonFun = function (k) {
             $(".flipButton").on("click", function () {
+				console.log("click");
                 side1data = 0
                 side1data += parseInt(parseFloat($('#inp1_' + k).val())) || 0;
                 side2data = parseInt(parseFloat($('#inp2_' + k).val()));
