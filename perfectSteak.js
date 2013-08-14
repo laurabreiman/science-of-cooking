@@ -233,9 +233,9 @@ var perfectSteak = function (div) {
         // mode is "F" for Fahrenheit/inches, and "C" for Celsius/cm.
         // The format of the string is this (separated by newlines:
         //      <thickness> <meat> starts at <starting-temp>
-        //      <time> at <side1-temp> and <side2-temp>
+        //      <side1-temp> and <side2-temp> for <time>
         //      ...
-        //      <time> at <side1-temp> and <side2-temp>
+        //      <side1-temp> and <side2-temp> for <time>
         // where
         //     <thickness> ::= <number> [cm|in]
         //     <meat> ::= Steak | Tuna | Turkey | ...
@@ -248,11 +248,11 @@ var perfectSteak = function (div) {
             var data = currentInfo["data"];
             for(var i=0; i<data.length; i++) {
                 var step = data[i];
-                recipe.push(convertTime(step[0])
-                            + " at "
-                            + printTemperature(step[1], mode)
+                recipe.push(printTemperature(step[1], mode)
                             + " and "
-                            + printTemperature(step[2], mode));
+                            + printTemperature(step[2], mode)
+                            + " for "
+                            + convertTime(step[0]));
             }
             return recipe.join("\n");
         }
@@ -284,13 +284,13 @@ var perfectSteak = function (div) {
                 }
 
                 // otherwise try to parse a recipe step
-                var m = line.match(/((\d)+:)?(\d+)?.*?(\d+)\xB0\s*([CF]).*?(\d+)\xB0\s*([CF])/i);
+                var m = line.match(/(\d+)\xB0\s*([CF]).*?(\d+)\xB0\s*([CF]).*?((\d)+:)?(\d+)/i);
                 if (m) {
                     console.log(m);
-                    var time = parseInt(m[3]); // seconds field
-                    if (m[2]) time += 60*parseInt(m[2]); // optional minutes field
-                    var side1Temp = parseTemperature(m[4], m[5]);
-                    var side2Temp = parseTemperature(m[6], m[7]);
+                    var side1Temp = parseTemperature(m[1], m[2]);
+                    var side2Temp = parseTemperature(m[3], m[4]);
+                    var time = parseInt(m[7]); // seconds field
+                    if (m[2]) time += 60*parseInt(m[6]); // optional minutes field
                     data.push([time, side1Temp, side2Temp]);
                     continue;
                 }
@@ -472,7 +472,7 @@ var perfectSteak = function (div) {
 
 				//NOW ADDING THEM ALL AGAIN
 				for (var j=0; j<newNum; j++){
-					addRow(j, inputTable);
+					addRow(j);
 				}
 				addAddButton();
             })
@@ -494,18 +494,19 @@ var perfectSteak = function (div) {
             });
 
             $("#recipe-pane").append(displayDiv);
-			loadTableFromModel();
-            
+
 			$("#graph-pane").append(switches);
             $("#startModal").modal("show");
 
             $("#recipe-pane").append(cookButton);
             addDropdown();
           
-            model.dataClear();
             addAddButton();
             CookButtonFun();
             closeRowFun();
+
+            // lastly, load up the recipe that's predefined in the model
+            loadTableFromModel();
         }
 		
         var toF = function (C) {
@@ -518,8 +519,8 @@ var perfectSteak = function (div) {
 		
 		
 		//THIS FUNCTION JUST HAS A BARREL OF ISSUES
-        var addRow = function (i, table) {
-            var row = $("<tr class ='row' id='row" + i + "'></tr>");
+        var addRow = function (i) {
+            var row = $("<tr class='row recipe-step' id='row" + i + "'></tr>");
 
             
 
@@ -568,7 +569,7 @@ var perfectSteak = function (div) {
             })
 
             row.append( rowiside1, rowiside2,durationi)
-            table.append(row);
+            $("#lastrow").before(row);
             if (i < model.currentInfo['data'].length) {
 
                 rowitime.val(model.convertTime(model.currentInfo['data'][i][0]));
@@ -587,7 +588,7 @@ var perfectSteak = function (div) {
 		var addAddButton=function(){
 			$('#lastrow').remove();
 		
-			 var row = $("<tr class ='row' id='lastrow'></tr>");
+			var row = $("<tr class ='row' id='lastrow'></tr>");
 			var addButton = $("<td><button class='btn btnBar addButton' id='addButton" + model.currentInfo['numRows'] + "'>+</button></td>");
             addButtonFun(addButton)
 	
@@ -602,12 +603,12 @@ var perfectSteak = function (div) {
         var addButtonFun = function (addButton) {
             addButton.on("click", function () {
 		
-                addButton.remove();
+                //addButton.remove();
 			
                 model.buildData();
                 model.numRowsPlus();
-                addRow(model.currentInfo['numRows']-1, $(".inputTable"));
-				addAddButton();
+                addRow(model.currentInfo['numRows']-1);
+				//addAddButton();
 				updateTime();
 				$('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
 				$(".inputTableContainer").animate({
@@ -703,27 +704,37 @@ var perfectSteak = function (div) {
 
             model.dataChange(newData);
 
+            console.log("stored table into model");
+            console.log(model.currentInfo);
+
             loadTextRecipeFromModel();
         };
 
         var loadTableFromModel = function() {
-            $(".inputTable tr").remove();
+            $(".recipe-step").remove();
             for (var i=0; i<model.currentInfo['data'].length;i++){
-                addRow(i, inputTable)
+                addRow(i)
             }
-
+            console.log("loaded table from model");
+            console.log(model.currentInfo);
         };
 
 
         var storeTextRecipeIntoModel = function() {
-            model.parseRecipe($("#recipeInput").text());
+            model.parseRecipe($("#recipeInput").val());            
+            console.log("stored text recipe into model");
+            console.log(model.currentInfo);
+
             loadTableFromModel();
         }
 
 
 		var loadTextRecipeFromModel = function() {
-            $("#recipeInput").text(model.printRecipe($('.mytog2:checked').attr('id')));
-		}
+            var recipe = model.printRecipe($('.mytog2:checked').attr('id'));
+            $("#recipeInput").val(recipe);
+            console.log("loaded text recipe from model");
+            console.log(model.currentInfo);
+ 		}
 
 
         var graph = function (isFirst, falseColor) {
@@ -841,24 +852,22 @@ var perfectSteak = function (div) {
                 var inf = model.currentInfo['recipe'][name2];
                 drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],$('.mytog2:checked').attr('id'));
 
+                // if we're viewing the text view, store it back to model so that the table view becomes consistent too
                 if ($("#recipeInput").closest(".tab-pane").hasClass("active")) {
-                    var recipeString = $("#recipeInput").val();
-                    model.parseRecipe(recipeString);
+                    storeTextRecipeIntoModel();
+                }
 
+                checkTableForImpossibleValues();
+                updateTime();
+                $('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
+                storeTableIntoModel();
+
+                if (clicked && model.currentInfo["OKToGraph"]) {
+                    graph(false, $('.mytog:checked').attr('id'))
                 } else {
-                    checkTableForImpossibleValues();
-                    updateTime();
-                    $('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
-                    storeTableIntoModel();
-
-
-                    if (clicked && model.currentInfo["OKToGraph"]) {
-                        graph(false, $('.mytog:checked').attr('id'))
-                    } else {
-                        d3.selectAll(".containers").remove();
-                        d3.selectAll(".mysteak").remove();
-                        model.dataClear();
-                    }
+                    d3.selectAll(".containers").remove();
+                    d3.selectAll(".mysteak").remove();
+                    model.dataClear();
                 }
             });
         }
