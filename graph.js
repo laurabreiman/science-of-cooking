@@ -164,7 +164,7 @@ if(meatType!='False'){
 		.attr('class','percents')
         .attr('x', width/3-30)
         .attr('y', function(d, i){ return (i *  15+200+8);})
-        .text(function(d,i){return (100*(parseFloat(dat[59][(6-i)])+parseFloat(dat[59][12-(6-i)]))/data[0].length).toFixed(0)+ "% "});
+        .text(function(d,i){return (100*(parseFloat(dat[59][(6-i)])+parseFloat(dat[59][6+i]))/data[0].length).toFixed(0)+ "% "});
 }
 
 var ttip = d3.select(".span9").append("div")   
@@ -221,9 +221,9 @@ console.log(line);
 	$("line").remove();
 	var myLine = d3.selectAll(".mysteak").append("svg:line")
     .attr("x1", margin.left)
-    .attr("y1", d3.event.pageY-margin.top)
+    .attr("y1", d3.event.pageY-margin.top-10)
     .attr("x2", width*32/30)
-    .attr("y2", d3.event.pageY-margin.top)
+    .attr("y2", d3.event.pageY-margin.top-10)
 	.style("z-index",-1)
     .style("stroke", "grey");
 	//console.log(d3.event.pageX-parseFloat($("body").css('margin-left')));
