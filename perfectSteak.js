@@ -361,7 +361,7 @@ var perfectSteak = function (div) {
         var tabPaneActive = $("<div class='tab-pane active' id='table'></div>");
         var thickInpDiv = $("<span id='thickInpDiv'>Thickness: <input type='text' id='thicknessInp' value='3'> cm </span>'");
 		var tempInp=$("<div><span id='tempInpDiv'>   Starting at: <input type='text' id='steakTemp' value='23'><span id='work'>&#176;C</span></span></div>");
-        var meatInp = $("<span><form id='meatInp' class='meatTypeDiv'>Meat: </b><input type='radio' name='meat' id='Steak' checked>Steak <input type='radio' name='meat' id='Tuna'>Tuna <input type='radio' name='meat' id='Turkey'>Turkey </form></span>");
+        var meatInp = $("<span><form id='meatInp' class='meatTypeDiv'>Meat: </b><input type='radio' name='meat' id='Steak' checked>steak <input type='radio' name='meat' id='Tuna'>tuna <input type='radio' name='meat' id='Turkey'>turkey </form></span>");
         var switcheroo = $('<span class="switcheroo"></span>');
         var mytog2 = $("<input type='radio' class='mytog2' id='C' name='toggle2' checked><label for='C' class='btn'>C</label><input type='radio' class='mytog2' id='F' name='toggle2'><label for='F' class='btn'>F</label>");
 		var inputTableContainer=$("<div class='inputTableContainer'></div>");
@@ -396,7 +396,6 @@ var perfectSteak = function (div) {
         displayDiv.append(tableTabs, tabContent);
     
         var addButton;
-
         var flipButton;
 		var cookButton=$('<button class="btn" id="cookButton"><input type="image" id="myimage" style="height:20px;width:20px;"" src="flame.png"> <span>Cook</span> <input type="image" id="myimage" style="height:20px;width:20px;" src="flame.png"></button>');
 
@@ -411,7 +410,8 @@ var perfectSteak = function (div) {
                 if (String($("#row" + i + "time").val()).indexOf(':') == -1) {
 
                     time += isNaN(parseFloat($("#row" + i + "time").val()))?0:parseFloat($("#row" + i + "time").val());
-                   // $("#row" + i + "time").val(model.convertTime(parseFloat($("#row" + i + "time").val())));
+					console.log(time);
+                   $("#row" + i + "time").val(model.convertTime(parseFloat($("#row" + i + "time").val())));
                 } else {
                     var colon = String($("#row" + i + "time").val()).indexOf(':');
                     var min = String($("#row" + i + "time").val()).substring(0, colon);
@@ -420,6 +420,8 @@ var perfectSteak = function (div) {
                 }
 
             }
+			console.log(model.currentInfo["totalTime"])
+			$('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
             model.updateTotalTime(time);
         }
 
@@ -546,6 +548,13 @@ var perfectSteak = function (div) {
             var flipButtoniCell = $("<td></td>");
             var flipButtoni = $("<button class='btn btn-mini flipButton' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
             flipButtoniCell.append(flipButtoni);
+			
+			flipButtoni.on("click", function () {
+                side1data = parseInt(parseFloat($('#inp1_' + i).val()));
+                side2data = parseInt(parseFloat($('#inp2_' + i).val()));
+                $('#inp1_' + i).val(side2data);
+                $('#inp2_' + i).val(side1data);
+            })
 
             var rowiside2 = $("<td id='row" + i + "side2' class='row" + i + "'></td>");
             var inp2_i = $("<input id='inp2_" + i + "' type='text'></input>");
@@ -554,6 +563,12 @@ var perfectSteak = function (div) {
             var durationi = $("<td id='duration" + i + "'></td>");
             var rowitime = $("<input id='row" + i + "time' type=text></input>");
             durationi.append(rowitime);
+			
+			rowitime.change(function(){
+				console.log("changed");
+				updateTime();
+				$('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
+			})
 
             var rowibuttoncell = $("<td></td>")
             var rowibutton = $("<button type='button' id=row" + i + "button' class='close closeRow'>&times;</button>")
@@ -563,7 +578,6 @@ var perfectSteak = function (div) {
                 row.remove();
                 //REDUCING THE NUMBER OF EXPECTED ROWS
                 model.numRowsMinus();
-              
                 //NOW WE NEED TO CHANGE THE ROW NUMBER OF ALL THE OTHER ROWS
                 for (var l = i + 1; l < model.currentInfo["numRows"] + 1; l++) {
 
@@ -576,6 +590,10 @@ var perfectSteak = function (div) {
                     $("#row" + l + "side2").attr("id", String("row" + parseInt(l - 1) + "side2"));
                     $("#inp2_" + l).attr("id", String("inp2_" + parseInt(l - 1)));
                 }
+				
+				updateTime();
+				console.log(model.currentInfo['totalTime'] + "total time");
+				$('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
             })
             rowibuttoncell.append(rowibutton);
 
@@ -591,7 +609,10 @@ var perfectSteak = function (div) {
                 inp1_i.val($(String("#inp1_" + parseInt(i - 1))).val() || 23);
                 inp2_i.val($(String("#inp2_" + parseInt(i - 1))).val() || 180);
             }
-            flipButtonFun(i);
+			
+			updateTime();
+			$('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
+            //flipButtonFun(i);
 			//model.numRowsPlus();
         }
 
@@ -897,21 +918,9 @@ var perfectSteak = function (div) {
             })
         };
 
-        var flipButtonFun = function (k) {
-            $(".flipButton").on("click", function () {
-				console.log("click");
-                side1data = 0
-                side1data += parseInt(parseFloat($('#inp1_' + k).val())) || 0;
-                side2data = parseInt(parseFloat($('#inp2_' + k).val()));
-                $('#inp1_' + k).val(side2data);
-                $('#inp2_' + k).val(side1data);
-            })
-        };
-
         return {
             buildDisplay: buildDisplay,
             addButtonFun: addButtonFun,
-            flipButtonFun: flipButtonFun,
             timeFun: timeFun
         }
 
