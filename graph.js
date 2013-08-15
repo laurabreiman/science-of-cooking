@@ -111,7 +111,7 @@ var yscaled = d3.scale.linear()
 var xAxis = d3.svg.axis()
     .scale(xscaled)
     .tickSize(0)
-    .tickPadding(10)
+    .tickPadding(15)
     .orient("bottom")
 	.tickFormat(convertTime);
 		
@@ -182,7 +182,7 @@ var layer = svg.selectAll(".layer")
     .data(layers)
   .enter().append("g")
     .attr("class", "layer")
-
+	.attr("row",function(d,i){return i})
     .style("fill", function(d, i) {return meatType=='False'? color[meatType](data[i]/tempMax):color[meatType](i); });
 
 	
@@ -192,10 +192,11 @@ var rect = layer.selectAll("rect")
   .enter().append("rect")
     .attr("x", function(d) { return x(d.x); })
     .attr("y", height)
+	.attr("col",function(d,i){return i})
     .attr("width", x.rangeBand())
     .attr("height", 0)
  .style("fill", function(d, i) {return meatType=='False'? color[meatType](data[i][d.y0]/tempMax):""})
-	.on("mouseover", function() {
+	.on("mouseover", function(d,i){
 		if(meatType!='False'){
 		var rects = d3.select(this);
 		var loc=null;
@@ -207,15 +208,19 @@ var rect = layer.selectAll("rect")
 		var leg=d3.selectAll('.Biglegend')[0][boundaries[meatType].length-loc];
 		
 		$(leg).css("fill","red");
-		for(var i=0;i<7;i++)
-		{
-		var text=d3.selectAll('.percents')[0][boundaries[meatType].length-i];
-		var line=parseInt((d3.event.pageX-margin.left)/(x.rangeBand()+1.2)-35);
-		var info=mode=='C'? CtempScale[meatType][boundaries[meatType].length-i]['info']:FtempScale[meatType][boundaries[meatType].length-i]['info'];
+		var ttip=d3.select('.tooltip');
+	
+	ttip.html(miniInfo[meatType][boundaries[meatType].length-loc])}
+		else{
+		var row = d3.select(this.parentNode).attr("row");
+		var col=d3.select(this).attr("col");	
+			
+		var ttip=d3.select('.tooltip');
+	
+	ttip.html(data[col][row].toFixed(1))}
 		
-
-		}
-		}
+		
+		
 	})
 .on("mousemove",function(){
 
@@ -234,16 +239,12 @@ var line=parseInt((d3.event.pageX-margin.left)/(x.rangeBand()+1.2)-35);
     .style("stroke", "grey");
 	//console.log(d3.event.pageX-parseFloat($("body").css('margin-left')));
 	var ttip=d3.select('.tooltip');
-	if(mode!='C'){
-		
-	ttip.html(toF(parseFloat(data[line][pos])).toFixed(2)+ "\xB0F")  }
-	else{
-		ttip.html(parseFloat(data[line][pos]).toFixed(2)+ "\xB0C")}
-	  // ttip.html(line.toFixed(2)+ "\xB0C") 
+
 	
 	   			ttip.style("opacity", 1)
                 .style("left", (d3.event.pageX-parseFloat($("body").css('margin-left'))+10) + "px")     
                 .style("top", (d3.event.pageY+10) + "px");   
+
 })
 			
         
@@ -275,7 +276,7 @@ var imgstop = svg.selectAll("image").data(flame);
             .attr("height", Math.min(x.rangeBand(),30))
 			.attr("x", function(d){return (d[0]+1.5)*(x.rangeBand()+1)})
             .attr("y", function(d){return -Math.min(x.rangeBand(),30)+(height+Math.min(x.rangeBand(),30))*(1-d[1])})
-		
+console.log(flame);		
 var linktext = svg.selectAll("g.linklabelholder").data(flame);
     linktext.enter().append("g").attr("class", "linklabelholder")
      .append("text")
@@ -286,11 +287,15 @@ var linktext = svg.selectAll("g.linklabelholder").data(flame);
 		.style("font-size", "8px")
      .text(function(d,i) {
 		 
-		 if(i==0){return mode=='C'? d[2].toFixed(0):toF(d[2]).toFixed(0)}
-		if(i==1&&flame[i][0]==flame[i-1][0]){return mode=='C'? d[2].toFixed(0):toF(d[2]).toFixed(0)}
-		if(i==1){return '';}
-		if(flame[i][0]==flame[i-1][0]&&flame[i-2][2]!=flame[i][2]){return mode=='C'? d[2].toFixed(0):toF(d[2]).toFixed(0)}				  
-		else return "";});
+		 if(i==0){return mode=='C'? d[2].toFixed(0):toF(d[2]).toFixed(0);}
+		 if(flame[i][1]==flame[i-1][1]&&flame[i][2]==flame[i-1][2])
+		{return '';}
+		 if(i>1 &&flame[i][1]!=flame[i-1][1]&&flame[i][1]==flame[i-2][1]){
+			 if(flame[i][2]==flame[i-2][2])
+		{return '';}
+		 }
+						  
+		else return mode=='C'? d[2].toFixed(0):toF(d[2]).toFixed(0);});
 
 		
 rect.transition()

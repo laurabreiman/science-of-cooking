@@ -38,11 +38,11 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,t
 		for(var i=0;i<instructions.length;i++)
 		{
 			if(mode!='C'){
-			directions.push(convertTime(instructions[i][0])+" at "+toF(instructions[i][1]).toFixed(0)+"\xB0F and "+toF(instructions[i][2]).toFixed(0)+"\xB0F"
+			directions.push( toF(instructions[i][1]).toFixed(0)+"\xB0F and "+toF(instructions[i][2]).toFixed(0)+"\xB0F for "+convertTime(instructions[i][0])
 			);
 			}
 			else{
-				directions.push(convertTime(instructions[i][0])+" at  "+instructions[i][1].toFixed(0)+"\xB0C and "+instructions[i][2].toFixed(0)+"\xB0C");
+				directions.push(instructions[i][1].toFixed(0)+"\xB0C and "+instructions[i][2].toFixed(0)+"\xB0C for "+convertTime(instructions[i][0]));
 			}
 			
 		}
