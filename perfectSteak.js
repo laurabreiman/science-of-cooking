@@ -137,7 +137,7 @@ var perfectSteak = function (div) {
         }
 
         var saveRecipe = function (name) {
-			console.log(currentInfo["data"])
+			//console.log(currentInfo["data"])
             var steak = [currentInfo["data"][0][1]];
             for (var m = 0; m < parseFloat($("#thicknessInp").val()) * 5; m++) {
 
@@ -276,7 +276,7 @@ var perfectSteak = function (div) {
                 // try to parse starting conditions
                 var m = line.match(/(\d+)\s*(in|cm).*?(steak|tuna|turkey).*?(\d+)\xB0\s*([CF])/i);
                 if (m) {
-                    console.log(m);
+                    //console.log(m);
                     currentInfo["thickness"] = parseInt(m[1]); // TODO: handle inches
                     currentInfo["meatTemp"] = parseTemperature(m[4], m[5]);
                     meatType = toTitleCase(m[4]); // so that "steak" becomes "Steak"
@@ -286,7 +286,7 @@ var perfectSteak = function (div) {
                 // otherwise try to parse a recipe step
                 var m = line.match(/(\d+)\xB0\s*([CF]).*?(\d+)\xB0\s*([CF]).*?((\d)+:)?(\d+)/i);
                 if (m) {
-                    console.log(m);
+                   // console.log(m);
                     var side1Temp = parseTemperature(m[1], m[2]);
                     var side2Temp = parseTemperature(m[3], m[4]);
                     var time = parseInt(m[7]); // seconds field
@@ -295,7 +295,7 @@ var perfectSteak = function (div) {
                     continue;
                 }
 
-                console.log("ignored " + line);
+                //console.log("ignored " + line);
 
             }
             currentInfo["data"] = data;
@@ -410,7 +410,7 @@ var perfectSteak = function (div) {
                 if (String($("#row" + i + "time").val()).indexOf(':') == -1) {
 
                     time += isNaN(parseFloat($("#row" + i + "time").val()))?0:parseFloat($("#row" + i + "time").val());
-					console.log(time);
+					//console.log(time);
                    $("#row" + i + "time").val(model.convertTime(parseFloat($("#row" + i + "time").val())));
                 } else {
                     var colon = String($("#row" + i + "time").val()).indexOf(':');
@@ -420,7 +420,7 @@ var perfectSteak = function (div) {
                 }
 
             }
-			console.log(model.currentInfo["totalTime"])
+			//console.log(model.currentInfo["totalTime"])
 			$('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
             model.updateTotalTime(time);
         }
@@ -579,19 +579,22 @@ var perfectSteak = function (div) {
                 //REDUCING THE NUMBER OF EXPECTED ROWS
                 model.numRowsMinus();
                 //NOW WE NEED TO CHANGE THE ROW NUMBER OF ALL THE OTHER ROWS
-                for (var l = i + 1; l < model.currentInfo["numRows"] + 1; l++) {
-
+                for (var l = i + 1; l <= model.currentInfo["numRows"]; l++) {
+					console.log($("#inp1_" + l).val()+"this is our negative problem")
+					console.log($("#inp2_"+l).val()+"this one seems OK")
                     $("#row" + l).attr("id", String("row" + parseInt(l - 1)));
                     $("#row" + l + "time").attr("id", String("row" + parseInt(l - 1) + "time"))
                     $("#row" + l + "button").attr("id", String("row" + parseInt(l - 1) + "button"))
                     $("#duration" + l).attr("id", String("duration" + parseInt(l - 1)));
                     $("#row" + l + "side1").attr("id", String("row" + parseInt(l - 1) + "side1"));
-                    $("inp1_" + l).attr("id", String("inp1_" + parseInt(l - 1)));
+                    $("#inp1_" + l).attr("id", String("inp1_" + parseInt(l - 1)));
                     $("#row" + l + "side2").attr("id", String("row" + parseInt(l - 1) + "side2"));
                     $("#inp2_" + l).attr("id", String("inp2_" + parseInt(l - 1)));
                 }
-				
 				updateTime();
+				model.buildData();
+				console.log(model.currentInfo['data']);
+				console.log($("#inp1_"+parseInt(rowNum+1)).val()+"maybe now it's a problem");
 				console.log(model.currentInfo['totalTime'] + "total time");
 				$('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
             })
@@ -731,8 +734,8 @@ var perfectSteak = function (div) {
 
             model.dataChange(newData);
 
-            console.log("stored table into model");
-            console.log(model.currentInfo);
+            //console.log("stored table into model");
+            //console.log(model.currentInfo);
 
             loadTextRecipeFromModel();
         };
@@ -750,15 +753,15 @@ var perfectSteak = function (div) {
             $('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
 
 
-            console.log("loaded table from model");
-            console.log(model.currentInfo);
+            //console.log("loaded table from model");
+            //console.log(model.currentInfo);
         };
 
 
         var storeTextRecipeIntoModel = function() {
             model.parseRecipe($("#recipeInput").val());            
-            console.log("stored text recipe into model");
-            console.log(model.currentInfo);
+            //console.log("stored text recipe into model");
+            //console.log(model.currentInfo);
 
             loadTableFromModel();
         }
@@ -767,8 +770,8 @@ var perfectSteak = function (div) {
 		var loadTextRecipeFromModel = function() {
             var recipe = model.printRecipe($('.mytog2:checked').attr('id'));
             $("#recipeInput").val(recipe);
-            console.log("loaded text recipe from model");
-            console.log(model.currentInfo);
+            //console.log("loaded text recipe from model");
+           // console.log(model.currentInfo);
  		}
 
 
@@ -864,7 +867,7 @@ var perfectSteak = function (div) {
                     graph(true, '');
                 };
   
-                console.log("showing the graph-pane");
+                //console.log("showing the graph-pane");
                 $("#graph-pane").css("visibility","visible");
 
                 var meat= $("input[type='radio'][name='meat']:checked").attr('id');
