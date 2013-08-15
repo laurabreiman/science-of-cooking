@@ -725,6 +725,10 @@ var perfectSteak = function (div) {
             for (var i=0; i<model.currentInfo['data'].length;i++){
                 addRow(i)
             }
+            updateTime();
+            $('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
+
+
             console.log("loaded table from model");
             console.log(model.currentInfo);
         };
