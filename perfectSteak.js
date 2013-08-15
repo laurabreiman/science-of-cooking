@@ -220,7 +220,7 @@ var perfectSteak = function (div) {
 
         // returns a temperature value in Celsius, given the value as a string and a mode which is either "C" or "F". 
         var parseTemperature = function(temperatureStr, mode) {
-            var value = parseInt(temperatureStr);
+            var value = parseFloat(temperatureStr);
             if (mode == "F") {
                 value = toC(value);
             }
@@ -274,23 +274,23 @@ var perfectSteak = function (div) {
                 var line = lines[i];
 
                 // try to parse starting conditions
-                var m = line.match(/(\d+)\s*(in|cm).*?(steak|tuna|turkey).*?(\d+)\xB0\s*([CF])/i);
+                var m = line.match(/(-?\d*[,.]?\d+)\s*(in|cm).*?(steak|tuna|turkey).*?(-?\d*[,.]?\d+)\xB0\s*([CF])/i);
                 if (m) {
                     console.log(m);
-                    currentInfo["thickness"] = parseInt(m[1]); // TODO: handle inches
+                    currentInfo["thickness"] = parseFloat(m[1]); // TODO: handle inches vs. cm
                     currentInfo["meatTemp"] = parseTemperature(m[4], m[5]);
-                    meatType = toTitleCase(m[4]); // so that "steak" becomes "Steak"
+                    meatType = toTitleCase(m[3]); // so that "steak" becomes "Steak"
                     continue; // don't parse the line as a step
                 }
 
                 // otherwise try to parse a recipe step
-                var m = line.match(/(\d+)\xB0\s*([CF]).*?(\d+)\xB0\s*([CF]).*?((\d)+:)?(\d+)/i);
+                var m = line.match(/(-?\d*[,.]?\d+)\xB0\s*([CF]).*?(-?\d*[,.]?\d+)\xB0\s*([CF]).*?((\d)+:)?(\d+)/i);
                 if (m) {
                     console.log(m);
                     var side1Temp = parseTemperature(m[1], m[2]);
                     var side2Temp = parseTemperature(m[3], m[4]);
                     var time = parseInt(m[7]); // seconds field
-                    if (m[2]) time += 60*parseInt(m[6]); // optional minutes field
+                    if (m[6]) time += 60*parseInt(m[6]); // optional minutes field
                     data.push([time, side1Temp, side2Temp]);
                     continue;
                 }
@@ -298,6 +298,7 @@ var perfectSteak = function (div) {
                 console.log("ignored " + line);
 
             }
+            // TODO: handle meat type
             currentInfo["data"] = data;
             currentInfo["numRows"] = data.length;
             // TODO: need to update currentInfo["totalTime"]
