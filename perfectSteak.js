@@ -398,7 +398,7 @@ var perfectSteak = function (div) {
         var addButton;
 
         var flipButton;
-		var cookButton=$('<button class="btn" id="cookButton" style="width:100%"><input type="image" id="myimage" style="height:20px;width:20px;"" src="flame.png"> <span>Cook</span> <input type="image" id="myimage" style="height:20px;width:20px;" src="flame.png"></button>');
+		var cookButton=$('<button class="btn" id="cookButton"><input type="image" id="myimage" style="height:20px;width:20px;"" src="flame.png"> <span>Cook</span> <input type="image" id="myimage" style="height:20px;width:20px;" src="flame.png"></button>');
 
         /*
             updateTime goes through the table and updates the total cooking time entered. It also checks for any entries that are in seconds and calls to change them into the format mm:ss
@@ -502,7 +502,9 @@ var perfectSteak = function (div) {
 			$("#graph-pane").append(switches);
             $("#startModal").modal("show");
 
-            $("#recipe-pane").append(cookButton);
+            var cookButtonRow = $("<div style='width:150px; margin-left: auto; margin-right: auto;'></div>");
+            cookButtonRow.append(cookButton);
+            $("#recipe-pane").append(cookButtonRow);
             addDropdown();
           
             addAddButton();
@@ -649,12 +651,12 @@ var perfectSteak = function (div) {
             for (var h = 0; h < model.currentInfo["numRows"]; h++) {
 
 
-                if (parseFloat($("#inp1_" + h).val()) < 0) {
+                if (parseFloat($("#inp1_" + h).val()) < -270) {
                     var side1Alert = $("<div class='alert alert-danger' id='row" + h + "side1alert'>Too low!</div>");
                     $("#row" + h + "side1").append(side1Alert);
                     model.currentInfo["OKToGraph"] = false;
                 }
-                if (parseFloat($("#inp2_" + h).val()) < 0) {
+                if (parseFloat($("#inp2_" + h).val()) < -270) {
                     var side2Alert = $("<div class='alert alert-danger' id='row" + h + "side2alert'>Too low!</div>");
                     $("#row" + h + "side2").append(side2Alert);
                     model.currentInfo["OKToGraph"] = false;
@@ -715,6 +717,10 @@ var perfectSteak = function (div) {
         };
 
         var loadTableFromModel = function() {
+            // TODO: handle meat type
+            $("#thicknessInp").val(model.currentInfo["thickness"]);
+            $("#steakTemp").val(model.currentInfo["meatTemp"]);
+            
             $(".recipe-step").remove();
             for (var i=0; i<model.currentInfo['data'].length;i++){
                 addRow(i)
