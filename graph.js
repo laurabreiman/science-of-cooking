@@ -164,7 +164,13 @@ if(meatType!='False'){
 		.attr('class','percents')
         .attr('x', width/3-30)
         .attr('y', function(d, i){ return (i *  15+200+8);})
-        .text(function(d,i){return (100*(parseFloat(dat[59][(6-i)])+parseFloat(dat[59][12-(6-i)]))/data[0].length).toFixed(0)+ "% "});
+        .text(function(d,i){
+		console.log(dat[59])
+	
+			if(i!=0){return (100*(parseFloat(dat[59][6-i])+parseFloat(dat[59][6+i]))/data[59].length).toFixed(0)+ "% "}
+			else{return (100*(parseFloat(dat[59][(6-i)]))/data[59].length).toFixed(0)+ "% "}
+		});
+
 }
 
 var ttip = d3.select(".span9").append("div")   
@@ -177,7 +183,7 @@ var layer = svg.selectAll(".layer")
   .enter().append("g")
     .attr("class", "layer")
 
-    .style("fill", function(d, i) {return meatType=='False'? color[meatType](data[d[i].x][i]/tempMax):color[meatType](i); });
+    .style("fill", function(d, i) {return meatType=='False'? color[meatType](data[i]/tempMax):color[meatType](i); });
 
 	
 
@@ -206,7 +212,7 @@ var rect = layer.selectAll("rect")
 		var text=d3.selectAll('.percents')[0][boundaries[meatType].length-i];
 		var line=parseInt((d3.event.pageX-margin.left)/(x.rangeBand()+1.2)-35);
 		var info=mode=='C'? CtempScale[meatType][boundaries[meatType].length-i]['info']:FtempScale[meatType][boundaries[meatType].length-i]['info'];
-		$(text).text((100*(parseFloat(dat[line][(i)])+parseFloat(dat[line][12-(i)]))/m).toFixed(0)+ "% ");
+		
 
 		}
 		}
@@ -217,13 +223,13 @@ var rect = layer.selectAll("rect")
 	var Offset = document.getElementById("graphSteak").offsetTop;
 	var pos=parseInt(data[0].length-(d3.event.pageY-margin.top)/(height/yStackMax)+12);
 var line=parseInt((d3.event.pageX-margin.left)/(x.rangeBand()+1.2)-35);
-console.log(line);
+//console.log(line);
 	$("line").remove();
 	var myLine = d3.selectAll(".mysteak").append("svg:line")
     .attr("x1", margin.left)
-    .attr("y1", d3.event.pageY-margin.top)
+    .attr("y1", d3.event.pageY-margin.top-10)
     .attr("x2", width*32/30)
-    .attr("y2", d3.event.pageY-margin.top)
+    .attr("y2", d3.event.pageY-margin.top-10)
 	.style("z-index",-1)
     .style("stroke", "grey");
 	//console.log(d3.event.pageX-parseFloat($("body").css('margin-left')));
