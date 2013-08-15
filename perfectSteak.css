@@ -35,7 +35,7 @@ position:relative;
 	position:relative;
 }
 .inputTableContainer{
-	height:100px;
+	height:120px;
 	overflow-y:auto;
 	overflow-x:hidden;
 }

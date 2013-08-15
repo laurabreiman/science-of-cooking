@@ -354,13 +354,13 @@ var perfectSteak = function (div) {
 
         model.importRecipes();
         var clicked = false;
-        var displayDiv = $("<div class='displayDiv'><h4>Input Recipe</h4></div>");
-        var tableTabs = $('<ul class="nav nav-tabs"><li><a id="table-tab" href="#table" data-toggle="tab" class="mytab">As table</a></li><li><a id="text-tab" href="#text" data-toggle="tab" class="mytab">As text</a></li></ul>');
+        var displayDiv = $("<div class='displayDiv'><h4>Recipe</h4></div>");
+        var tableTabs = $('<ul class="nav nav-tabs"><li class="active"><a id="table-tab" href="#table" data-toggle="tab" class="mytab">as table</a></li><li><a id="text-tab" href="#text" data-toggle="tab" class="mytab">as text</a></li></ul>');
 
         var tabContent = $("<div class='tab-content'></div>");
         var tabPaneActive = $("<div class='tab-pane active' id='table'></div>");
         var thickInpDiv = $("<span id='thickInpDiv'>Thickness: <input type='text' id='thicknessInp' value='3'> cm </span>'");
-		var tempInp=$("<div><span id='tempInpDiv'>   Initial Temperature: <input type='text' id='steakTemp' value='23'><span id='work'>&#176;C</span></span></div>");
+		var tempInp=$("<div><span id='tempInpDiv'>   Starting at: <input type='text' id='steakTemp' value='23'><span id='work'>&#176;C</span></span></div>");
         var meatInp = $("<span><form id='meatInp'><b>Meat: </b><input type='radio' name='meat' id='Steak' checked>Steak<input type='radio' name='meat' id='Tuna'>Tuna <input type='radio' name='meat' id='Turkey'>Turkey </form></span>");
         var switcheroo = $('<span class="switcheroo"></span>');
         var mytog2 = $("<input type='radio' class='mytog2' id='C' name='toggle2' checked><label for='C' class='btn'>C</label><input type='radio' class='mytog2' id='F' name='toggle2'><label for='F' class='btn'>F</label>");
@@ -368,7 +368,7 @@ var perfectSteak = function (div) {
         var inputTable = $("<table class='inputTable table table-striped'></table>");
 		inputTableContainer.append(inputTable)
         var tabPane = $("<div class='tab-pane' id='text'></div>")
-        var inpTabHeader = $("<table class='header table table-striped'><tr><th class='inpTabHeader' id= 'si1'>Side 1 (&#176;C)</th><th class='inpTabHeader' id='si2'>Side 2 (&#176;C)</th><th class='inpTabHeader'>Duration (mm:ss)</th></tr></table>");
+        var inpTabHeader = $("<table class='header table table-striped'><tr><!--<th></th>--><th class='inpTabHeader' id= 'si1'>Side 1 (&#176;C)</th><th></th><th class='inpTabHeader' id='si2'>Side 2 (&#176;C)</th><th class='inpTabHeader'>Duration (mm:ss)</th><th></th></tr></table>");
         var containerm = $("<div class='containerm'><textarea id='recipeInput' cols=40 rows=5></textarea></div>");
 
         inputTableContainer.append(inputTable);
@@ -398,7 +398,7 @@ var perfectSteak = function (div) {
         var addButton;
 
         var flipButton;
-		var cookButton=$('<button class="btn" id="cookButton" style="width:100%"><input type="image" id="myimage" style="height:20px;width:20px;"" src="flame.png"><span>Cook</span><input type="image" id="myimage" style="height:20px;width:20px;" src="flame.png"></button>');
+		var cookButton=$('<button class="btn" id="cookButton"><input type="image" id="myimage" style="height:20px;width:20px;"" src="flame.png"> <span>Cook</span> <input type="image" id="myimage" style="height:20px;width:20px;" src="flame.png"></button>');
 
         /*
             updateTime goes through the table and updates the total cooking time entered. It also checks for any entries that are in seconds and calls to change them into the format mm:ss
@@ -502,7 +502,9 @@ var perfectSteak = function (div) {
 			$("#graph-pane").append(switches);
             $("#startModal").modal("show");
 
-            $("#recipe-pane").append(cookButton);
+            var cookButtonRow = $("<div style='width:150px; margin-left: auto; margin-right: auto;'></div>");
+            cookButtonRow.append(cookButton);
+            $("#recipe-pane").append(cookButtonRow);
             addDropdown();
           
             addAddButton();
@@ -526,32 +528,36 @@ var perfectSteak = function (div) {
         var addRow = function (i) {
             var row = $("<tr class='row recipe-step' id='row" + i + "'></tr>");
 
-            
-
-            var rowiside1 = $("<td id='row" + i + "side1'></td>");
-            var inp1_i = $("<input id='inp1_" + i + "' type=text></input>");
-
-			var label=$("<span> "+(i+1)+"</span>");
+		
+            // TODO: restore this step-numbering once we get it to automatically update it when rows are removed from the middle
+            // of the recipe.  Best way is to figure out how to do the numbering with CSS.
+            /*
+			var label=$("<td><span> "+(i+1)+"</span></td>");
 			if(i<10){label.css("margin-left","8px");}
 			label.css("margin-right","3px");
 			label.css("font-size",'12px');
 			label.css("text-anchor",'end');
+            */
+
+            var rowiside1 = $("<td id='row" + i + "side1'></td>");
+            var inp1_i = $("<input id='inp1_" + i + "' type=text></input>");
+            rowiside1.append(inp1_i);
+
+            var flipButtoniCell = $("<td></td>");
             var flipButtoni = $("<button class='btn btn-mini flipButton' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
-			
-            rowiside1.append(label,inp1_i);
+            flipButtoniCell.append(flipButtoni);
 
             var rowiside2 = $("<td id='row" + i + "side2' class='row" + i + "'></td>");
             var inp2_i = $("<input id='inp2_" + i + "' type='text'></input>");
-          
-            rowiside2.append(flipButtoni,inp2_i);
-							 var durationi = $("<td id='duration" + i + "'></td>");
-            var rowitime = $("<input id='row" + i + "time' type=text></input>");
-			var rowibutton = $("<button type='button' id=row" + i + "button' class='close closeRow'>&times;</button>")
-            durationi.append(rowitime,rowibutton);
+            rowiside2.append(inp2_i);
 
+            var durationi = $("<td id='duration" + i + "'></td>");
+            var rowitime = $("<input id='row" + i + "time' type=text></input>");
+            durationi.append(rowitime);
+
+            var rowibuttoncell = $("<td></td>")
+            var rowibutton = $("<button type='button' id=row" + i + "button' class='close closeRow'>&times;</button>")
             rowibutton.on("click", function () {
-				$(".lastrow").remove();
-				//$(".tt").remove();
                 var rowNum = String($(this).attr("id").charAt(3))
                 //NOW WE'RE REMOVING THE ROW WITH THE X NEXT TO IT
                 row.remove();
@@ -570,14 +576,12 @@ var perfectSteak = function (div) {
                     $("#row" + l + "side2").attr("id", String("row" + parseInt(l - 1) + "side2"));
                     $("#inp2_" + l).attr("id", String("inp2_" + parseInt(l - 1)));
                 }
-				addAddButton();
-				
             })
+            rowibuttoncell.append(rowibutton);
 
-            row.append( rowiside1, rowiside2,durationi)
+            row.append(/*label,*/ rowiside1, flipButtoniCell, rowiside2, durationi, rowibuttoncell);
             $("#lastrow").before(row);
             if (i < model.currentInfo['data'].length) {
-
                 rowitime.val(model.convertTime(model.currentInfo['data'][i][0]));
                 inp1_i.val(model.currentInfo['data'][i][1]);
                 inp2_i.val(model.currentInfo['data'][i][2])
@@ -587,7 +591,7 @@ var perfectSteak = function (div) {
                 inp1_i.val($(String("#inp1_" + parseInt(i - 1))).val() || 23);
                 inp2_i.val($(String("#inp2_" + parseInt(i - 1))).val() || 180);
             }
-flipButtonFun(i);
+            flipButtonFun(i);
 			//model.numRowsPlus();
         }
 
@@ -597,21 +601,20 @@ flipButtonFun(i);
 			var row = $("<tr class ='row' id='lastrow'></tr>");
 			var addButton = $("<td><button class='btn btnBar addButton' id='addButton" + model.currentInfo['numRows'] + "'>+</button></td>");
             addButtonFun(addButton)
-
-			var label=$('<td><span>Total:</span></td>');
+	
+			var label=$('<td><span>total</span></td>');
 			label.css("text-align","right");
 			updateTime();
 			var info=$('<td><span class="tt">'+model.convertTime(model.currentInfo["totalTime"])+'</span></td>');
-			row.append(addButton,label,info);
+			row.append(addButton,$("<td></td>"),label,info);
             inputTable.append(row);
 		}
 
         var addButtonFun = function (addButton) {
             addButton.on("click", function () {
-
+                storeTableIntoModel();
                 model.numRowsPlus();
                 addRow(model.currentInfo['numRows']-1);
-				//addAddButton();
 				updateTime();
 				$('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
 				$(".inputTableContainer").animate({
@@ -648,12 +651,12 @@ flipButtonFun(i);
             for (var h = 0; h < model.currentInfo["numRows"]; h++) {
 
 
-                if (parseFloat($("#inp1_" + h).val()) < 0) {
+                if (parseFloat($("#inp1_" + h).val()) < -270) {
                     var side1Alert = $("<div class='alert alert-danger' id='row" + h + "side1alert'>Too low!</div>");
                     $("#row" + h + "side1").append(side1Alert);
                     model.currentInfo["OKToGraph"] = false;
                 }
-                if (parseFloat($("#inp2_" + h).val()) < 0) {
+                if (parseFloat($("#inp2_" + h).val()) < -270) {
                     var side2Alert = $("<div class='alert alert-danger' id='row" + h + "side2alert'>Too low!</div>");
                     $("#row" + h + "side2").append(side2Alert);
                     model.currentInfo["OKToGraph"] = false;
@@ -714,6 +717,10 @@ flipButtonFun(i);
         };
 
         var loadTableFromModel = function() {
+            // TODO: handle meat type
+            $("#thicknessInp").val(model.currentInfo["thickness"]);
+            $("#steakTemp").val(model.currentInfo["meatTemp"]);
+            
             $(".recipe-step").remove();
             for (var i=0; i<model.currentInfo['data'].length;i++){
                 addRow(i)
