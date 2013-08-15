@@ -164,7 +164,7 @@ if(meatType!='False'){
 		.attr('class','percents')
         .attr('x', width/3-30)
         .attr('y', function(d, i){ return (i *  15+200+8);})
-        .text(function(d,i){return (100*(parseFloat(dat[59][(6-i)])+parseFloat(dat[59][12-(6-i)]))/m).toFixed(0)+ "% "});
+        .text(function(d,i){return (100*(parseFloat(dat[59][(6-i)])+parseFloat(dat[59][12-(6-i)]))/data[0].length).toFixed(0)+ "% "});
 }
 
 var ttip = d3.select(".span9").append("div")   
