@@ -79,8 +79,8 @@ input[type="radio"].toggle + label {
 }
 .switcheroo{
 	position: absolute;
-	left:20%;
-	top:80px;
+	left:72%;
+	top:10px;
 	height:30px;
 	width:200px;
 	

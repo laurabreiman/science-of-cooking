@@ -167,13 +167,13 @@ function HeatSolver(startingTemps,timestep,spacestep){
             }
             
             //set the conductivity of air to zero
-            if(time_top_bottom[j][1] == 23){
+            if(time_top_bottom[j][1] > 15&&time_top_bottom[j][1] < 30){
                 nonconductive[1] = 1;
             }
             else{
                 nonconductive[1] = 0;
             }
-            if(time_top_bottom[j][2] == 23){
+            if(time_top_bottom[j][2] > 15&&time_top_bottom[j][2] < 30){
                 nonconductive[0] = 1;
             }
             else{
@@ -255,18 +255,19 @@ function HeatSolver(startingTemps,timestep,spacestep){
         
         for(var j=0; j<time_top_bottom.length; j++){
             //set the conductivity of air to zero
-            if(time_top_bottom[j][1] == 23){
+             if(time_top_bottom[j][1] > 15&&time_top_bottom[j][1] < 30){
                 nonconductive[1] = 1;
             }
             else{
                 nonconductive[1] = 0;
             }
-            if(time_top_bottom[j][2] == 23){
+            if(time_top_bottom[j][2] > 15&&time_top_bottom[j][2] < 30){
                 nonconductive[0] = 1;
             }
             else{
                 nonconductive[0] = 0;
             }
+
 
             change_temp(time_top_bottom[j][1], time_top_bottom[j][2])
             
@@ -348,7 +349,8 @@ function HeatSolver(startingTemps,timestep,spacestep){
                 cnVector.push(currentTemps[0]);//((1+2*alpha)*currentTemps[i]-alpha*(currentTemps[i+1]));
             }
             else if(i==0 && nonconductive[0] == 1){
-                cnVector.push(alphacn*currentTemps[i]+(1-2*alphacn)*currentTemps[i+1]+alphacn*(currentTemps[i+2]));//((1+2*alpha)*currentTemps[i]-alpha*(currentTemps[i+1]));
+                cnVector.push(alphacn*currentTemps[i]+(1-2*alphacn)*currentTemps[i+1]+alphacn*(currentTemps[i+2]));
+				//((1+2*alpha)*currentTemps[i]-alpha*(currentTemps[i+1]));
             }
             else if(i==currentTemps.length-1 && nonconductive[1] == 1){
                 cnVector.push(cnVector[i-1]);//(-alpha*currentTemps[i-1]+(1+2*alpha)*currentTemps[i]);

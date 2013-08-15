@@ -58,7 +58,10 @@ var FtempScale={
 	"False":[{}]
 	
               };
-
+var miniInfo={"Steak":['raw','rare','medium rare','medium','well','browned','charred'],
+			  "Tuna":['raw','rare','medium rare','medium','well','browned','charred'],
+			  "Turkey":['raw','rare','medium rare','medium','well','browned','charred']
+			 }
 //color
 var color = {
      
