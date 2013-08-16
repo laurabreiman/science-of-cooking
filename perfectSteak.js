@@ -354,7 +354,7 @@ var perfectSteak = function (div) {
 
         model.importRecipes();
         var clicked = false;
-        var displayDiv = $("<div class='displayDiv'><h4>Recipe</h4></div>");
+        var displayDiv = $("<div class='displayDiv'></div>");
         var tableTabs = $('<ul class="nav nav-tabs"><li class="active"><a id="table-tab" href="#table" data-toggle="tab" class="mytab">as table</a></li><li><a id="text-tab" href="#text" data-toggle="tab" class="mytab">as text</a></li></ul>');
 
         var tabContent = $("<div class='tab-content'></div>");
@@ -443,19 +443,22 @@ var perfectSteak = function (div) {
             }
 
      dropdownDiv.change(function () {
-
+		 
                 var e1 = document.getElementById("d1");
                 var name1 = e1.options[e1.selectedIndex].text;
                 var e2 = document.getElementById("d2");
                 var name2 = e2.options[e2.selectedIndex].text;
-                var info = model.currentInfo['recipe'][name1];
+              
 
                 d3.selectAll('.finalsteak').remove();
 
-                drawFinished(info[0], info[1], info[2], info[3], 0,info[4],$('.mytog2:checked').attr('id'));
-                var inf = model.currentInfo['recipe'][name2];
-
-                drawFinished(inf[0], inf[1], inf[2], inf[3], 1, inf[4], inf[5]);
+          				if(name1!="")
+				{var info = model.currentInfo['recipe'][name1];
+                
+                drawFinished(info[0], info[1], info[2], info[3], 0,info[4],$('.mytog2:checked').attr('id'));}
+				if(name2!="")
+				{var inf = model.currentInfo['recipe'][name2];
+                drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],$('.mytog2:checked').attr('id'));}
             });
 
 			//NOW THIS DELETES EVERY ROW AND ADDS THEIR OWN LITTLE ROWS
@@ -482,7 +485,7 @@ var perfectSteak = function (div) {
             })
 
             dropdownDiv.append(dropdown1, dropdown2);
-            tabPaneActive.prepend(dropdown3);
+            displayDiv.prepend(dropdown3);
             $(".span12").prepend(dropdownDiv);
         }
 
@@ -490,7 +493,7 @@ var perfectSteak = function (div) {
             buildDisplay places the necessary items on the screen for the user to interact with.
         */
         var buildDisplay = function () {
-            div.append("<div class='row'><div class='container optionBar'></div></div><div id='recipe-pane' class='span3'></div><div id='graph-pane' class='span9' style='visibility:hidden;'></div><div class='span12'></div></div>");
+            div.append("<div class='row'><div class='container optionBar'></div></div><div id='recipe-pane' class='span3'><h4>Recipe</h4></div><div id='graph-pane' class='span9' style='visibility:hidden;'></div><div class='span12'></div></div>");
             var switches = $('<div class="switch"><input type="radio" class="mytog" id="PS" name="toggle" checked><label for="PS" class="btn" id ="state">Protein State</label><input type="radio" class="mytog"id="T" name="toggle"><label for="T" class="btn" id ="state">Temperature</label></div>');
             div.append(switcheroo);
             switches.change(function () {
@@ -528,8 +531,6 @@ var perfectSteak = function (div) {
         var addRow = function (i) {
             var row = $("<tr class='row recipe-step' id='row" + i + "'></tr>");
 
-
-        
 			var labels=$("<span id='label"+i+ "' > "+(i+1)+"</span>");
 			if(i<9){labels.css("margin-left","8px");}
 			labels.css("margin-right","3px");
@@ -591,8 +592,8 @@ var perfectSteak = function (div) {
                 inp1_i.val(model.currentInfo['data'][i][1]);
                 inp2_i.val(model.currentInfo['data'][i][2])
             } else {
-
-                rowitime.val("4:00");
+console.log($("#row" + (i-1) + "time").val());
+                rowitime.val($("#row" + (i-1) + "time").val()|| "3:00");
                 inp1_i.val($(String("#inp1_" + parseInt(i - 1))).val() || 23);
                 inp2_i.val($(String("#inp2_" + parseInt(i - 1))).val() || 180);
             }
@@ -867,13 +868,14 @@ console.log("click");
                 var name1 = e1.options[e1.selectedIndex].text;
                 var e2 = document.getElementById("d2");
                 var name2 = e2.options[e2.selectedIndex].text;
-                var info = model.currentInfo['recipe'][name1];
-                d3.selectAll('.finalsteak').remove();
-
-
-                //drawFinished(info[0], info[1], info[2], info[3], 0,info[4],$('.mytog2:checked').attr('id'));
-                //var inf = model.currentInfo['recipe'][name2];
-                //drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],$('.mytog2:checked').attr('id'));
+				d3.selectAll('.finalsteak').remove();
+				if(name1!="")
+				{var info = model.currentInfo['recipe'][name1];
+                
+                drawFinished(info[0], info[1], info[2], info[3], 0,info[4],$('.mytog2:checked').attr('id'));}
+				if(name2!="")
+				{var inf = model.currentInfo['recipe'][name2];
+                drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],$('.mytog2:checked').attr('id'));}
 
                 // if we're viewing the text view, store it back to model so that the table view becomes consistent too
                 if ($("#recipeInput").closest(".tab-pane").hasClass("active")) {
@@ -899,13 +901,13 @@ console.log("click");
             $("#row" + j + "time").change(function () {
 
                 if (j == 0) {
-                    timeStep = parseInt($("#row" + j + "time").value);
+                    timeStep = parseInt($("#row" + j + "time").val());
                 }
+else{
+	timeStep = parseInt($("#row" + (j-1) + "time").val());
+}
 
-
-                if (j == 0) {
-                    timeStep = parseInt($("#row" + j + "time").value);
-                }
+          
 
             })
         };
