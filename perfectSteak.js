@@ -463,6 +463,7 @@ var perfectSteak = function (div) {
 
 			//NOW THIS DELETES EVERY ROW AND ADDS THEIR OWN LITTLE ROWS
             dropdown3.change(function () {
+				
 				var e3=document.getElementById("d3");
 				var name3=e3.options[e3.selectedIndex].text;
 
@@ -481,7 +482,7 @@ var perfectSteak = function (div) {
 				//model.buildData();
 				console.log(model.currentInfo["numRows"]);
 				addAddButton();
-
+				cookingFood();
             })
 
             dropdownDiv.append(dropdown1, dropdown2);
@@ -841,9 +842,8 @@ console.log("click");
                 calculate(model.currentInfo["data"], steak, meatType, isFirst, model.currentInfo["totalTime"], $('.mytog2:checked').attr('id'),animated)
             }
         }
-        var CookButtonFun = function () {
-            $("#cookButton").on("click", function () {
-                clicked = true;
+		var cookingFood=function() {
+			clicked = true;
                 checkTableForImpossibleValues();
                 d3.selectAll(".mysteak").remove();
                 d3.selectAll(".containers").remove();
@@ -894,7 +894,10 @@ console.log("click");
                     d3.selectAll(".mysteak").remove();
                     model.dataClear();
                 }
-            });
+            }
+        var CookButtonFun = function () {
+            $("#cookButton").on("click", cookingFood
+                );
         }
 
         var timeFun = function (j) {
