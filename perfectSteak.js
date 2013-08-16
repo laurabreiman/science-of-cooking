@@ -368,7 +368,7 @@ var perfectSteak = function (div) {
         var inputTable = $("<table class='inputTable table table-striped'></table>");
 		inputTableContainer.append(inputTable)
         var tabPane = $("<div class='tab-pane' id='text'></div>")
-        var inpTabHeader = $("<table class='header table table-striped'><tr><!--<th></th>--><th class='inpTabHeader' id= 'si1'>Side 1 (&#176;C)</th><th></th><th class='inpTabHeader' id='si2'>Side 2 (&#176;C)</th><th class='inpTabHeader'>Duration (mm:ss)</th><th></th></tr></table>");
+        var inpTabHeader = $("<table class='header table table-striped'><tr><th class='inpTabHeader' id= 'si1'>Side 1 (&#176;C)</th><th></th><th class='inpTabHeader' id='si2'>Side 2 (&#176;C)</th><th> </th><th class='inpTabHeader'>Duration (mm:ss)</th><th></th></tr></table>");
         var containerm = $("<div class='containerm'><textarea id='recipeInput' cols=40 rows=5></textarea></div>");
 
         inputTableContainer.append(inputTable);
@@ -378,6 +378,8 @@ var perfectSteak = function (div) {
             $('#si1').html("Side 1 (&#176;" + $('.mytog2:checked').attr('id') + ")");
             $('#si2').html("Side 2 (&#176;" + $('.mytog2:checked').attr('id') + ")");
             $('#work').html("&#176;" + $('.mytog2:checked').attr('id'));
+			$('.deg').html("&#176;" + $('.mytog2:checked').attr('id'));
+			
             graph(false, $('.mytog:checked').attr('id'),false);
         });
         tabPaneActive.append( meatInp,thickInpDiv,tempInp,inpTabHeader,inputTableContainer);
@@ -437,8 +439,23 @@ var perfectSteak = function (div) {
             dropdown3.append('<option></option>');
 
             for (var key in model.currentInfo['recipe']) {
-                dropdown1.append($('<option>' + key + '</option>'));
-                dropdown2.append($('<option>' + key + '</option>'));
+				var rename=$('<span id="d1'+key+'">Rename</span>');
+				var del=$('<button class="d1closer" id = "1'+key+'">&times;</button>');
+				var rename1=$('<span id="d1'+key+'">Rename</span>');
+				var del1=$('<button class="d1closer" id = "1'+key+'">&times;</button>');
+                
+					var option1=$('<option>' + key +'</option>');
+				var option2=$('<option>' + key +'</option>');
+				// option1.append(rename,del);
+				//option2.append(rename1,del1);
+				dropdown1.append(option1)
+								 
+			del.on("click",function(){
+				console.log(this.attr("id"))
+			})
+                dropdown2.append(option2);
+			
+				
                 dropdown3.append($('<option>' + key + '</option>'));
             }
 
@@ -542,7 +559,7 @@ var perfectSteak = function (div) {
             
 
             var rowiside1 = $("<td id='row" + i + "side1'></td>");
-            var inp1_i = $("<input id='inp1_" + i + "' type=text></input>");
+            var inp1_i = $("<input id='inp1_" + i + "' type=text></input><span class='deg'>&#176C</span>");
             rowiside1.append(labels,inp1_i);
 
             var flipButtoniCell = $("<td></td>");
@@ -550,7 +567,7 @@ var perfectSteak = function (div) {
             flipButtoniCell.append(flipButtoni);
 
             var rowiside2 = $("<td id='row" + i + "side2' class='row" + i + "'></td>");
-            var inp2_i = $("<input id='inp2_" + i + "' type='text'></input>");
+            var inp2_i = $("<input id='inp2_" + i + "' type='text'></input><span class='deg'>&#176C</span>");
             rowiside2.append(inp2_i);
 
             var durationi = $("<td id='duration" + i + "'></td>");
@@ -862,8 +879,11 @@ console.log("click");
                 model.saveRecipe(name);
                 var dropdown1 = $("#d1");
                 var dropdown2 = $("#d2");
+			var dropdown3=$('#d3');
+			
                 dropdown1.append($('<option>' + name + '</option>'));
                 dropdown2.append($('<option>' + name + '</option>'));
+			dropdown3.append($('<option>' + name + '</option>'));
                 var e1 = document.getElementById("d1");
                 var name1 = e1.options[e1.selectedIndex].text;
                 var e2 = document.getElementById("d2");

@@ -162,7 +162,7 @@ th{
 
 td{
 	position:relative;
-	max-width:32% !important;
+	max-width:90% !important;
 	margin:0!important;
 	padding:1px!important;
 	left:0px!important;
@@ -189,7 +189,19 @@ td{
 	margin-top:0%;
 	margin-bottom:0%;
 }
+.nav-tabs > li, .nav-pills > li {
+    float:none;
+   display:inline-block;
 
+}
+.deg{
+display:inline-block;	
+	position:relative;
+	top:-10px;
+font-size:8px;}
+.nav-tabs, .nav-pills {
+    text-align:right;
+}
 #meatInp{
 	position:relative;
 	padding: 0px;
