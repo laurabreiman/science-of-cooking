@@ -380,6 +380,7 @@ var perfectSteak = function (div) {
             $('#work').html("&#176;" + $('.mytog2:checked').attr('id'));
 			$('.deg').html("&#176;" + $('.mytog2:checked').attr('id'));
 			
+			
             graph(false, $('.mytog:checked').attr('id'),false);
         });
         tabPaneActive.append( meatInp,thickInpDiv,tempInp,inpTabHeader,inputTableContainer);
@@ -559,7 +560,7 @@ var perfectSteak = function (div) {
             
 
             var rowiside1 = $("<td id='row" + i + "side1'></td>");
-            var inp1_i = $("<input id='inp1_" + i + "' type=text></input><span class='deg'>&#176C</span>");
+            var inp1_i = $("<input id='inp1_" + i + "' type=text></input><span class='deg'>&#176"+$('.mytog2:checked').attr('id')+"</span>");
             rowiside1.append(labels,inp1_i);
 
             var flipButtoniCell = $("<td></td>");
@@ -567,7 +568,7 @@ var perfectSteak = function (div) {
             flipButtoniCell.append(flipButtoni);
 
             var rowiside2 = $("<td id='row" + i + "side2' class='row" + i + "'></td>");
-            var inp2_i = $("<input id='inp2_" + i + "' type='text'></input><span class='deg'>&#176C</span>");
+            var inp2_i = $("<input id='inp2_" + i + "' type='text'></input><span class='deg'>&#176"+$('.mytog2:checked').attr('id')+"</span>");
             rowiside2.append(inp2_i);
 
             var durationi = $("<td id='duration" + i + "'></td>");
