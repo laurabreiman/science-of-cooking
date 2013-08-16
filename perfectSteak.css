@@ -71,7 +71,7 @@ input[type="radio"].toggle + label {
 .switch{
 	position: absolute;
 	left:81.5%;
-	top:80px;
+	top:70px;
 	height:30px;
 	width:200px;
 	
@@ -161,6 +161,7 @@ th{
 }
 
 td{
+	font-size:12px;
 	position:relative;
 	max-width:90% !important;
 	margin:0!important;
@@ -173,6 +174,7 @@ td{
 	width:100%;
 		
 }
+
 
 .closeRow{
 	margin-right:10px;
@@ -194,10 +196,25 @@ td{
    display:inline-block;
 
 }
+#si1 {
+	position:relative;
+	left:25px !important;
+	background:none !important;
+}
+#si2 {
+	position:relative;
+	left:25px  !important;
+	background:none !important;
+}
+#dur {
+	position:relative;
+	left:12px  !important;
+	background:none !important;
+}
 .deg{
 display:inline-block;	
-	position:relative;
-	top:-10px;
+	
+	
 font-size:8px;}
 .nav-tabs, .nav-pills {
     text-align:right;
@@ -214,7 +231,9 @@ input[type="text"] {
     font-size: 12px;
     width: 37px;
 	height: 20px;
-	margin-left:0px;
+	padding-top:6px;
+	margin:0px;
+	
 }
 #recipeInput{
 	border: 1px solid black;
@@ -226,13 +245,13 @@ input[type="text"] {
 
 #thickInpDiv, #tempInpDiv, #meatTypeDiv{
 	
-	margin:0px;
+	margin:3px;
 	width:100%;!important;
 	  font-size: 12px;
 }
 
 .btn-mini{
-	width:25px!important;
+	width:15px!important;
 	padding:0px!important;
 	margin:0px !important;
 	position: relative !important;

@@ -288,7 +288,7 @@ var linktext = svg.selectAll("g.linklabelholder").data(flame);
 		.style("font-size", "8px")
      .text(function(d,i) {
 		 
-		 if(i==0){return mode=='C'? d[2].toFixed(0):toF(d[2]).toFixed(0);}
+		 if(i==0){return mode=='C'? d[2].toFixed(0)+"\xB0C":toF(d[2]).toFixed(0)+"\xB0F";}
 		 if(flame[i][1]==flame[i-1][1]&&flame[i][2]==flame[i-1][2])
 		{return '';}
 		 if(i>1 &&flame[i][1]!=flame[i-1][1]&&flame[i][1]==flame[i-2][1]){
@@ -296,7 +296,7 @@ var linktext = svg.selectAll("g.linklabelholder").data(flame);
 		{return '';}
 		 }
 						  
-		else return mode=='C'? d[2].toFixed(0):toF(d[2]).toFixed(0);});
+		else return mode=='C'? d[2].toFixed(0)+"\xB0C":toF(d[2]).toFixed(0)+"\xB0F";});
 
 		
 rect.transition()

@@ -368,15 +368,14 @@ var perfectSteak = function (div) {
         var inputTable = $("<table class='inputTable table table-striped'></table>");
 		inputTableContainer.append(inputTable)
         var tabPane = $("<div class='tab-pane' id='text'></div>")
-        var inpTabHeader = $("<table class='header table table-striped'><tr><th class='inpTabHeader' id= 'si1'>Side 1 (&#176;C)</th><th></th><th class='inpTabHeader' id='si2'>Side 2 (&#176;C)</th><th> </th><th class='inpTabHeader'>Duration (mm:ss)</th><th></th></tr></table>");
+        var inpTabHeader = $("<table class='inputTable table table-striped'><tr><td class='inpTabHeader' id= 'si1'>Side 1 </td><td class='inpTabHeader' id='si2'>Side 2</td><td class='inpTabHeader' id= 'dur'>min:sec</td></tr></table>");
         var containerm = $("<div class='containerm'><textarea id='recipeInput' cols=40 rows=5></textarea></div>");
 
         inputTableContainer.append(inputTable);
         switcheroo.append(mytog2);
 		switcheroo.change(function () {
 
-            $('#si1').html("Side 1 (&#176;" + $('.mytog2:checked').attr('id') + ")");
-            $('#si2').html("Side 2 (&#176;" + $('.mytog2:checked').attr('id') + ")");
+
             $('#work').html("&#176;" + $('.mytog2:checked').attr('id'));
 			$('.deg').html("&#176;" + $('.mytog2:checked').attr('id'));
 			
@@ -550,11 +549,11 @@ var perfectSteak = function (div) {
         var addRow = function (i) {
             var row = $("<tr class='row recipe-step' id='row" + i + "'></tr>");
 
-			var labels=$("<span id='label"+i+ "' > "+(i+1)+"</span>");
+			var labels=$("<span id='label"+i+ "' > "+(i+1)+".</span>");
 			if(i<9){labels.css("margin-left","8px");}
 			labels.css("margin-right","3px");
-			labels.css("position","relative");
-			labels.css("top","-5px");
+			//labels.css("position","relative");
+			//labels.css("top","-5px");
 			labels.css("font-size",'12px');
 			labels.css("text-anchor",'end');
             
@@ -564,7 +563,7 @@ var perfectSteak = function (div) {
             rowiside1.append(labels,inp1_i);
 
             var flipButtoniCell = $("<td></td>");
-            var flipButtoni = $("<button class='btn btn-mini flipButton' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
+            var flipButtoni = $("<button class='btn btn-mini flipButton' id='flipButton" + i + "'><font size=1px>&harr;</font></button>");
             flipButtoniCell.append(flipButtoni);
 
             var rowiside2 = $("<td id='row" + i + "side2' class='row" + i + "'></td>");
@@ -572,7 +571,9 @@ var perfectSteak = function (div) {
             rowiside2.append(inp2_i);
 
             var durationi = $("<td id='duration" + i + "'></td>");
+			
             var rowitime = $("<input id='row" + i + "time' type=text></input>");
+			rowitime.css("margin-left","8px")
             durationi.append(rowitime);
 
             var rowibuttoncell = $("<td></td>")
@@ -596,7 +597,7 @@ var perfectSteak = function (div) {
                     $("#row" + l + "side2").attr("id", String("row" + parseInt(l - 1) + "side2"));
                     $("#inp2_" + l).attr("id", String("inp2_" + parseInt(l - 1)));
 					$("#label"+(l) ).attr("id","label"+ parseInt(l-1))
-					$("#label"+(l-1) ).html( parseInt(l));
+					$("#label"+(l-1) ).html( parseInt(l)+".");
                 }
 				updateTime();
 				$('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
@@ -627,7 +628,7 @@ console.log($("#row" + (i-1) + "time").val());
 			var addButton = $("<td><button class='btn btnBar addButton' id='addButton" + model.currentInfo['numRows'] + "'>+</button></td>");
             addButtonFun(addButton)
 
-			var label=$('<td><span>total</span></td>');
+			var label=$('<td><span>Total:</span></td>');
 			label.css("text-align","right");
 			updateTime();
 			var info=$('<td><span class="tt">'+model.convertTime(model.currentInfo["totalTime"])+'</span></td>');
