@@ -1,4 +1,4 @@
-var graphSteak=function(sampledata,flame,timestep,meatType,maxTemps,mode){
+var graphSteak=function(sampledata,flame,timestep,meatType,maxTemps,mode,animated){
 var graph=(function(){
 var setup=function(div,data,flame,timestep,meatType,maxTemps,mode)	
 	{
@@ -299,7 +299,7 @@ var linktext = svg.selectAll("g.linklabelholder").data(flame);
 
 		
 rect.transition()
-    .delay(function(d, i) { return meatType=='False'? 0:i * 10; })
+    .delay(function(d, i) { return animated==false? 0:i * 10; })
     .attr("y", function(d) { return y(d.y0 + d.y); })
     .attr("height", function(d) { return y(d.y0) - y(d.y0 + d.y); });
 
@@ -366,8 +366,8 @@ function transitionGrouped() {
   y.domain([0, yGroupMax]);
 
   rect.transition()
-      .duration(function(d){return meatType=='False'? 0:500})
-      .delay(function(d, i) {return meatType=='False'? 0: i * 10; })
+      .duration(function(d){return animated==false? 0:500})
+      .delay(function(d, i) {return animated==false? 0: i * 10; })
       .attr("x", function(d, i, j) { return x(d.x) + x.rangeBand() / n * j; })
       .attr("width", x.rangeBand() / n)
     .transition()
@@ -379,8 +379,8 @@ function transitionStacked() {
   y.domain([0, yStackMax]);
 
   rect.transition()
-      .duration(function(d){return meatType=='False'? 0:500})
-      .delay(function(d, i) { return meatType=='False'? 0:i * 10; })
+      .duration(function(d){return animated==false? 0:500})
+      .delay(function(d, i) { return animated==false? 0:i * 10; })
       .attr("y", function(d) { return y(d.y0 + d.y); })
       .attr("height", function(d) { return y(d.y0) - y(d.y0 + d.y); })
     .transition()

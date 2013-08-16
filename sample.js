@@ -4,7 +4,7 @@
         it into graphable data arrays and values that are then displayed to the screen
         with the function graphSteak
 */
-var calculate=function(data,steak,meatType,first,totalTime,mode){
+var calculate=function(data,steak,meatType,first,totalTime,mode,animated){
 	
     //sets the parameters for the iterations of the diffusion equations. 
     //parameters are initially set to a timestep of 1 second and a spacestep of 1mm,
@@ -50,7 +50,7 @@ console.log("calc");
     }
     */
 	if(!first){
-    graphSteak(sampledata,flame,timestep,meatType,maxTemps,mode);}
+    graphSteak(sampledata,flame,timestep,meatType,maxTemps,mode,animated);}
 
     
 }

@@ -200,9 +200,9 @@ td{
 input[type="text"] {
     border: 1px solid black;
     font-size: 12px;
-    width: 40px;
+    width: 37px;
 	height: 20px;
-	margin:2px;
+	margin-left:0px;
 }
 #recipeInput{
 	border: 1px solid black;

@@ -31,10 +31,10 @@ var perfectSteak = function (div) {
 
         var importRecipes = function () {
          
-		var saved=[{"name":"Heston Blumenthal","data":[[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150]],"Temp":23},
+		var saved=[{"name":"Flip every 15 seconds (Heston Blumenthal)","data":[[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150],[15,150,23],[15,23,150]],"Temp":23},
 	{"name":"4 minutes a side","data":[[240,150,23],[240,23,150],[300,23,23]],"Temp":23},
-	{"name":"America's Test Kitchen","data":[[15,230,23],[15,23,230],[150,110,110],[900,23,23]],"Temp":23},
-				 {"name":"Nathan Myhrvold","data":[[3600,53,53],[30,-200,-200],[120,200,200]],"Temp":23}];
+	{"name":"Sear then cook low (America's Test Kitchen)","data":[[15,230,23],[15,23,230],[150,110,110],[900,23,23]],"Temp":23},
+				 {"name":"Sous Vide and Liquid Nitrogen (Nathan Myhrvold)","data":[[3600,53,53],[30,-200,-200],[120,200,200]],"Temp":23}];
 		for (var i=0;i<4;i++){
 				var name=saved[i]["name"];
 				var data=saved[i]["data"];
@@ -378,7 +378,7 @@ var perfectSteak = function (div) {
             $('#si1').html("Side 1 (&#176;" + $('.mytog2:checked').attr('id') + ")");
             $('#si2').html("Side 2 (&#176;" + $('.mytog2:checked').attr('id') + ")");
             $('#work').html("&#176;" + $('.mytog2:checked').attr('id'));
-            graph(false, $('.mytog:checked').attr('id'));
+            graph(false, $('.mytog:checked').attr('id'),false);
         });
         tabPaneActive.append( meatInp,thickInpDiv,tempInp,inpTabHeader,inputTableContainer);
 		 // tabPaneActive.append( inpTabHeader);
@@ -494,7 +494,7 @@ var perfectSteak = function (div) {
             var switches = $('<div class="switch"><input type="radio" class="mytog" id="PS" name="toggle" checked><label for="PS" class="btn" id ="state">Protein State</label><input type="radio" class="mytog"id="T" name="toggle"><label for="T" class="btn" id ="state">Temperature</label></div>');
             div.append(switcheroo);
             switches.change(function () {
-                graph(false, $('.mytog:checked').attr('id'));
+                graph(false, $('.mytog:checked').attr('id'),false);
             });
 
             $("#recipe-pane").append(displayDiv);
@@ -529,19 +529,19 @@ var perfectSteak = function (div) {
             var row = $("<tr class='row recipe-step' id='row" + i + "'></tr>");
 
 
-            // TODO: restore this step-numbering once we get it to automatically update it when rows are removed from the middle
-            // of the recipe.  Best way is to figure out how to do the numbering with CSS.
-            /*
-			var label=$("<td><span> "+(i+1)+"</span></td>");
-			if(i<10){label.css("margin-left","8px");}
-			label.css("margin-right","3px");
-			label.css("font-size",'12px');
-			label.css("text-anchor",'end');
-            */
+        
+			var labels=$("<span id='label"+i+ "' > "+(i+1)+"</span>");
+			if(i<9){labels.css("margin-left","8px");}
+			labels.css("margin-right","3px");
+			labels.css("position","relative");
+			labels.css("top","-5px");
+			labels.css("font-size",'12px');
+			labels.css("text-anchor",'end');
+            
 
             var rowiside1 = $("<td id='row" + i + "side1'></td>");
             var inp1_i = $("<input id='inp1_" + i + "' type=text></input>");
-            rowiside1.append(inp1_i);
+            rowiside1.append(labels,inp1_i);
 
             var flipButtoniCell = $("<td></td>");
             var flipButtoni = $("<button class='btn btn-mini flipButton' id='flipButton" + i + "'><font size=4px>&harr;</font></button>");
@@ -575,11 +575,16 @@ var perfectSteak = function (div) {
                     $("inp1_" + l).attr("id", String("inp1_" + parseInt(l - 1)));
                     $("#row" + l + "side2").attr("id", String("row" + parseInt(l - 1) + "side2"));
                     $("#inp2_" + l).attr("id", String("inp2_" + parseInt(l - 1)));
+					$("#label"+(l) ).attr("id","label"+ parseInt(l-1))
+					$("#label"+(l-1) ).html( parseInt(l));
                 }
+				updateTime();
+				$('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
+                
             })
             rowibuttoncell.append(rowibutton);
 
-            row.append(/*label,*/ rowiside1, flipButtoniCell, rowiside2, durationi, rowibuttoncell);
+            row.append( rowiside1, flipButtoniCell, rowiside2, durationi, rowibuttoncell);
             $("#lastrow").before(row);
             if (i < model.currentInfo['data'].length) {
                 rowitime.val(model.convertTime(model.currentInfo['data'][i][0]));
@@ -627,11 +632,12 @@ var perfectSteak = function (div) {
 
 
         var closeRowFun = function () {
+		/*
             $(".closeRow").on("click", function () {
                 var rowNum = String($(this).attr("id").charAt(3))
                 $("#row" + rowNum).remove();
                 model.numRowsMinus();
-
+console.log("click");
                 //NOW WE NEED TO CHANGE THE ROW NUMBER OF ALL THE OTHER ROWS
                 for (var l = rowNum + 1; l < model.currentInfo["numRows"]; l++) {
                     $("#row" + l).attr("id", "row" + l - 1);
@@ -640,11 +646,14 @@ var perfectSteak = function (div) {
                     $("inp1_" + l).attr("id", "inp1_" + l - 1);
                     $("#row" + l + "side2").attr("id", "row" + l - 1 + "side2");
                     $("#inp2_" + l).attr("id", "inp2_" + l - 1);
+					//$("#label"+l ).attr("id","label"+l-1)
+					$("#label"+l ).html(l-1);
                 }
-
+				updateTime();
+				$('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
             });
+			*/
         }
-
         var checkTableForImpossibleValues = function () {
             model.currentInfo["OKToGraph"] = true;
             $(".alert").remove();
@@ -751,7 +760,7 @@ var perfectSteak = function (div) {
  		}
 
 
-        var graph = function (isFirst, falseColor) {
+        var graph = function (isFirst, falseColor,animated) {
 
             d3.selectAll(".mysteak").remove();
             d3.selectAll(".containers").remove();
@@ -828,7 +837,7 @@ var perfectSteak = function (div) {
                   updateTime();
 				$('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
 
-                calculate(model.currentInfo["data"], steak, meatType, isFirst, model.currentInfo["totalTime"], $('.mytog2:checked').attr('id'))
+                calculate(model.currentInfo["data"], steak, meatType, isFirst, model.currentInfo["totalTime"], $('.mytog2:checked').attr('id'),animated)
             }
         }
         var CookButtonFun = function () {
@@ -840,7 +849,7 @@ var perfectSteak = function (div) {
                 if (model.currentInfo["OKToGraph"]) {
                     d3.selectAll("svg").remove();
                     model.dataClear();
-                    graph(true, '');
+                    graph(true, '',true);
                 };
   
                 console.log("showing the graph-pane");
@@ -877,7 +886,7 @@ var perfectSteak = function (div) {
                 storeTableIntoModel();
 
                 if (clicked && model.currentInfo["OKToGraph"]) {
-                    graph(false, $('.mytog:checked').attr('id'))
+                    graph(false, $('.mytog:checked').attr('id'),true)
                 } else {
                     d3.selectAll(".containers").remove();
                     d3.selectAll(".mysteak").remove();
