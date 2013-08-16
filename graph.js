@@ -217,7 +217,8 @@ var rect = layer.selectAll("rect")
 			
 		var ttip=d3.select('.tooltip');
 	
-	ttip.html(data[col][row].toFixed(1))}
+	ttip.html(mode=='F'?toF(data[col][row]).toFixed(1)+"\xB0F":data[col][row].toFixed(1)+"\xB0C"
+			)}
 		
 		
 		
