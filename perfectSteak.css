@@ -116,11 +116,6 @@ input[type="radio"].toggle-right + label {
 	height:70px;
 }
 
-#d3{
-	position: relative;
-	width: 80%;
-}
-
 .btn{
 	font-size:12pt;
 	padding:2px;
@@ -180,17 +175,23 @@ td{
 	margin-right:10px;
 }
 .span12{
-	margin-top:40px;
+	margin-top:40px
 }
 .steakHist
-{
+{	
 	width:40%;
-	height:20px;
+	height: auto;
 	margin-left:0%;
 	margin-right:5%;
 	margin-top:0%;
 	margin-bottom:0%;
 }
+
+#d3{
+	position: relative;
+	width: 80%;
+}
+
 .nav-tabs > li, .nav-pills > li {
     float:none;
    display:inline-block;

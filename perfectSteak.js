@@ -156,7 +156,8 @@ var perfectSteak = function (div) {
             var myheatsolver = HeatSolver(steak);
             var Thedata = myheatsolver.sixty_graph_arrays_duration(currentInfo["data"]);
             var maxTemps = Thedata.maxTemps;
-            var meatType = $("input[type='radio'][name='meat']:checked").attr('id');
+            var meatdrop = document.getElementById("dMeat"); 
+            var meatType = meatdrop.options[meatdrop.selectedIndex].text; 
             var recipe = [meatType, maxTemps, currentInfo["data"], currentInfo["meatTemp"], parseFloat($("#thicknessInp").val()), $('.mytog2:checked').attr('id')];
             addRecipe(name, recipe);
 
@@ -361,7 +362,7 @@ var perfectSteak = function (div) {
         var tabPaneActive = $("<div class='tab-pane active' id='table'></div>");
         var thickInpDiv = $("<span id='thickInpDiv'>Thickness: <input type='text' id='thicknessInp' value='3'> cm </span>'");
 		var tempInp=$("<div><span id='tempInpDiv'>   Starting at: <input type='text' id='steakTemp' value='23'><span id='work'>&#176;C</span></span></div>");
-        var meatInp = $("<span><form id='meatInp' class='meatTypeDiv'>Meat: </b><input type='radio' name='meat' id='Steak' checked>Steak <input type='radio' name='meat' id='Tuna'>Tuna <input type='radio' name='meat' id='Turkey'>Turkey </form></span>");
+        //var meatInp = $("<span><form id='meatInp' class='meatTypeDiv'>Meat: </b><input type='radio' name='meat' id='Steak' checked>Steak <input type='radio' name='meat' id='Tuna'>Tuna <input type='radio' name='meat' id='Turkey'>Turkey </form></span>");
         var switcheroo = $('<span class="switcheroo"></span>');
         var mytog2 = $("<input type='radio' class='mytog2' id='C' name='toggle2' checked><label for='C' class='btn'>C</label><input type='radio' class='mytog2' id='F' name='toggle2'><label for='F' class='btn'>F</label>");
 		var inputTableContainer=$("<div class='inputTableContainer'></div>");
@@ -382,7 +383,7 @@ var perfectSteak = function (div) {
 			
             graph(false, $('.mytog:checked').attr('id'),false);
         });
-        tabPaneActive.append( meatInp,thickInpDiv,tempInp,inpTabHeader,inputTableContainer);
+        tabPaneActive.append(thickInpDiv,tempInp,inpTabHeader,inputTableContainer);
 		 // tabPaneActive.append( inpTabHeader);
         tabPane.append(containerm);
         tabContent.append(tabPaneActive, tabPane);
@@ -434,6 +435,7 @@ var perfectSteak = function (div) {
             var dropdownDiv = $("<div class='dropdown'><div><h4>Compare Two Recipes</h4></div></div>");
             var dropdown1 = $('<select class="steakHist" id ="d1"><option></option></select>');
             var dropdown2 = $('<select class="steakHist"id ="d2"><option></option></select>');
+            var dropdownMeat=$('<select class="meatInp selectpicker steakHist" id="dMeat"><option name="Steak">Steak</option><option name="Tuna">Tuna</option><option name="Turkey">Turkey</option></select></ul>') 
 
             var dropdown3 = $('<select class="steakHist dropdown" id="d3" name="dropdown3"></select><br class="dropdown">')
             dropdown3.append('<option></option>');
@@ -503,7 +505,7 @@ var perfectSteak = function (div) {
             })
 
             dropdownDiv.append(dropdown1, dropdown2);
-            displayDiv.prepend(dropdown3);
+			tabPaneActive.prepend(dropdown3, dropdownMeat);
             $(".span12").prepend(dropdownDiv);
         }
 
@@ -836,8 +838,8 @@ console.log("click");
             };
 
             //add to on click and calculate(blah,blah,blah, meatType)
-            var meatType = $("input[type='radio'][name='meat']:checked").attr('id');
-
+            var meatdrop = document.getElementById("dMeat"); 
+            var meatType = meatdrop.options[meatdrop.selectedIndex].text; 
 
             if (falseColor == 'T') {
 
