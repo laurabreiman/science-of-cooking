@@ -79,10 +79,10 @@ input[type="radio"].toggle + label {
 }
 .switcheroo{
 	position: absolute;
-	left:72%;
+	left:62%;
 	top:10px;
 	height:30px;
-	width:200px;
+	width:150px;
 	
 }
 #Steak{
