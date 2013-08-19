@@ -86,7 +86,7 @@ var n = boundaries[meatType].length*2+1, // number of layers
     var yGroupMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); });
    var  yStackMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y0 + d.y; }); });
 
-var margin = {top: 50, right: 10, bottom: 100, left: 50},
+var margin = {top: 50, right: 0, bottom: 100, left: 50},
     width = 690 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
@@ -275,14 +275,14 @@ var imgstop = svg.selectAll("image").data(flame);
 			.attr("xlink:href", function(d){return d[1]==1? "flamedown.png":"flame.png"})
 			.attr("width", Math.min(x.rangeBand(),30))
             .attr("height", Math.min(x.rangeBand(),30))
-			.attr("x", function(d){return (d[0]+1.5)*(x.rangeBand()+1)})
+			.attr("x", function(d){return (d[0]+2)*(x.rangeBand()+1)})
             .attr("y", function(d){return -Math.min(x.rangeBand(),30)+(height+Math.min(x.rangeBand(),30))*(1-d[1])})
 console.log(flame);		
 var linktext = svg.selectAll("g.linklabelholder").data(flame);
     linktext.enter().append("g").attr("class", "linklabelholder")
      .append("text")
      .attr("class", "linklabel")
-     .attr("dx", function(d){return (d[0]+1.5)*(x.rangeBand()+1)})
+     .attr("dx", function(d){return (d[0]+2)*(x.rangeBand()+1)})
      .attr("dy", function(d){return -Math.min(x.rangeBand(),30)/1.2+(height+2*Math.min(x.rangeBand(),30))*(1-d[1])})
      .attr("text-anchor", "right")
 		.style("font-size", "8px")
