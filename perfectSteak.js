@@ -283,7 +283,7 @@ var perfectSteak = function (div) {
                 }
 
                 // otherwise try to parse a recipe step
-                var m = line.match(/(\d+)\xB0\s*([CF]).*?(\d+)\xB0\s*([CF]).*?((\d)+:)?(\d+)/i);
+                var m = line.match(/(\d+)\xB0\s*([CF]).*?(\d+)\xB0\s*([CF]).*?((\d+)+:)?(\d+)/i);
                 if (m) {
                     var side1Temp = parseTemperature(m[1], m[2]);
                     var side2Temp = parseTemperature(m[3], m[4]);
