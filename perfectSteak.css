@@ -7,7 +7,7 @@
 	margin: 0px!important;
 	height:260px;
 	overflow-y:auto;
-		overflow-x:hidden
+		overflow-x:hidden;
 }
 
 .displayDiv{
@@ -144,7 +144,7 @@ input[type="radio"].toggle-right + label {
 	
 }
 .containerm{
-width:100%;
+width:98%;
 height:260px;	
 }
 
@@ -170,9 +170,20 @@ td{
 		
 }
 
+.tab-content{
+		overflow-x:hidden !important; 
+}
 
 .closeRow{
 	margin-right:10px;
+}
+.span9{
+	width:600px!important;
+	
+}
+.span3{
+	width:270px!important;
+
 }
 .span12{
 	margin-top:40px

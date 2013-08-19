@@ -877,7 +877,8 @@ console.log("click");
                 console.log("showing the graph-pane");
                 $("#graph-pane").css("visibility","visible");
 
-                var meat= $("input[type='radio'][name='meat']:checked").attr('id');
+               var meatdrop = document.getElementById("dMeat"); 
+            var meat = meatdrop.options[meatdrop.selectedIndex].text; 
                 model.currentInfo['names'][meat]=model.currentInfo['names'][meat]+1;
                 var name =  "My "+meat+" "+ model.currentInfo['names'][meat];
                 model.saveRecipe(name);
@@ -940,7 +941,7 @@ else{
         };
 
         var flipButtonFun = function (k) {
-            $(".flipButton").on("click", function () {
+            $("#flipButton"+k).on("click", function () {
 				console.log("click");
                 side1data = 0
                 side1data += parseInt(parseFloat($('#inp1_' + k).val())) || 0;
