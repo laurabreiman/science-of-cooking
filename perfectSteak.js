@@ -138,7 +138,6 @@ var perfectSteak = function (div) {
         }
 
         var saveRecipe = function (name) {
-			console.log(currentInfo["data"])
             var steak = [currentInfo["data"][0][1]];
             for (var m = 0; m < parseFloat($("#thicknessInp").val()) * 5; m++) {
 
@@ -275,7 +274,7 @@ var perfectSteak = function (div) {
             var meatType;
 			if(recipeStr.indexOf("Steak")>-1)   {  var meatType="Steak";}
 			if(recipeStr.indexOf("Tuna")>-1)     {var meatType="Tuna";}
-			else{ var meatType="Turkey";}
+			if(recipeStr.indexOf("Turkey")>-1)   { var meatType="Turkey";}
 			console.log(meatType);
 			currentInfo["meatType"]=meatType;
             for (var i = 0; i < lines.length; ++i) {
@@ -284,7 +283,6 @@ var perfectSteak = function (div) {
                 // try to parse starting conditions
                 var m = line.match(/(\d+)\s*(in|cm).*?(steak|tuna|turkey).*?(\d+)\xB0\s*([CF])/i);
                 if (m) {
-                    console.log(m);
                     currentInfo["thickness"] = parseInt(m[1]); // TODO: handle inches
                     currentInfo["meatTemp"] = parseTemperature(m[4], m[5]);
                     meatType = toTitleCase(m[4]); // so that "steak" becomes "Steak"
@@ -292,9 +290,8 @@ var perfectSteak = function (div) {
                 }
 
                 // otherwise try to parse a recipe step
-                var m = line.match(/(\d+)\xB0\s*([CF]).*?(\d+)\xB0\s*([CF]).*?((\d)+:)?(\d+)/i);
+                var m = line.match(/(\d+)\xB0\s*([CF]).*?(\d+)\xB0\s*([CF]).*?((\d+)+:)?(\d+)/i);
                 if (m) {
-                    console.log(m);
                     var side1Temp = parseTemperature(m[1], m[2]);
                     var side2Temp = parseTemperature(m[3], m[4]);
                     var time = parseInt(m[7]); // seconds field
@@ -303,7 +300,6 @@ var perfectSteak = function (div) {
                     continue;
                 }
 
-                console.log("ignored " + line);
 
             }
             currentInfo["data"] = data;
@@ -896,7 +892,6 @@ console.log("click");
                     graph(true, '',true);
                 };
   
-                console.log("showing the graph-pane");
                 $("#graph-pane").css("visibility","visible");
 
                var meatdrop = document.getElementById("dMeat"); 
@@ -963,8 +958,10 @@ else{
         };
 
         var flipButtonFun = function (k) {
+
             $("#flipButton"+k).on("click", function () {
 				console.log("click");
+
                 side1data = 0
                 side1data += parseInt(parseFloat($('#inp1_' + k).val())) || 0;
                 side2data = parseInt(parseFloat($('#inp2_' + k).val()));
