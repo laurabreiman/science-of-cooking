@@ -705,12 +705,17 @@ console.log("click");
                     $("#row" + h + "side2").append(side2Alert);
                     model.currentInfo["OKToGraph"] = false;
                 }
-                if (parseFloat($("#row" + h + "time").val()) <= 0) {
+                if (convertToSeconds($("#row" + h + "time").val()) <= 0) {
                     var timeAlert = $("<div class='alert alert-danger' id='row" + h + "timeAlert'>Invalid time</div>");
                     $("#duration" + h).append(timeAlert);
                     model.currentInfo["OKToGraph"] = false;
                 }
             }
+        }
+        
+        //changes Y:Z into X seconds
+        var convertToSeconds = function(minutesSeconds){
+            return parseFloat(minutesSeconds)*60+parseFloat(minutesSeconds.slice(-2));
         }
 
         var storeTableIntoModel = function () {
