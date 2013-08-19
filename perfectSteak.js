@@ -607,8 +607,11 @@ var perfectSteak = function (div) {
 					$("#label"+(l) ).attr("id","label"+ parseInt(l-1))
 					$("#label"+(l-1) ).html( parseInt(l)+".");
                 }
+				model.dataClear();
+				model.buildData();
 				updateTime();
 				$('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
+				
                 
             })
             rowibuttoncell.append(rowibutton);
