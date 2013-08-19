@@ -883,11 +883,11 @@ console.log("click");
                 model.saveRecipe(name);
                 var dropdown1 = $("#d1");
                 var dropdown2 = $("#d2");
-			var dropdown3=$('#d3');
+                var dropdown3=$('#d3');
 			
                 dropdown1.append($('<option>' + name + '</option>'));
                 dropdown2.append($('<option>' + name + '</option>'));
-			dropdown3.append($('<option>' + name + '</option>'));
+                dropdown3.append($('<option>' + name + '</option>'));
                 var e1 = document.getElementById("d1");
                 var name1 = e1.options[e1.selectedIndex].text;
                 var e2 = document.getElementById("d2");
@@ -968,19 +968,7 @@ else{
         // in the Chrome debugging console 
         perfectSteak.model = model;
         perfectSteak.view = view;
-        //model.parseRecipe();
-
-
-
         view.buildDisplay();
-
-        /* $('.inputTable').offset(
-            top: 1030
-        });*/
-
-
-
-
     };
     return {
         setup: setup
