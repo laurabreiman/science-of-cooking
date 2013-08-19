@@ -691,6 +691,7 @@ console.log("click");
         var checkTableForImpossibleValues = function () {
             model.currentInfo["OKToGraph"] = true;
             $(".alert").remove();
+			
             for (var h = 0; h < model.currentInfo["numRows"]; h++) {
 
 
@@ -704,8 +705,8 @@ console.log("click");
                     $("#row" + h + "side2").append(side2Alert);
                     model.currentInfo["OKToGraph"] = false;
                 }
-                if (parseFloat($("#row" + h + "time").val()) < 0) {
-                    var timeAlert = $("<div class='alert alert-danger' id='row" + h + "timeAlert'>Negative time</div>");
+                if (parseFloat($("#row" + h + "time").val()) <= 0) {
+                    var timeAlert = $("<div class='alert alert-danger' id='row" + h + "timeAlert'>Invalid time</div>");
                     $("#duration" + h).append(timeAlert);
                     model.currentInfo["OKToGraph"] = false;
                 }
