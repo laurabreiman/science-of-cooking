@@ -5,6 +5,7 @@
         with the function graphSteak
 */
 var calculate=function(data,steak,meatType,first,mode,animated){
+	console.log(data);
 	
     //sets the parameters for the iterations of the diffusion equations. 
     //parameters are initially set to a timestep of 1 second and a spacestep of 1mm,

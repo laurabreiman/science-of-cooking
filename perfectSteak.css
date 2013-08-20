@@ -35,7 +35,7 @@ position:relative;
 	position:relative;
 }
 .inputTableContainer{
-	height:110px;
+	height:170px;
 	overflow-y:auto;
 	overflow-x:hidden;
 }
@@ -45,6 +45,9 @@ position:relative;
 }
 .mytog2 {
   display: none;
+}
+#dmeat{
+	margin-right:0%;
 }
 .mytog2:checked + label {
   background-image: linear-gradient(to top,#969696,#727272);
@@ -66,7 +69,7 @@ position:relative;
 }
 
 input[type="radio"].toggle + label {
-  width: 3em;
+  width: 1em;
 }
 .switch{
 	position: absolute;
@@ -95,11 +98,7 @@ input[type="radio"].toggle + label {
 	margin-right:1px;
 
 }
-input[type="radio"].toggle:checked + label.btn:hover {
-  background-color: inherit;
-  background-position: 0 0;
-  transition: none;
-}
+
 
 input[type="radio"].toggle-left + label {
   border-right: 0;
@@ -114,6 +113,7 @@ input[type="radio"].toggle-right + label {
 .dropdown{
     overflow:auto;
 	height:70px;
+	margin-bottom:3px!important;
 }
 
 .btn{
@@ -158,7 +158,7 @@ th{
 td{
 	font-size:12px;
 	position:relative;
-	max-width:90% !important;
+	
 	margin:0!important;
 	padding:1px!important;
 	left:0px!important;
@@ -241,17 +241,25 @@ width:690px!important;
 input[type="text"] {
     border: 1px solid black;
     font-size: 12px;
-    width: 37px;
+    width: 30px;
 	height: 20px;
 	padding-top:6px;
+	padding-left:3px;
 	margin:0px;
 	
+}
+.time{
+		width:40px !important;
 }
 #recipeInput{
 	border: 1px solid black;
     font-size: 12px;
 	width:100% !important;
 	height:300px !important;
+	
+}
+#thicknessInp{
+	width:25px;
 	
 }
 
