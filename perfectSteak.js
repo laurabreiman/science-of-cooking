@@ -390,31 +390,14 @@ var perfectSteak = function (div) {
         switcheroo.append(mytog2);
 		switcheroo.change(function () {
 
-			if($('.mytog2:checked').attr('id')=='F')
-			{
-				model.currentInfo["meatTemp"]=toF(model.currentInfo['meatTemp']);
-			}
-			else
-			{
-				model.currentInfo["meatTemp"]=toC(model.currentInfo['meatTemp']);
-			}
-				for(var i=0;i<model.currentInfo["data"].length;i++)
-				{
-					if($('.mytog2:checked').attr('id')=='F')
-					{model.currentInfo["data"][i][1]=toF(model.currentInfo["data"][i][1]);
-					 model.currentInfo["data"][i][2]=toF(model.currentInfo["data"][i][2]);
-					}
-					else
-					{
-					 //model.currentInfo["data"][i][1]=toC(model.currentInfo["data"][i][1]);
-					 //model.currentInfo["data"][i][2]=toC(model.currentInfo["data"][i][2]);
-					}
-				}
+			
+				
 		
             $('#work').html("&#176;" + $('.mytog2:checked').attr('id'));
 			$('.deg').html("&#176;" + $('.mytog2:checked').attr('id'));
-			
+			loadTextRecipeFromModel();
 			loadTableFromModel();
+			
             graph(false, $('.mytog:checked').attr('id'),false);
         });
         tabPaneActive.append(thickInpDiv,tempInp,inpTabHeader,inputTableContainer);
