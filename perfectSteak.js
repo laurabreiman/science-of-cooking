@@ -401,15 +401,11 @@ var perfectSteak = function (div) {
         inputTableContainer.append(inputTable);
         switcheroo.append(mytog2);
 		switcheroo.change(function () {
-
-			
-				
 		
-            $('#work').html("&#176;" + $('.mytog2:checked').attr('id'));
+	            $('#work').html("&#176;" + $('.mytog2:checked').attr('id'));
 			$('.deg').html("&#176;" + $('.mytog2:checked').attr('id'));
 			loadTextRecipeFromModel();
-			loadTableFromModel();
-			
+			loadTableFromModel();			
             graph(false, $('.mytog:checked').attr('id'),false);
         });
         tabPaneActive.append(thickInpDiv,tempInp,inpTabHeader,inputTableContainer);
@@ -655,8 +651,13 @@ var perfectSteak = function (div) {
             $("#lastrow").before(row);
             if (i < model.currentInfo['data'].length) {
                 rowitime.val(model.convertTime(model.currentInfo['data'][i][0]));
-                inp1_i.val(model.currentInfo['data'][i][1]);
+				if($('.mytog2:checked').attr('id') == 'F'){
+                inp1_i.val(toF(model.currentInfo['data'][i][1]));
+                inp2_i.val(toF(model.currentInfo['data'][i][2]))}
+				else{
+					 inp1_i.val(model.currentInfo['data'][i][1]);
                 inp2_i.val(model.currentInfo['data'][i][2])
+				}
             } else {
 console.log($("#row" + (i-1) + "time").val());
                 rowitime.val($("#row" + (i-1) + "time").val()|| "3:00");
@@ -791,7 +792,9 @@ console.log("click");
                 }
                 var timeSec = parseInt(timedata.charAt(timedata.length - 2) + timedata.charAt(timedata.length - 1));
                 var timeForGraph = 60 * timeMin(timedata) + timeSec;
-                newData.push([timeForGraph, side1data, side2data]);
+				if($('.mytog2:checked').attr('id') == 'C'){
+                newData.push([timeForGraph, side1data, side2data]);}
+				else{newData.push([timeForGraph, toC(side1data), toC(side2data)]);}
 
             }
 
