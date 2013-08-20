@@ -14,7 +14,10 @@
 	position: relative;
 	width: 100%;
 }
-
+#renameInp{
+    width: 60%;
+    margin: 2px;
+}
 .btnBar{
 position:relative;
 	left:2px!important;
@@ -239,7 +242,7 @@ width:690px!important;
 }
 
 input[type="text"] {
-    border: 1px solid black;
+    border: 1px solid gray;
     font-size: 12px;
     width: 30px;
 	height: 20px;

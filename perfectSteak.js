@@ -134,6 +134,13 @@ var perfectSteak = function (div) {
         var dataChange = function (array) {
             currentInfo["data"] = array;
         }
+        
+        var changeRecipeName = function (oldName, newName) {
+            
+            currentInfo["recipe"][newName] = currentInfo["recipe"][oldName];
+            delete currentInfo["recipe"][oldName];
+            console.log(oldName, currentInfo['recipe'])
+        }
 
         var saveRecipe = function (name) {
             var steak = [currentInfo["data"][0][1]];
@@ -343,7 +350,8 @@ var perfectSteak = function (div) {
             updateTotalTime: updateTotalTime,
             printRecipe: printRecipe,
             parseRecipe: parseRecipe,
-            importRecipes: importRecipes
+            importRecipes: importRecipes,
+            changeRecipeName: changeRecipeName
         }
     }
 
@@ -524,10 +532,21 @@ var perfectSteak = function (div) {
 				addAddButton();
 				cookingFood();
             })
-
+            var renameInp = $("<span>Rename: </span><input type='text' id='renameInp' value=''>");
             dropdownDiv.append(dropdown1, dropdown2);
-			tabPaneActive.prepend(dropdown3, dropdownMeat);
+			tabPaneActive.prepend(renameInp, dropdown3, dropdownMeat);
             $(".span12").prepend(dropdownDiv);
+            
+            renameInp.on("focusout",function(){
+                var newName = $('#renameInp').val();
+                var oldName = $("#d3").val();
+                model.changeRecipeName(oldName, newName);
+                dropdown3.empty();
+                for (var key in model.currentInfo['recipe']) {
+                    dropdown3.append($('<option value="'+key+'">' + key + '</option>'));
+                }
+                $("#d3 > [value='"+newName+"']").attr("selected", "true");
+            });
         }
 
         /*
@@ -974,8 +993,7 @@ console.log("click");
             }
 
         var CookButtonFun = function () {
-            $("#cookButton").on("click", cookingFood
-                );
+            $("#cookButton").on("click", cookingFood);
         }
 
         var timeFun = function (j) {
