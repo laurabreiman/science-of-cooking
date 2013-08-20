@@ -66,7 +66,7 @@ position:relative;
 }
 
 input[type="radio"].toggle + label {
-  width: 3em;
+  width: 1em;
 }
 .switch{
 	position: absolute;
@@ -95,11 +95,7 @@ input[type="radio"].toggle + label {
 	margin-right:1px;
 
 }
-input[type="radio"].toggle:checked + label.btn:hover {
-  background-color: inherit;
-  background-position: 0 0;
-  transition: none;
-}
+
 
 input[type="radio"].toggle-left + label {
   border-right: 0;

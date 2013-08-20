@@ -381,11 +381,31 @@ var perfectSteak = function (div) {
         switcheroo.append(mytog2);
 		switcheroo.change(function () {
 
-
+			if($('.mytog2:checked').attr('id')=='F')
+			{
+				model.currentInfo["meatTemp"]=toF(model.currentInfo['meatTemp']);
+			}
+			else
+			{
+				model.currentInfo["meatTemp"]=toC(model.currentInfo['meatTemp']);
+			}
+				for(var i=0;i<model.currentInfo["data"].length;i++)
+				{
+					if($('.mytog2:checked').attr('id')=='F')
+					{model.currentInfo["data"][i][1]=toF(model.currentInfo["data"][i][1]);
+					 model.currentInfo["data"][i][2]=toF(model.currentInfo["data"][i][2]);
+					}
+					else
+					{
+					 //model.currentInfo["data"][i][1]=toC(model.currentInfo["data"][i][1]);
+					 //model.currentInfo["data"][i][2]=toC(model.currentInfo["data"][i][2]);
+					}
+				}
+		
             $('#work').html("&#176;" + $('.mytog2:checked').attr('id'));
 			$('.deg').html("&#176;" + $('.mytog2:checked').attr('id'));
 			
-			
+			loadTableFromModel();
             graph(false, $('.mytog:checked').attr('id'),false);
         });
         tabPaneActive.append(thickInpDiv,tempInp,inpTabHeader,inputTableContainer);
@@ -545,10 +565,10 @@ var perfectSteak = function (div) {
         }
 
         var toF = function (C) {
-            return (C * (9 / 5) + 32 + "&#176;F");
+            return (C * (9 / 5) + 32);
         }
         var toC = function (F) {
-            return ((5 / 9) * (F - 32));
+            return ((F - 32)*5/9);
         }
 
 
@@ -890,8 +910,14 @@ console.log("click");
                 calculate(model.currentInfo["data"], steak, meatType, isFirst, $('.mytog2:checked').attr('id'),animated)
             }
         }
+		 function playSound(soundfile) {
+ document.getElementById("dummy").innerHTML=
+ "<embed src=\""+soundfile+"\" hidden=\"true\" autostart=\"true\" loop=\"false\" />";
+ 
+ }
 		var cookingFood=function() {
 			clicked = true;
+			playSound('steak.wav'); 
                 checkTableForImpossibleValues();
                 d3.selectAll(".mysteak").remove();
                 d3.selectAll(".containers").remove();
@@ -946,6 +972,7 @@ console.log("click");
                     model.dataClear();
                 }
             }
+
         var CookButtonFun = function () {
             $("#cookButton").on("click", cookingFood
                 );
