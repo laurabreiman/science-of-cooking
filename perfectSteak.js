@@ -946,6 +946,10 @@ console.log("click");
             var meat = meatdrop.options[meatdrop.selectedIndex].text; 
             model.currentInfo['names'][meat]=model.currentInfo['names'][meat]+1;
             var name =  "My "+meat+" "+ model.currentInfo['names'][meat];
+            // if we're viewing the text view, store it back to model so that the table view becomes consistent too
+            if ($("#recipeInput").closest(".tab-pane").hasClass("active")) {
+                storeTextRecipeIntoModel();
+            }
             var saved = model.saveRecipe(name);
             var dropdown1 = $("#d1");
             var dropdown2 = $("#d2");
@@ -967,11 +971,6 @@ console.log("click");
                 if(name2!="")
                 {var inf = model.currentInfo['recipe'][name2];
                 drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],$('.mytog2:checked').attr('id'));}
-
-                // if we're viewing the text view, store it back to model so that the table view becomes consistent too
-                if ($("#recipeInput").closest(".tab-pane").hasClass("active")) {
-                    storeTextRecipeIntoModel();
-                }
 
             }
             else{
