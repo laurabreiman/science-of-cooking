@@ -136,10 +136,10 @@ var perfectSteak = function (div) {
         }
         
         var changeRecipeName = function (oldName, newName) {
-            
-            currentInfo["recipe"][newName] = currentInfo["recipe"][oldName];
-            delete currentInfo["recipe"][oldName];
-            console.log(oldName, currentInfo['recipe'])
+            if(newName != oldName){
+                currentInfo["recipe"][newName] = currentInfo["recipe"][oldName];
+                delete currentInfo["recipe"][oldName];
+            }
         }
 
         var saveRecipe = function (name) {
