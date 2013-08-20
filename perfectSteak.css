@@ -206,8 +206,7 @@ width:690px!important;
 
 .nav-tabs > li, .nav-pills > li {
     float:none;
-   display:inline-block;
-
+    display:inline-block;
 }
 #si1 {
 	position:relative;
@@ -225,10 +224,10 @@ width:690px!important;
 	background:none !important;
 }
 .deg{
-display:inline-block;	
-	
-	
-font-size:8px;}
+    display:inline-block;	
+	font-size:8px;
+}
+
 .nav-tabs, .nav-pills {
     text-align:right;
 }

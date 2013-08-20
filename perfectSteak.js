@@ -136,39 +136,44 @@ var perfectSteak = function (div) {
         }
 
         var saveRecipe = function (name) {
+            var steak = [currentInfo["data"][0][1]];
+            var thickness = parseFloat($("#thicknessInp").val());
+            for (var m = 0; m < thickness * 5; m++) {
 
+                if ($('.mytog2:checked').attr('id') == 'C') {
+                    steak.push(parseFloat($("#steakTemp").val()))
+                } else {
+                    steak.push(toC(parseFloat($("#steakTemp").val())))
+                }
+                steak.push(parseFloat($("#steakTemp").val()))
+            }
+            
+            steak.push(currentInfo["data"][0][2]);
+            
+            var myheatsolver = HeatSolver(steak);
+            var Thedata = myheatsolver.sixty_graph_arrays_duration(currentInfo["data"]);
+            var maxTemps = Thedata.maxTemps;
+            var meatdrop = document.getElementById("dMeat"); 
+            var meatType = meatdrop.options[meatdrop.selectedIndex].text; 
+            currentInfo["meatType"]=meatType;
+            var recipe = [meatType, maxTemps, currentInfo["data"], currentInfo["meatTemp"], thickness, $('.mytog2:checked').attr('id')];
+            var isDuplicate = false;
             for(var i in currentInfo["recipe"]){
                 if(currentInfo['recipe'][i][0] == meatType && currentInfo['recipe'][i][4] == thickness && currentInfo['recipe'][i][2].toString() ==currentInfo["data"].toString() && currentInfo['recipe'][i][3]==currentInfo["meatTemp"]){
                     
                     //already exists
-                    return 0;
+                    alert(i);
+                    isDuplicate = true;
+                    break;
                 }
                 
-                else{
-                    var steak = [currentInfo["data"][0][1]];
-                    var thickness = parseFloat($("#thicknessInp").val());
-                    for (var m = 0; m < thickness * 5; m++) {
-        
-                        if ($('.mytog2:checked').attr('id') == 'C') {
-                            steak.push(parseFloat($("#steakTemp").val()))
-                        } else {
-                            steak.push(toC(parseFloat($("#steakTemp").val())))
-                        }
-                        steak.push(parseFloat($("#steakTemp").val()))
-                    }
-                    
-                    steak.push(currentInfo["data"][0][2]);
-                    
-                    var myheatsolver = HeatSolver(steak);
-                    var Thedata = myheatsolver.sixty_graph_arrays_duration(currentInfo["data"]);
-                    var maxTemps = Thedata.maxTemps;
-                    var meatdrop = document.getElementById("dMeat"); 
-                    var meatType = meatdrop.options[meatdrop.selectedIndex].text; 
-                    currentInfo["meatType"]=meatType;
-                    var recipe = [meatType, maxTemps, currentInfo["data"], currentInfo["meatTemp"], thickness, $('.mytog2:checked').attr('id')];
-                    return 1;
-                    addRecipe(name, recipe);
-                }
+            }
+            if(isDuplicate){
+                return 0;
+            }
+            else{
+                addRecipe(name, recipe);
+                return 1;
             }
 
         }
@@ -901,61 +906,65 @@ console.log("click");
         }
 		var cookingFood=function() {
 			clicked = true;
-                checkTableForImpossibleValues();
-                d3.selectAll(".mysteak").remove();
-                d3.selectAll(".containers").remove();
-                if (model.currentInfo["OKToGraph"]) {
-                    d3.selectAll("svg").remove();
-                    model.dataClear();
-                    graph(true, '',true);
-                };
-  
-                $("#graph-pane").css("visibility","visible");
+            checkTableForImpossibleValues();
+            d3.selectAll(".mysteak").remove();
+            d3.selectAll(".containers").remove();
+            if (model.currentInfo["OKToGraph"]) {
+                d3.selectAll("svg").remove();
+                model.dataClear();
+                graph(true, '',true);
+            };
 
-               var meatdrop = document.getElementById("dMeat"); 
+            $("#graph-pane").css("visibility","visible");
+
+            var meatdrop = document.getElementById("dMeat"); 
             var meat = meatdrop.options[meatdrop.selectedIndex].text; 
-                model.currentInfo['names'][meat]=model.currentInfo['names'][meat]+1;
-                var name =  "My "+meat+" "+ model.currentInfo['names'][meat];
-                var saved = model.saveRecipe(name);
-                var dropdown1 = $("#d1");
-                var dropdown2 = $("#d2");
-                var dropdown3=$('#d3');
-			     
-                if(saved ==1){
-                    dropdown1.append($('<option>' + name + '</option>'));
-                    dropdown2.append($('<option>' + name + '</option>'));
-                    dropdown3.append($('<option>' + name + '</option>'));
-                    var e1 = document.getElementById("d1");
-                    var name1 = e1.options[e1.selectedIndex].text;
-                    var e2 = document.getElementById("d2");
-                    var name2 = e2.options[e2.selectedIndex].text;
-                    d3.selectAll('.finalsteak').remove();
-                    if(name1!="")
-                    {var info = model.currentInfo['recipe'][name1];
-                    
-                    drawFinished(info[0], info[1], info[2], info[3], 0,info[4],$('.mytog2:checked').attr('id'));}
-                    if(name2!="")
-                    {var inf = model.currentInfo['recipe'][name2];
-                    drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],$('.mytog2:checked').attr('id'));}
-    
-                    // if we're viewing the text view, store it back to model so that the table view becomes consistent too
-                    if ($("#recipeInput").closest(".tab-pane").hasClass("active")) {
-                        storeTextRecipeIntoModel();
-                    }
-    
-                    checkTableForImpossibleValues();
-                    updateTime();
-                    $('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
-                    storeTableIntoModel();
-    
-                    if (clicked && model.currentInfo["OKToGraph"]) {
-                        graph(false, $('.mytog:checked').attr('id'),true)
-                    } else {
-                        d3.selectAll(".containers").remove();
-                        d3.selectAll(".mysteak").remove();
-                        model.dataClear();
-                    }
+            model.currentInfo['names'][meat]=model.currentInfo['names'][meat]+1;
+            var name =  "My "+meat+" "+ model.currentInfo['names'][meat];
+            var saved = model.saveRecipe(name);
+            alert(saved);
+            var dropdown1 = $("#d1");
+            var dropdown2 = $("#d2");
+            var dropdown3 = $('#d3');
+             
+            if(saved ==1){ //if there was no duplicate
+                dropdown1.append($('<option>' + name + '</option>'));
+                dropdown2.append($('<option>' + name + '</option>'));
+                dropdown3.append($('<option>' + name + '</option>'));
+                var e1 = document.getElementById("d1");
+                var name1 = e1.options[e1.selectedIndex].text;
+                var e2 = document.getElementById("d2");
+                var name2 = e2.options[e2.selectedIndex].text;
+                d3.selectAll('.finalsteak').remove();
+                if(name1!="")
+                {var info = model.currentInfo['recipe'][name1];
+                
+                drawFinished(info[0], info[1], info[2], info[3], 0,info[4],$('.mytog2:checked').attr('id'));}
+                if(name2!="")
+                {var inf = model.currentInfo['recipe'][name2];
+                drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],$('.mytog2:checked').attr('id'));}
+
+                // if we're viewing the text view, store it back to model so that the table view becomes consistent too
+                if ($("#recipeInput").closest(".tab-pane").hasClass("active")) {
+                    storeTextRecipeIntoModel();
                 }
+
+            }
+            else{
+                model.currentInfo['names'][meat]=model.currentInfo['names'][meat]-1;
+            }
+            checkTableForImpossibleValues();
+            updateTime();
+            $('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
+            storeTableIntoModel();
+
+            if (clicked && model.currentInfo["OKToGraph"]) {
+                graph(false, $('.mytog:checked').attr('id'),true)
+            } else {
+                d3.selectAll(".containers").remove();
+                d3.selectAll(".mysteak").remove();
+                model.dataClear();
+            }
             }
         var CookButtonFun = function () {
             $("#cookButton").on("click", cookingFood
