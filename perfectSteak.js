@@ -162,7 +162,6 @@ var perfectSteak = function (div) {
                 if(currentInfo['recipe'][i][0] == meatType && currentInfo['recipe'][i][4] == thickness && currentInfo['recipe'][i][2].toString() ==currentInfo["data"].toString() && currentInfo['recipe'][i][3]==currentInfo["meatTemp"]){
                     
                     //already exists
-                    alert(i);
                     isDuplicate = true;
                     break;
                 }
@@ -948,7 +947,6 @@ console.log("click");
             model.currentInfo['names'][meat]=model.currentInfo['names'][meat]+1;
             var name =  "My "+meat+" "+ model.currentInfo['names'][meat];
             var saved = model.saveRecipe(name);
-            alert(saved);
             var dropdown1 = $("#d1");
             var dropdown2 = $("#d2");
             var dropdown3 = $('#d3');
