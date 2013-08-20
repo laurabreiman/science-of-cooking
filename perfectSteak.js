@@ -609,7 +609,7 @@ var perfectSteak = function (div) {
 
             var durationi = $("<td id='duration" + i + "'></td>");
 			
-            var rowitime = $("<input id='row" + i + "time' type=text></input>");
+            var rowitime = $("<input class = 'time' id='row" + i + "time' type=text></input>");
 			rowitime.css("margin-left","8px")
             durationi.append(rowitime);
 
