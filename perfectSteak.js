@@ -127,40 +127,49 @@ var perfectSteak = function (div) {
 
         //THIS ADDS AN ELEMENT TO THE DATA ARRAY
         var dataAdd = function (item) {
-
             currentInfo["data"].push(item);
         }
 
         //THIS IS FOR CHANGING THE ENTIRE DATA ARRAY
         var dataChange = function (array) {
             currentInfo["data"] = array;
-
         }
 
         var saveRecipe = function (name) {
-            var steak = [currentInfo["data"][0][1]];
-            for (var m = 0; m < parseFloat($("#thicknessInp").val()) * 5; m++) {
 
-                if ($('.mytog2:checked').attr('id') == 'C') {
-                    steak.push(parseFloat($("#steakTemp").val()))
-                } else {
-                    steak.push(toC(parseFloat($("#steakTemp").val())))
+            for(var i in currentInfo["recipe"]){
+                if(currentInfo['recipe'][i][0] == meatType && currentInfo['recipe'][i][4] == thickness && currentInfo['recipe'][i][2].toString() ==currentInfo["data"].toString() && currentInfo['recipe'][i][3]==currentInfo["meatTemp"]){
+                    
+                    //already exists
+                    return 0;
                 }
-            
-
-                steak.push(parseFloat($("#steakTemp").val()))
-
-				}
-				 steak.push(currentInfo["data"][0][2]);
-            
-            var myheatsolver = HeatSolver(steak);
-            var Thedata = myheatsolver.sixty_graph_arrays_duration(currentInfo["data"]);
-            var maxTemps = Thedata.maxTemps;
-            var meatdrop = document.getElementById("dMeat"); 
-            var meatType = meatdrop.options[meatdrop.selectedIndex].text; 
-			currentInfo["meatType"]=meatType;
-            var recipe = [meatType, maxTemps, currentInfo["data"], currentInfo["meatTemp"], parseFloat($("#thicknessInp").val()), $('.mytog2:checked').attr('id')];
-            addRecipe(name, recipe);
+                
+                else{
+                    var steak = [currentInfo["data"][0][1]];
+                    var thickness = parseFloat($("#thicknessInp").val());
+                    for (var m = 0; m < thickness * 5; m++) {
+        
+                        if ($('.mytog2:checked').attr('id') == 'C') {
+                            steak.push(parseFloat($("#steakTemp").val()))
+                        } else {
+                            steak.push(toC(parseFloat($("#steakTemp").val())))
+                        }
+                        steak.push(parseFloat($("#steakTemp").val()))
+                    }
+                    
+                    steak.push(currentInfo["data"][0][2]);
+                    
+                    var myheatsolver = HeatSolver(steak);
+                    var Thedata = myheatsolver.sixty_graph_arrays_duration(currentInfo["data"]);
+                    var maxTemps = Thedata.maxTemps;
+                    var meatdrop = document.getElementById("dMeat"); 
+                    var meatType = meatdrop.options[meatdrop.selectedIndex].text; 
+                    currentInfo["meatType"]=meatType;
+                    var recipe = [meatType, maxTemps, currentInfo["data"], currentInfo["meatTemp"], thickness, $('.mytog2:checked').attr('id')];
+                    return 1;
+                    addRecipe(name, recipe);
+                }
+            }
 
         }
 
@@ -907,43 +916,45 @@ console.log("click");
             var meat = meatdrop.options[meatdrop.selectedIndex].text; 
                 model.currentInfo['names'][meat]=model.currentInfo['names'][meat]+1;
                 var name =  "My "+meat+" "+ model.currentInfo['names'][meat];
-                model.saveRecipe(name);
+                var saved = model.saveRecipe(name);
                 var dropdown1 = $("#d1");
                 var dropdown2 = $("#d2");
                 var dropdown3=$('#d3');
-			
-                dropdown1.append($('<option>' + name + '</option>'));
-                dropdown2.append($('<option>' + name + '</option>'));
-                dropdown3.append($('<option>' + name + '</option>'));
-                var e1 = document.getElementById("d1");
-                var name1 = e1.options[e1.selectedIndex].text;
-                var e2 = document.getElementById("d2");
-                var name2 = e2.options[e2.selectedIndex].text;
-				d3.selectAll('.finalsteak').remove();
-				if(name1!="")
-				{var info = model.currentInfo['recipe'][name1];
-                
-                drawFinished(info[0], info[1], info[2], info[3], 0,info[4],$('.mytog2:checked').attr('id'));}
-				if(name2!="")
-				{var inf = model.currentInfo['recipe'][name2];
-                drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],$('.mytog2:checked').attr('id'));}
-
-                // if we're viewing the text view, store it back to model so that the table view becomes consistent too
-                if ($("#recipeInput").closest(".tab-pane").hasClass("active")) {
-                    storeTextRecipeIntoModel();
-                }
-
-                checkTableForImpossibleValues();
-                updateTime();
-                $('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
-                storeTableIntoModel();
-
-                if (clicked && model.currentInfo["OKToGraph"]) {
-                    graph(false, $('.mytog:checked').attr('id'),true)
-                } else {
-                    d3.selectAll(".containers").remove();
-                    d3.selectAll(".mysteak").remove();
-                    model.dataClear();
+			     
+                if(saved ==1){
+                    dropdown1.append($('<option>' + name + '</option>'));
+                    dropdown2.append($('<option>' + name + '</option>'));
+                    dropdown3.append($('<option>' + name + '</option>'));
+                    var e1 = document.getElementById("d1");
+                    var name1 = e1.options[e1.selectedIndex].text;
+                    var e2 = document.getElementById("d2");
+                    var name2 = e2.options[e2.selectedIndex].text;
+                    d3.selectAll('.finalsteak').remove();
+                    if(name1!="")
+                    {var info = model.currentInfo['recipe'][name1];
+                    
+                    drawFinished(info[0], info[1], info[2], info[3], 0,info[4],$('.mytog2:checked').attr('id'));}
+                    if(name2!="")
+                    {var inf = model.currentInfo['recipe'][name2];
+                    drawFinished(inf[0], inf[1], inf[2], inf[3], 1,inf[4],$('.mytog2:checked').attr('id'));}
+    
+                    // if we're viewing the text view, store it back to model so that the table view becomes consistent too
+                    if ($("#recipeInput").closest(".tab-pane").hasClass("active")) {
+                        storeTextRecipeIntoModel();
+                    }
+    
+                    checkTableForImpossibleValues();
+                    updateTime();
+                    $('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
+                    storeTableIntoModel();
+    
+                    if (clicked && model.currentInfo["OKToGraph"]) {
+                        graph(false, $('.mytog:checked').attr('id'),true)
+                    } else {
+                        d3.selectAll(".containers").remove();
+                        d3.selectAll(".mysteak").remove();
+                        model.dataClear();
+                    }
                 }
             }
         var CookButtonFun = function () {
