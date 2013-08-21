@@ -588,9 +588,6 @@ var perfectSteak = function (div) {
             return ((F - 32) * 5 / 9);
         }
 
-
-
-        //THIS FUNCTION JUST HAS A BARREL OF ISSUES
         var addRow = function (i) {
             var row = $("<tr class='row recipe-step' id='row" + i + "'></tr>");
 
@@ -599,11 +596,8 @@ var perfectSteak = function (div) {
                 labels.css("margin-left", "8px");
             }
             labels.css("margin-right", "3px");
-            //labels.css("position","relative");
-            //labels.css("top","-5px");
             labels.css("font-size", '12px');
             labels.css("text-anchor", 'end');
-
 
             var rowiside1 = $("<td id='row" + i + "side1'></td>");
             var inp1_i = $("<input id='inp1_" + i + "' type=text></input><span class='deg'>&#176" + $('.mytog2:checked').attr('id') + "</span>");
@@ -631,7 +625,7 @@ var perfectSteak = function (div) {
                 row.remove();
                 //REDUCING THE NUMBER OF EXPECTED ROWS
                 model.numRowsMinus();
-
+        
                 //NOW WE NEED TO CHANGE THE ROW NUMBER OF ALL THE OTHER ROWS
                 for (var l = i + 1; l < model.currentInfo["numRows"] + 1; l++) {
 
@@ -650,7 +644,6 @@ var perfectSteak = function (div) {
                 model.buildData();
                 updateTime();
                 $('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
-
 
             })
             rowibuttoncell.append(rowibutton);
