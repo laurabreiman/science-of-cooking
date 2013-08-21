@@ -73,9 +73,7 @@ var perfectSteak = function (div) {
         }
 
         var changeThickness = function (newVal) {
-
             currentInfo["thickness"] = newVal;
-
         }
 
         var browserInfo = function (M) {
@@ -97,8 +95,6 @@ var perfectSteak = function (div) {
         var addRecipe = function (name, recipe) {
             currentInfo['recipe'][name] = recipe;
         }
-
-
 
         //CHANGES X SECONDS INTO Y:X WHERE Y IS MINUTES X IS SECONDS
         var convertTime = function (secs) {
@@ -196,8 +192,6 @@ var perfectSteak = function (div) {
             }
 
         }
-
-
 
         var buildData = function () {
             var newData = [];
@@ -367,9 +361,6 @@ var perfectSteak = function (div) {
             changeRecipeName: changeRecipeName
         }
     }
-
-
-
 
     function View(div, model) {
 
