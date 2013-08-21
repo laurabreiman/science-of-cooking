@@ -6,6 +6,10 @@
     float: right !important;
 }
 
+.firstImg{
+    height: 100px !important;
+    width: 75%;
+}
 .modal-body img{
     height: 200px;
     border: 1px solid black;

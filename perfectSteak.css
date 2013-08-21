@@ -13,6 +13,7 @@
 .displayDiv{
 	position: relative;
 	width: 100%;
+    
 }
 #renameInp{
     width: 60%;
@@ -199,7 +200,7 @@ width:690px!important;
 	margin-left:0%;
 	margin-right:5%;
 	margin-top:0%;
-	margin-bottom:0%;
+	margin-bottom:2%;
 }
 
 #d3{
@@ -228,7 +229,7 @@ width:690px!important;
 }
 .deg{
     display:inline-block;	
-	font-size:8px;
+	font-size:10px;
 }
 
 .nav-tabs, .nav-pills {
@@ -244,7 +245,7 @@ width:690px!important;
 input[type="text"] {
     border: 1px solid gray;
     font-size: 12px;
-    width: 30px;
+    width: 35px;
 	height: 20px;
 	padding-top:6px;
 	padding-left:3px;
@@ -268,9 +269,9 @@ input[type="text"] {
 
 #thickInpDiv, #tempInpDiv, #meatTypeDiv{
 	
-	margin:3px;
+	margin:5px;!important;
 	width:100%;!important;
-	  font-size: 12px;
+    font-size: 12px;
 }
 
 .btn-mini{

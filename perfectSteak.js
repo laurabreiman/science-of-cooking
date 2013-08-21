@@ -943,7 +943,6 @@ console.log("click");
             function playSound(soundfile) {
                 document.getElementById("dummy").innerHTML =
                     "<embed src=\"" + soundfile + "\" hidden=\"true\" autostart=\"true\" loop=\"false\" />";
-
             }
         var cookingFood = function () {
             clicked = true;
@@ -1021,9 +1020,6 @@ console.log("click");
                 } else {
                     timeStep = parseInt($("#row" + (j - 1) + "time").val());
                 }
-
-
-
             })
         };
 
