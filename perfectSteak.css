@@ -4,10 +4,10 @@
 	text-align: left;
 	top: 0px !important;
 	padding: 0px !important;
-	margin: 0px!important;
+	margin: 2px!important;
 	height:260px;
 	overflow-y:auto;
-		overflow-x:hidden;
+    overflow-x:hidden;
 }
 
 .displayDiv{
