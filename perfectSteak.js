@@ -435,7 +435,8 @@ var perfectSteak = function (div) {
         var addButton;
 
         var flipButton;
-        var cookButton = $('<button class="btn" id="cookButton"><input type="image" id="myimage" style="height:20px;width:20px;"" src="flame.png"> <span>Cook</span> <input type="image" id="myimage" style="height:20px;width:20px;" src="flame.png"></button>');
+        var cookButton = $('<button class="btn" id="cookButton"><i class="icon-large icon-fire"></i> <span class="cook-text">Cook</span><i class="icon-large icon-fire"></i></button>');
+//<input type="image" id="myimage" style="height:20px;width:20px;" src="flame.png">
 
         /*
             updateTime goes through the table and updates the total cooking time entered. It also checks for any entries that are in seconds and calls to change them into the format mm:ss

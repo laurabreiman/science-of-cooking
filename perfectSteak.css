@@ -22,25 +22,31 @@
     margin-left: 25;
     margin-top: 10;
 }
+
 .btnBar{
-position:relative;
+    position:relative;
 	left:2px!important;
 	width:25px!important;
 }
+
 .nav-tabs>li>a {
 	height:15px!important;
 	padding:1px!important;
 }
+
 .header{
 	margin:0px!important;
 }
+
 .inputTable{
 	margin:0px!important;
 }
+
 #inpTabHeader{
 	margin:0px!important;
 	position:relative;
 }
+
 .inputTableContainer{
 	height:170px;
 	overflow-y:auto;
@@ -50,34 +56,39 @@ position:relative;
 .mytog {
   display: none;
 }
+
 .mytog2 {
   display: none;
 }
+
 #dmeat{
 	margin-right:0%;
 }
+
 .mytog2:checked + label {
-  background-image: linear-gradient(to top,#969696,#727272);
-  box-shadow: inset 0 1px 6px rgba(41, 41, 41, 0.2),
+    background-image: linear-gradient(to top,#969696,#727272);
+    box-shadow: inset 0 1px 6px rgba(41, 41, 41, 0.2),
                     0 1px 2px rgba(0, 0, 0, 0.05);
-  cursor: default;
-  color: #E6E6E6;
-  border-color: transparent;
-  text-shadow: 0 1px 1px rgba(40, 40, 40, 0.75);
+    cursor: default;
+    color: #E6E6E6;
+    border-color: transparent;
+    text-shadow: 0 1px 1px rgba(40, 40, 40, 0.75);
 }
+
 .mytog:checked + label {
-  background-image: linear-gradient(to top,#969696,#727272);
-  box-shadow: inset 0 1px 6px rgba(41, 41, 41, 0.2),
+    background-image: linear-gradient(to top,#969696,#727272);
+    box-shadow: inset 0 1px 6px rgba(41, 41, 41, 0.2),
                     0 1px 2px rgba(0, 0, 0, 0.05);
-  cursor: default;
-  color: #E6E6E6;
-  border-color: transparent;
-  text-shadow: 0 1px 1px rgba(40, 40, 40, 0.75);
+    cursor: default;
+    color: #E6E6E6;
+    border-color: transparent;
+    text-shadow: 0 1px 1px rgba(40, 40, 40, 0.75);
 }
 
 input[type="radio"].toggle + label {
-  width: 1em;
+    width: 1em;
 }
+
 .switch{
 	position: absolute;
 	left:81.5%;
@@ -85,34 +96,37 @@ input[type="radio"].toggle + label {
 	height:30px;
 	width:200px;
 }
+
 .switcheroo{
 	position: relative;
 	height:30px;
 	width:150px;
 	float: right;
 }
+
 #Steak{
 	margin:1px;
 }
+
 #Tuna{
 	margin:1px;
 }
+
 #Turkey{
 	margin-right:1px;
-
 }
 
-
 input[type="radio"].toggle-left + label {
-  border-right: 0;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+    border-right: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 input[type="radio"].toggle-right + label {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
+
 .dropdown{
     overflow:auto;
 	height:70px;
@@ -123,17 +137,32 @@ input[type="radio"].toggle-right + label {
 	font-size:12pt;
 	padding:2px;
 }
+
 #state{
 	font-size:12px;
 	padding:0px;
 }
+
 #lastrow{
-		font-size:12px;
+    font-size:12px;
 }
 #Cook{
 	font-size:20pt;
 	padding:2px;
 	width:66%;
+}
+
+#cookButton{
+    padding:5px;
+    border:1px solid orange;
+}
+
+.cook-text{
+    margin:5px;
+}
+
+.icon-fire{
+    margin:2px;
 }
 
 .selectName{
@@ -144,14 +173,12 @@ input[type="radio"].toggle-right + label {
 
 #recipeName{
 	width: 200px !important;
-	
 }
+
 .containerm{
-width:98%;
-height:260px;	
+    width:98%;
+    height:260px;	
 }
-
-
 
 th{
 	font-size: 12px;
@@ -170,28 +197,28 @@ td{
 .displayDiv{
 	position:relative;
 	width:100%;
-		
 }
 
 .tab-content{
-		overflow-x:hidden !important; 
+    overflow-x:hidden !important; 
 }
 
 .closeRow{
 	margin-right:10px;
 }
+
 .span9{
-width:690px!important;
-	
-	
+    width:690px!important;
 }
+
 .span3{
 	width:230px!important;
-
 }
+
 .span12{
 	margin-top:40px
 }
+
 .steakHist
 {	
 	width:40%;
@@ -216,16 +243,19 @@ width:690px!important;
 	left:25px !important;
 	background:none !important;
 }
+
 #si2 {
 	position:relative;
 	left:25px  !important;
 	background:none !important;
 }
+
 #dur {
 	position:relative;
 	left:12px  !important;
 	background:none !important;
 }
+
 .deg{
     display:inline-block;	
 	font-size:10px;
@@ -234,6 +264,7 @@ width:690px!important;
 .nav-tabs, .nav-pills {
     text-align:right;
 }
+
 #meatInp{
 	position:relative;
 	padding: 0px;
@@ -249,25 +280,24 @@ input[type="text"] {
 	padding-top:6px;
 	padding-left:3px;
 	margin:0px;
-	
 }
+
 .time{
-		width:40px !important;
+    width:40px !important;
 }
+
 #recipeInput{
 	border: 1px solid black;
     font-size: 12px;
 	width:100% !important;
-	height:300px !important;
-	
+	height:300px !important;	
 }
+
 #thicknessInp{
-	width:25px;
-	
+	width:25px;	
 }
 
 #thickInpDiv, #tempInpDiv, #meatTypeDiv{
-	
 	margin:5px;!important;
 	width:100%;!important;
     font-size: 12px;
