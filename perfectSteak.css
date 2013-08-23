@@ -39,7 +39,8 @@
 }
 
 .inputTable{
-	margin:0px!important;
+    margin-bottom:-10px!important;
+    margin-top: 10px;
 }
 
 #inpTabHeader{
@@ -231,7 +232,8 @@ td{
 
 #d3{
 	position: relative;
-	width: 80%;
+	width: 65%;
+    float: right;
 }
 
 .nav-tabs > li, .nav-pills > li {
@@ -297,10 +299,20 @@ input[type="text"] {
 	width:25px;	
 }
 
-#thickInpDiv, #tempInpDiv, #meatTypeDiv{
-	margin:5px;!important;
-	width:100%;!important;
+#thickInpDiv, #tempInpDiv, #meatTypeDiv, #meatInpDiv{
+    width:100%;!important;
     font-size: 12px;
+}
+
+#tempInpDiv>span{
+    margin-right:8px;
+    margin-bottom:15px;
+}
+#thickInpDiv>span{
+    margin-right:10px;
+}
+#meatInpDiv>span{
+    margin-right:15px;
 }
 
 .btn-mini{

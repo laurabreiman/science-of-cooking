@@ -392,12 +392,11 @@ var perfectSteak = function (div) {
         var clicked = false;
         var displayDiv = $("<div class='displayDiv'></div>");
         var tableTabs = $('<ul class="nav nav-tabs"><li class="active"><a id="table-tab" href="#table" data-toggle="tab" class="mytab">as table</a></li><li><a id="text-tab" href="#text" data-toggle="tab" class="mytab">as text</a></li></ul>');
-
         var tabContent = $("<div class='tab-content'></div>");
         var tabPaneActive = $("<div class='tab-pane active' id='table'></div>");
-        var thickInpDiv = $("<span id='thickInpDiv'>Thickness: <input type='text' id='thicknessInp' value='3'> cm </span>'");
-        var tempInp = $("<div><span id='tempInpDiv'>   Starting at: <input type='text' id='steakTemp' value='23'><span id='work'>&#176;C</span></span></div>");
-        //var meatInp = $("<span><form id='meatInp' class='meatTypeDiv'>Meat: </b><input type='radio' name='meat' id='Steak' checked>Steak <input type='radio' name='meat' id='Tuna'>Tuna <input type='radio' name='meat' id='Turkey'>Turkey </form></span>");
+        var meatInpDiv = $("<div id='meatInpDiv'><span>Meat type:</div>'");
+        var thickInpDiv = $("<div id='thickInpDiv'><span>Thickness: </span><input type='text' id='thicknessInp' value='3'> cm </div>'");
+        var tempInp = $("<div id='tempInpDiv'><span>Starting at:</span> <input type='text' id='steakTemp' value='23'><span id='work'>&#176;C</span></div>");
         var switcheroo = $('<span class="switcheroo"></span>');
         var mytog2 = $("<input type='radio' class='mytog2' id='C' name='toggle2' checked><label for='C' class='btn'>Celsius</label><input type='radio' class='mytog2' id='F' name='toggle2'><label for='F' class='btn'>Fahrenheit</label>");
         var inputTableContainer = $("<div class='inputTableContainer'></div>");
@@ -417,7 +416,7 @@ var perfectSteak = function (div) {
             loadTableFromModel();
             graph(false, $('.mytog:checked').attr('id'), false);
         });
-        tabPaneActive.append(thickInpDiv, tempInp, inpTabHeader, inputTableContainer);
+        tabPaneActive.append(meatInpDiv, thickInpDiv, tempInp, inpTabHeader, inputTableContainer);
         // tabPaneActive.append( inpTabHeader);
         tabPane.append(containerm);
         tabContent.append(tabPaneActive, tabPane);
@@ -551,8 +550,8 @@ var perfectSteak = function (div) {
             })
             
             dropdownDiv.append(dropdown1, dropdown2);
-            tabPaneActive.prepend(dropdownMeat);
-            $("#recipe-pane").prepend(dropdown3);
+            $("#meatInpDiv").append(dropdownMeat);
+            $(".recipeHead").append(dropdown3);
             $(".span12").prepend(dropdownDiv);
             $("#d3 option").eq(1).prop("selected", "true");
         }
@@ -562,7 +561,7 @@ var perfectSteak = function (div) {
         */
         var buildDisplay = function () {
             switcheroo.addClass("pull-right");
-            div.append("<div class='row'><div class='container optionBar'></div></div><div id='recipe-pane' class='span3'><h4>Recipe</h4></div><div id='graph-pane' class='span9' style='visibility:hidden;'></div><div class='span12'></div></div>");
+            div.append("<div class='row'><div class='container optionBar'></div></div><div id='recipe-pane' class='span3'><h4 class='recipeHead'>Recipe:</h4></div><div id='graph-pane' class='span9' style='visibility:hidden;'></div><div class='span12'></div></div>");
             var switches = $('<div class="switch"><input type="radio" class="mytog" id="PS" name="toggle" checked><label for="PS" class="btn" id ="state">Protein State</label><input type="radio" class="mytog"id="T" name="toggle"><label for="T" class="btn" id ="state">Temperature</label></div>');
             $('.navbar-inner').append(switcheroo);
             switches.change(function () {
