@@ -37,12 +37,12 @@ var perfectSteak = function (div) {
         var importRecipes = function () {
 
             var saved = [{
-                "name": "Flip every 15 seconds (Heston Blumenthal)",
-                "data": [[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150]],
-                "Temp": 23
-            }, {
                 "name": "4 minutes a side",
                 "data": [[240, 150, 23],[240, 23, 150],[300, 23, 23]],
+                "Temp": 23
+            },  {
+                "name": "Flip every 15 seconds (Heston Blumenthal)",
+                "data": [[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150],[15, 150, 23],[15, 23, 150]],
                 "Temp": 23
             }, {
                 "name": "Sear then cook low (America's Test Kitchen)",
@@ -52,8 +52,13 @@ var perfectSteak = function (div) {
                 "name": "Sous Vide and Liquid Nitrogen (Nathan Myhrvold)",
                 "data": [[3600, 53, 53],[30, -200, -200],[120, 200, 200]],
                 "Temp": 23
+            },
+                {
+                "name": "Create your Own!",
+                "data": [[60, 23, 23]],
+                "Temp": 23
             }];
-            for (var i = 0; i < 4; i++) {
+            for (var i = 0; i < 5; i++) {
                 var name = saved[i]["name"];
                 var data = saved[i]["data"];
 
@@ -394,7 +399,7 @@ var perfectSteak = function (div) {
         var tempInp = $("<div><span id='tempInpDiv'>   Starting at: <input type='text' id='steakTemp' value='23'><span id='work'>&#176;C</span></span></div>");
         //var meatInp = $("<span><form id='meatInp' class='meatTypeDiv'>Meat: </b><input type='radio' name='meat' id='Steak' checked>Steak <input type='radio' name='meat' id='Tuna'>Tuna <input type='radio' name='meat' id='Turkey'>Turkey </form></span>");
         var switcheroo = $('<span class="switcheroo"></span>');
-        var mytog2 = $("<input type='radio' class='mytog2' id='C' name='toggle2' checked><label for='C' class='btn'>Celcius</label><input type='radio' class='mytog2' id='F' name='toggle2'><label for='F' class='btn'>Fahrenheit</label>");
+        var mytog2 = $("<input type='radio' class='mytog2' id='C' name='toggle2' checked><label for='C' class='btn'>Celsius</label><input type='radio' class='mytog2' id='F' name='toggle2'><label for='F' class='btn'>Fahrenheit</label>");
         var inputTableContainer = $("<div class='inputTableContainer'></div>");
         var inputTable = $("<table class='inputTable table table-striped'></table>");
         inputTableContainer.append(inputTable)
@@ -482,7 +487,6 @@ var perfectSteak = function (div) {
                 dropdown1.append(option1)
 
                 del.on("click", function () {
-                    console.log(this.attr("id"))
                 })
                 dropdown2.append(option2);
 
@@ -516,7 +520,6 @@ var perfectSteak = function (div) {
 
                 var e3 = document.getElementById("d3");
                 var name3 = e3.options[e3.selectedIndex].text;
-
                 model.dataChange(model.currentInfo['recipe'][name3][2]);
 
                 var newNum = model.currentInfo['data'].length;
@@ -530,15 +533,14 @@ var perfectSteak = function (div) {
                 }
 
                 model.buildData();
-                console.log(model.currentInfo["numRows"]);
                 addAddButton();
-                cookingFood();
             })
-            var renameInp = $("<span>Rename: </span><input type='text' id='renameInp' value=''>");
+            var renameInp = $("<span>Rename: </span><input type='text' id='renameInp' value='"+"'>");
             dropdownDiv.append(dropdown1, dropdown2);
-            tabPaneActive.prepend(renameInp, dropdown3, dropdownMeat);
+            tabPaneActive.prepend(dropdown3, dropdownMeat);
+            $("#graph-pane").prepend(renameInp);
             $(".span12").prepend(dropdownDiv);
-
+            $("#d3 option").eq(1).prop("selected", "true");
             renameInp.on("focusout", function () {
                 var newName = $('#renameInp').val();
                 var oldName = $("#d3").val();
@@ -574,7 +576,6 @@ var perfectSteak = function (div) {
 
             addAddButton();
             CookButtonFun();
-            closeRowFun();
 
             // lastly, load up the recipe that's predefined in the model
             loadTableFromModel();
@@ -660,7 +661,6 @@ var perfectSteak = function (div) {
                     inp2_i.val(model.currentInfo['data'][i][2])
                 }
             } else {
-                console.log($("#row" + (i - 1) + "time").val());
                 rowitime.val($("#row" + (i - 1) + "time").val() || "3:00");
                 inp1_i.val($(String("#inp1_" + parseInt(i - 1))).val() || 23);
                 inp2_i.val($(String("#inp2_" + parseInt(i - 1))).val() || 180);
@@ -702,29 +702,6 @@ var perfectSteak = function (div) {
         };
 
 
-        var closeRowFun = function () {
-            /*
-            $(".closeRow").on("click", function () {
-                var rowNum = String($(this).attr("id").charAt(3))
-                $("#row" + rowNum).remove();
-                model.numRowsMinus();
-console.log("click");
-                //NOW WE NEED TO CHANGE THE ROW NUMBER OF ALL THE OTHER ROWS
-                for (var l = rowNum + 1; l < model.currentInfo["numRows"]; l++) {
-                    $("#row" + l).attr("id", "row" + l - 1);
-                    $("#duration" + l).attr("id", "duration" + l - 1);
-                    $("#row" + l + "side1").attr("id", "row" + l - 1 + "side1");
-                    $("inp1_" + l).attr("id", "inp1_" + l - 1);
-                    $("#row" + l + "side2").attr("id", "row" + l - 1 + "side2");
-                    $("#inp2_" + l).attr("id", "inp2_" + l - 1);
-					//$("#label"+l ).attr("id","label"+l-1)
-					$("#label"+l ).html(l-1);
-                }
-				updateTime();
-				$('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
-            });
-			*/
-        }
         var checkTableForImpossibleValues = function () {
             model.currentInfo["OKToGraph"] = true;
             $(".alert").remove();
@@ -803,9 +780,6 @@ console.log("click");
 
             model.dataChange(newData);
 
-            console.log("stored table into model");
-            console.log(model.currentInfo);
-
             loadTextRecipeFromModel();
         };
 
@@ -822,14 +796,12 @@ console.log("click");
             updateTime();
             $('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
 
-            console.log("loaded table from model");
             var meat = model.currentInfo["meatType"];
-            console.log(model.currentInfo);
+
             var meatdrop = document.getElementById("dMeat");
             for (var i = 0; i < meatdrop.options.length; i++) {
                 if (meatdrop.options[i].text == meat) {
                     $(meatdrop.options[i]).prop('selected', true);
-                    console.log(meatdrop.options[i].text)
                 }
             }
         };
@@ -837,8 +809,6 @@ console.log("click");
 
         var storeTextRecipeIntoModel = function () {
             model.parseRecipe($("#recipeInput").val());
-            console.log("stored text recipe into model");
-            console.log(model.currentInfo);
 
             loadTableFromModel();
         }
@@ -847,8 +817,6 @@ console.log("click");
         var loadTextRecipeFromModel = function () {
             var recipe = model.printRecipe($('.mytog2:checked').attr('id'));
             $("#recipeInput").val(recipe);
-            console.log("loaded text recipe from model");
-            console.log(model.currentInfo);
         }
 
 
@@ -1019,8 +987,6 @@ console.log("click");
         var flipButtonFun = function (k) {
 
             $("#flipButton" + k).on("click", function () {
-                console.log("click");
-
                 side1data = 0
                 side1data += parseInt(parseFloat($('#inp1_' + k).val())) || 0;
                 side2data = parseInt(parseFloat($('#inp2_' + k).val()));
