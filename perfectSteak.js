@@ -11,7 +11,7 @@ var perfectSteak = function (div) {
             'data': [
                 [240, 150, 23],
                 [240, 23, 150],
-                [150, 23, 23]
+                [300, 23, 23]
             ], //timestamps of temperatures
             'numRows': 3, //how many steps there are in the recipe
             'time': 0, //time
@@ -517,11 +517,23 @@ var perfectSteak = function (div) {
 
             //NOW THIS DELETES EVERY ROW AND ADDS THEIR OWN LITTLE ROWS
             dropdown3.change(function () {
-
                 var e3 = document.getElementById("d3");
                 var name3 = e3.options[e3.selectedIndex].text;
                 model.dataChange(model.currentInfo['recipe'][name3][2]);
-
+                
+                $("#renameInp").remove();
+                var renameInp = $("<input type='text' id='renameInp' value='"+name3+"'>");
+                renameInp.on("focusout", function () {
+                    var newName = $('#renameInp').val();
+                    var oldName = $("#d3").val();
+                    model.changeRecipeName(oldName, newName);
+                    dropdown3.empty();
+                    for (var key in model.currentInfo['recipe']) {
+                        dropdown3.append($('<option value="' + key + '">' + key + '</option>'));
+                    }
+                    $("#d3 > [value='" + newName + "']").attr("selected", "true");
+                });
+                
                 var newNum = model.currentInfo['data'].length;
                 //REMOVING ALL THE ROWS THAT CURRENTLY EXIST
                 $('.recipe-step').remove();
@@ -534,32 +546,24 @@ var perfectSteak = function (div) {
 
                 model.buildData();
                 addAddButton();
+                $("#graph-pane").prepend(renameInp);
             })
-            var renameInp = $("<span>Rename: </span><input type='text' id='renameInp' value='"+"'>");
+            
             dropdownDiv.append(dropdown1, dropdown2);
-            tabPaneActive.prepend(dropdown3, dropdownMeat);
-            $("#graph-pane").prepend(renameInp);
+            tabPaneActive.prepend(dropdownMeat);
+            $("#recipe-pane").prepend(dropdown3);
             $(".span12").prepend(dropdownDiv);
             $("#d3 option").eq(1).prop("selected", "true");
-            renameInp.on("focusout", function () {
-                var newName = $('#renameInp').val();
-                var oldName = $("#d3").val();
-                model.changeRecipeName(oldName, newName);
-                dropdown3.empty();
-                for (var key in model.currentInfo['recipe']) {
-                    dropdown3.append($('<option value="' + key + '">' + key + '</option>'));
-                }
-                $("#d3 > [value='" + newName + "']").attr("selected", "true");
-            });
         }
 
         /*
             buildDisplay places the necessary items on the screen for the user to interact with.
         */
         var buildDisplay = function () {
+            switcheroo.addClass("pull-right");
             div.append("<div class='row'><div class='container optionBar'></div></div><div id='recipe-pane' class='span3'><h4>Recipe</h4></div><div id='graph-pane' class='span9' style='visibility:hidden;'></div><div class='span12'></div></div>");
             var switches = $('<div class="switch"><input type="radio" class="mytog" id="PS" name="toggle" checked><label for="PS" class="btn" id ="state">Protein State</label><input type="radio" class="mytog"id="T" name="toggle"><label for="T" class="btn" id ="state">Temperature</label></div>');
-            div.append(switcheroo);
+            $('.navbar-inner').append(switcheroo);
             switches.change(function () {
                 graph(false, $('.mytog:checked').attr('id'), false);
             });

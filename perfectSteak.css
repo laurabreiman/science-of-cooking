@@ -16,8 +16,11 @@
     
 }
 #renameInp{
-    width: 30%;
-    margin: 2px;
+    width: 50%;
+    margin: 0px;
+    border: none;
+    margin-left: 25;
+    margin-top: 10;
 }
 .btnBar{
 position:relative;
@@ -81,16 +84,12 @@ input[type="radio"].toggle + label {
 	top:70px;
 	height:30px;
 	width:200px;
-	
-	
 }
 .switcheroo{
-	position: absolute;
-	left:62%;
-	top:10px;
+	position: relative;
 	height:30px;
 	width:150px;
-	
+	float: right;
 }
 #Steak{
 	margin:1px;
