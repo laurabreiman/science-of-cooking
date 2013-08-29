@@ -313,7 +313,7 @@ var perfectSteak = function (div) {
                 var line = lines[i];
 
                 // try to parse starting conditions
-                var m = line.match(/(\d+)\s*(in|cm).*?(steak|tuna|turkey).*?(\d+)\xB0\s*([CF])/i);
+                var m = line.match(/(\d+)\s*(in|cm).*?(steak|tuna|turkey).*?(-?\d+)\xB0\s*([CF])/i);
                 if (m) {
                     currentInfo["thickness"] = parseInt(m[1]); // TODO: handle inches
                     currentInfo["meatTemp"] = parseTemperature(m[4], m[5]);
@@ -322,7 +322,7 @@ var perfectSteak = function (div) {
                 }
 
                 // otherwise try to parse a recipe step
-                var m = line.match(/(\d+)\xB0\s*([CF]).*?(\d+)\xB0\s*([CF]).*?((\d+)+:)?(\d+)/i);
+                var m = line.match(/(-?\d+)\xB0\s*([CF]).*?(-?\d+)\xB0\s*([CF]).*?((\d+)+:)?(\d+)/i);
                 if (m) {
                     var side1Temp = parseTemperature(m[1], m[2]);
                     var side2Temp = parseTemperature(m[3], m[4]);
