@@ -46,6 +46,8 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,t
 			}
 			
 		}
+		myMaxTemps=myMaxTemps.splice(1,myMaxTemps.length-2);
+		
 		var myMaxs=[];
 		
 			for (var x = 0; x < 7; x++) {myMaxs.push(0);}
@@ -64,6 +66,7 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,t
 	
 			}
 		
+		console.log(j);
 		myMaxs.reverse();
 		
 		var dropdown=$('<select id="steakHist"></select>');
@@ -103,7 +106,9 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,t
         .attr('x', function(d,i){return (0+(1-side)*80)+'%'})
         .attr('y', function(d, i){ return  -125+8+i*10})
 		.style('font-size','6pt')
-        .text(function(d){ return (100*d/(myMaxTemps.length)).toFixed(0) +"%"; });	
+        .text(function(d){ 
+			console.log(d);
+			return (100*d/(myMaxTemps.length)).toFixed(0) +"%"; });	
 
 //Draw the Rectangle
 var rectangle = svgContainer.selectAll("rect")

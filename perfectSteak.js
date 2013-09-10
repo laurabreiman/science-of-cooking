@@ -903,6 +903,21 @@ var perfectSteak = function (div) {
 
                 calculate(model.currentInfo["data"], steak, meatType, isFirst, $('.mytog2:checked').attr('id'), animated)
             }
+			        var e1 = document.getElementById("d1");
+                var name1 = e1.options[e1.selectedIndex].text;
+                var e2 = document.getElementById("d2");
+                var name2 = e2.options[e2.selectedIndex].text;
+                d3.selectAll('.finalsteak').remove();
+                if (name1 != "") {
+                    var info = model.currentInfo['recipe'][name1];
+
+                    drawFinished(info[0], info[1], info[2], info[3], 0, info[4], $('.mytog2:checked').attr('id'));
+                }
+                if (name2 != "") {
+                    var inf = model.currentInfo['recipe'][name2];
+                    drawFinished(inf[0], inf[1], inf[2], inf[3], 1, inf[4], $('.mytog2:checked').attr('id'));
+                }
+
         }
 
             function playSound(soundfile) {
