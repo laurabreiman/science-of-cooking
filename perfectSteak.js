@@ -409,7 +409,7 @@ var perfectSteak = function (div) {
         inputTableContainer.append(inputTable);
         switcheroo.append(mytog2);
         switcheroo.change(function () {
-
+		
             $('#work').html("&#176;" + $('.mytog2:checked').attr('id'));
             $('.deg').html("&#176;" + $('.mytog2:checked').attr('id'));
             loadTextRecipeFromModel();
@@ -791,7 +791,11 @@ var perfectSteak = function (div) {
 
             // TODO: handle meat type
             $("#thicknessInp").val(model.currentInfo["thickness"]);
-            $("#steakTemp").val(model.currentInfo["meatTemp"]);
+			//MARISSA WORKING HERE
+			if($('.mytog2:checked').attr('id')=='F'){
+			$("#steakTemp").val(toF(model.currentInfo["meatTemp"]));}
+			else
+			{$("#steakTemp").val(model.currentInfo["meatTemp"]);}
 
             $(".recipe-step").remove();
             for (var i = 0; i < model.currentInfo['data'].length; i++) {
@@ -865,7 +869,8 @@ var perfectSteak = function (div) {
                 $("#tempInpDiv").append(tempAlert);
                 OKtoCook = false;
             } else {
-                model.changeMeatTemp(parseFloat($("#steakTemp").val()))
+				if($('.mytog2:checked').attr('id') == 'F'){model.changeMeatTemp(toC(parseFloat($("#steakTemp").val())))}
+                else{model.changeMeatTemp(parseFloat($("#steakTemp").val()))}
             };
 
             if (String(parseInt($("#thicknessInp").val())) == 'NaN') {
