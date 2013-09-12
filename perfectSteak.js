@@ -156,6 +156,10 @@ var perfectSteak = function (div) {
                 delete currentInfo["recipe"][oldName];
             }
         }
+		
+		var deleteRecipe = function(oldName){
+			delete currentInfo["recipe"][oldName];
+		}
 
         var saveRecipe = function (name) {
             var steak = [currentInfo["data"][0][1]];
@@ -363,7 +367,8 @@ var perfectSteak = function (div) {
             printRecipe: printRecipe,
             parseRecipe: parseRecipe,
             importRecipes: importRecipes,
-            changeRecipeName: changeRecipeName
+            changeRecipeName: changeRecipeName,
+			deleteRecipe: deleteRecipe
         }
     }
 
@@ -522,7 +527,9 @@ var perfectSteak = function (div) {
                 model.dataChange(model.currentInfo['recipe'][name3][2]);
                 
                 $("#renameInp").remove();
+				$("#renameInpDeleteButton").remove();
                 var renameInp = $("<input type='text' id='renameInp' value='"+name3+"'>");
+				var renameInpDeleteButton = $("<button class= 'btn btn-small' id='renameInpDeleteButton'>Delete This Recipe</button>")
                 renameInp.on("focusout", function () {
                     var newName = $('#renameInp').val();
                     var oldName = $("#d3").val();
@@ -533,6 +540,15 @@ var perfectSteak = function (div) {
                     }
                     $("#d3 > [value='" + newName + "']").attr("selected", "true");
                 });
+				
+				renameInpDeleteButton.on("click", function(){
+					console.log("current recipe name " + $("#d3").val());
+					model.deleteRecipe($("#d3").val());
+					dropdown3.empty();
+					for (var key in model.currentInfo['recipe']){
+						dropdown3.append($('<option value="' + key + '">' + key + '</option>'));
+					}
+				})
                 
                 var newNum = model.currentInfo['data'].length;
                 //REMOVING ALL THE ROWS THAT CURRENTLY EXIST
@@ -546,7 +562,7 @@ var perfectSteak = function (div) {
 
                 model.buildData();
                 addAddButton();
-                $("#graph-pane").prepend(renameInp);
+                $("#graph-pane").prepend(renameInp, renameInpDeleteButton);
             })
             
             dropdownDiv.append(dropdown1, dropdown2);
