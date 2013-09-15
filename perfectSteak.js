@@ -56,6 +56,19 @@ var perfectSteak = function (div) {
 		var addSaved = function(name, data, temp){
 			currentInfo['saved'].push({"name":name, "data":data, "Temp":temp})
 		}
+		
+		//this is called whenever the user deletes a recipe
+		//it just deletes from the default list of recipes
+		var removeSaved = function(name){
+			for (var i =0; i<currentInfo.saved.length; i++){
+				console.log("this is the name" + name)
+				if (currentInfo.saved[i]["name"]==name){
+					console.log("splicing"+currentInfo.saved)
+					currentInfo.saved.splice(i, 1);
+					console.log(currentInfo.saved)
+				}
+			}
+		}
 
         var importRecipes = function () {
 			var saved = currentInfo.saved;
@@ -371,7 +384,8 @@ var perfectSteak = function (div) {
             parseRecipe: parseRecipe,
             importRecipes: importRecipes,
             changeRecipeName: changeRecipeName,
-			deleteRecipe: deleteRecipe
+			deleteRecipe: deleteRecipe,
+			removeSaved: removeSaved
         }
     }
 
@@ -547,7 +561,7 @@ var perfectSteak = function (div) {
 				
 				renameInpDeleteButton.on("click", function(){
 					console.log("current recipe name " + $("#d3").val());
-					model.deleteRecipe($("#d3").val());
+					model.removeSaved($("#d3").val());
 					dropdown3.empty();
 					for (var key in model.currentInfo['recipe']){
 						dropdown3.append($('<option value="' + key + '">' + key + '</option>'));
