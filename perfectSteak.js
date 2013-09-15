@@ -22,21 +22,8 @@ var perfectSteak = function (div) {
                 'Steak': 0,
                 'Tuna': 0,
                 'Turkey': 0
-            }
-
-        };
-
-        var timeStep = 240;
-        var toF = function (C) {
-            return C * (9 / 5) + 32;
-        }
-        var toC = function (F) {
-            return ((5 / 9) * (F - 32));
-        }
-
-        var importRecipes = function () {
-
-            var saved = [{
+            },
+			'saved': [{
                 "name": "4 minutes a side",
                 "data": [[240, 150, 23],[240, 23, 150],[300, 23, 23]],
                 "Temp": 23
@@ -52,13 +39,27 @@ var perfectSteak = function (div) {
                 "name": "Sous Vide and Liquid Nitrogen (Nathan Myhrvold)",
                 "data": [[3600, 53, 53],[30, -200, -200],[120, 200, 200]],
                 "Temp": 23
-            },
-                {
-                "name": "Create your Own!",
-                "data": [[60, 23, 23]],
-                "Temp": 23
-            }];
-            for (var i = 0; i < 5; i++) {
+            }]
+
+        };
+
+        var timeStep = 240;
+        var toF = function (C) {
+            return C * (9 / 5) + 32;
+        }
+        var toC = function (F) {
+            return ((5 / 9) * (F - 32));
+        }
+		
+		//this is called whenever the user creates a new recipe
+		//it adds to the default list of recipes that is stuck on the dropdown of recipes ("#d3")
+		var addSaved = function(name, data, temp){
+			currentInfo['saved'].push({"name":name, "data":data, "Temp":temp})
+		}
+
+        var importRecipes = function () {
+			var saved = currentInfo.saved;
+            for (var i = 0; i < saved.length; i++) {
                 var name = saved[i]["name"];
                 var data = saved[i]["data"];
 
@@ -162,6 +163,7 @@ var perfectSteak = function (div) {
 		}
 
         var saveRecipe = function (name) {
+			importRecipes();
             var steak = [currentInfo["data"][0][1]];
             var thickness = parseFloat($("#thicknessInp").val());
             for (var m = 0; m < thickness * 5; m++) {
@@ -349,6 +351,7 @@ var perfectSteak = function (div) {
             currentInfo: currentInfo,
             changeThickness: changeThickness,
             timeStep: timeStep,
+			addSaved: addSaved,
             dataAdd: dataAdd,
             dataClear: dataClear,
             dataChange: dataChange,
@@ -525,6 +528,7 @@ var perfectSteak = function (div) {
                 var e3 = document.getElementById("d3");
                 var name3 = e3.options[e3.selectedIndex].text;
                 model.dataChange(model.currentInfo['recipe'][name3][2]);
+				console.log("I have just changed the dropdown" + model.currentInfo['data']);
                 
                 $("#renameInp").remove();
 				$("#renameInpDeleteButton").remove();
@@ -577,7 +581,33 @@ var perfectSteak = function (div) {
         */
         var buildDisplay = function () {
             switcheroo.addClass("pull-right");
-            div.append("<div class='row'><div class='container optionBar'></div></div><div id='recipe-pane' class='span3'><h4 class='recipeHead'>Recipe:</h4></div><div id='graph-pane' class='span9' style='visibility:hidden;'></div><div class='span12'></div></div>");
+            div.append("<div class='row'><div class='container optionBar'></div></div>");
+			var recipePane=$("<div id='recipe-pane' class='span3'><h4 class='recipeHead'>Recipe:</h4><span></div>");
+			var newRecipeButton = $("<button class = 'btn btn-small' id='newRecipeButton'>New</button></span>");
+			recipePane.append(newRecipeButton);
+			
+			newRecipeButton.on("click", function(){
+				model.addRecipe("Create Your Own!", {
+                "name": "Create Your Own!",
+                "data": [[240, 150, 23],[240, 23, 150],[300, 23, 23]],
+                "Temp": 23
+				})
+				model.addSaved("Create Your Own!", [[240, 150, 23],[240, 23, 150],[300, 23, 23]], 23);
+				model.dataChange([[240, 150, 23],[240, 23, 150],[300, 23, 23]]);
+				model.saveRecipe("Create Your Own!");
+				console.log(model.currentInfo['data']+ "I have just changed the data");
+				console.log(model.currentInfo['saved']+"these are my saved recipes");
+				$('#renameInp').val("Create Your Own!");
+				
+				$("#d3").empty();
+                for (var key in model.currentInfo['recipe']) {
+                   $("#d3").append($('<option value="' + key + '">' + key + '</option>'));
+                }
+				$("#d3").val('Create Your Own!');
+			})
+			
+			var graphPane=$("<div id='graph-pane' class='span9' style='visibility:hidden;'></div><div class='span12'></div></div>");
+			div.append(recipePane, graphPane);
             var switches = $('<div class="switch"><input type="radio" class="mytog" id="PS" name="toggle" checked><label for="PS" class="btn" id ="state">Protein State</label><input type="radio" class="mytog"id="T" name="toggle"><label for="T" class="btn" id ="state">Temperature</label></div>');
             $('.navbar-inner').append(switcheroo);
             switches.change(function () {
@@ -924,7 +954,7 @@ var perfectSteak = function (div) {
 
                 calculate(model.currentInfo["data"], steak, meatType, isFirst, $('.mytog2:checked').attr('id'), animated)
             }
-			        var e1 = document.getElementById("d1");
+			    var e1 = document.getElementById("d1");
                 var name1 = e1.options[e1.selectedIndex].text;
                 var e2 = document.getElementById("d2");
                 var name2 = e2.options[e2.selectedIndex].text;
