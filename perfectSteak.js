@@ -22,20 +22,8 @@ var perfectSteak = function (div) {
                 'Steak': 0,
                 'Tuna': 0,
                 'Turkey': 0
-            }
-        };
-
-        var timeStep = 240;
-        var toF = function (C) {
-            return C * (9 / 5) + 32;
-        }
-        var toC = function (F) {
-            return ((5 / 9) * (F - 32));
-        }
-
-        var importRecipes = function () {
-
-            var saved = [{
+            },
+			'saved': [{
                 "name": "4 minutes a side",
                 "data": [[240, 150, 23],[240, 23, 150],[300, 23, 23]],
                 "Temp": 23
@@ -51,13 +39,40 @@ var perfectSteak = function (div) {
                 "name": "Sous Vide and Liquid Nitrogen (Nathan Myhrvold)",
                 "data": [[3600, 53, 53],[30, -200, -200],[120, 200, 200]],
                 "Temp": 23
-            },
-                {
-                "name": "Create your Own!",
-                "data": [[60, 23, 23]],
-                "Temp": 23
-            }];
-            for (var i = 0; i < 5; i++) {
+            }]
+
+        };
+
+        var timeStep = 240;
+        var toF = function (C) {
+            return C * (9 / 5) + 32;
+        }
+        var toC = function (F) {
+            return ((5 / 9) * (F - 32));
+        }
+		
+		//this is called whenever the user creates a new recipe
+		//it adds to the default list of recipes that is stuck on the dropdown of recipes ("#d3")
+		var addSaved = function(name, data, temp){
+			currentInfo['saved'].push({"name":name, "data":data, "Temp":temp})
+		}
+		
+		//this is called whenever the user deletes a recipe
+		//it just deletes from the default list of recipes
+		var removeSaved = function(name){
+			for (var i =0; i<currentInfo.saved.length; i++){
+				console.log("this is the name" + name)
+				if (currentInfo.saved[i]["name"]==name){
+					console.log("splicing"+currentInfo.saved)
+					currentInfo.saved.splice(i, 1);
+					console.log(currentInfo.saved)
+				}
+			}
+		}
+
+        var importRecipes = function () {
+			var saved = currentInfo.saved;
+            for (var i = 0; i < saved.length; i++) {
                 var name = saved[i]["name"];
                 var data = saved[i]["data"];
 
@@ -155,8 +170,13 @@ var perfectSteak = function (div) {
                 delete currentInfo["recipe"][oldName];
             }
         }
+		
+		var deleteRecipe = function(oldName){
+			delete currentInfo["recipe"][oldName];
+		}
 
         var saveRecipe = function (name) {
+			importRecipes();
             var steak = [currentInfo["data"][0][1]];
             var thickness = parseFloat($("#thicknessInp").val());
             for (var m = 0; m < thickness * 5; m++) {
@@ -312,7 +332,7 @@ var perfectSteak = function (div) {
                 var line = lines[i];
 
                 // try to parse starting conditions
-                var m = line.match(/(\d+)\s*(in|cm).*?(steak|tuna|turkey).*?(\d+)\xB0\s*([CF])/i);
+                var m = line.match(/(\d+)\s*(in|cm).*?(steak|tuna|turkey).*?(-?\d+)\xB0\s*([CF])/i);
                 if (m) {
                     currentInfo["thickness"] = parseInt(m[1]); // TODO: handle inches
                     currentInfo["meatTemp"] = parseTemperature(m[4], m[5]);
@@ -321,7 +341,7 @@ var perfectSteak = function (div) {
                 }
 
                 // otherwise try to parse a recipe step
-                var m = line.match(/(\d+)\xB0\s*([CF]).*?(\d+)\xB0\s*([CF]).*?((\d+)+:)?(\d+)/i);
+                var m = line.match(/(-?\d+)\xB0\s*([CF]).*?(-?\d+)\xB0\s*([CF]).*?((\d+)+:)?(\d+)/i);
                 if (m) {
                     var side1Temp = parseTemperature(m[1], m[2]);
                     var side2Temp = parseTemperature(m[3], m[4]);
@@ -344,6 +364,7 @@ var perfectSteak = function (div) {
             currentInfo: currentInfo,
             changeThickness: changeThickness,
             timeStep: timeStep,
+			addSaved: addSaved,
             dataAdd: dataAdd,
             dataClear: dataClear,
             dataChange: dataChange,
@@ -362,7 +383,9 @@ var perfectSteak = function (div) {
             printRecipe: printRecipe,
             parseRecipe: parseRecipe,
             importRecipes: importRecipes,
-            changeRecipeName: changeRecipeName
+            changeRecipeName: changeRecipeName,
+			deleteRecipe: deleteRecipe,
+			removeSaved: removeSaved
         }
     }
 
@@ -408,7 +431,7 @@ var perfectSteak = function (div) {
         inputTableContainer.append(inputTable);
         switcheroo.append(mytog2);
         switcheroo.change(function () {
-
+		
             $('#work').html("&#176;" + $('.mytog2:checked').attr('id'));
             $('.deg').html("&#176;" + $('.mytog2:checked').attr('id'));
             loadTextRecipeFromModel();
@@ -519,9 +542,12 @@ var perfectSteak = function (div) {
                 var e3 = document.getElementById("d3");
                 var name3 = e3.options[e3.selectedIndex].text;
                 model.dataChange(model.currentInfo['recipe'][name3][2]);
+				console.log("I have just changed the dropdown" + model.currentInfo['data']);
                 
                 $("#renameInp").remove();
+				$("#renameInpDeleteButton").remove();
                 var renameInp = $("<input type='text' id='renameInp' value='"+name3+"'>");
+				var renameInpDeleteButton = $("<button class= 'btn btn-small' id='renameInpDeleteButton'>Delete This Recipe</button>")
                 renameInp.on("focusout", function () {
                     var newName = $('#renameInp').val();
                     var oldName = $("#d3").val();
@@ -532,6 +558,15 @@ var perfectSteak = function (div) {
                     }
                     $("#d3 > [value='" + newName + "']").attr("selected", "true");
                 });
+				
+				renameInpDeleteButton.on("click", function(){
+					console.log("current recipe name " + $("#d3").val());
+					model.removeSaved($("#d3").val());
+					dropdown3.empty();
+					for (var key in model.currentInfo['recipe']){
+						dropdown3.append($('<option value="' + key + '">' + key + '</option>'));
+					}
+				})
                 
                 var newNum = model.currentInfo['data'].length;
                 //REMOVING ALL THE ROWS THAT CURRENTLY EXIST
@@ -545,7 +580,7 @@ var perfectSteak = function (div) {
 
                 model.buildData();
                 addAddButton();
-                $("#graph-pane").prepend(renameInp);
+                $("#graph-pane").prepend(renameInp, renameInpDeleteButton);
             })
             
             dropdownDiv.append(dropdown1, dropdown2);
@@ -560,7 +595,33 @@ var perfectSteak = function (div) {
         */
         var buildDisplay = function () {
             switcheroo.addClass("pull-right");
-            div.append("<div class='row'><div class='container optionBar'></div></div><div id='recipe-pane' class='span3'><h4 class='recipeHead'>Recipe:</h4></div><div id='graph-pane' class='span9' style='visibility:hidden;'></div><div class='span12'></div></div>");
+            div.append("<div class='row'><div class='container optionBar'></div></div>");
+			var recipePane=$("<div id='recipe-pane' class='span3'><h4 class='recipeHead'>Recipe:</h4><span></div>");
+			var newRecipeButton = $("<button class = 'btn btn-small' id='newRecipeButton'>New</button></span>");
+			recipePane.append(newRecipeButton);
+			
+			newRecipeButton.on("click", function(){
+				model.addRecipe("Create Your Own!", {
+                "name": "Create Your Own!",
+                "data": [[240, 150, 23],[240, 23, 150],[300, 23, 23]],
+                "Temp": 23
+				})
+				model.addSaved("Create Your Own!", [[240, 150, 23],[240, 23, 150],[300, 23, 23]], 23);
+				model.dataChange([[240, 150, 23],[240, 23, 150],[300, 23, 23]]);
+				model.saveRecipe("Create Your Own!");
+				console.log(model.currentInfo['data']+ "I have just changed the data");
+				console.log(model.currentInfo['saved']+"these are my saved recipes");
+				$('#renameInp').val("Create Your Own!");
+				
+				$("#d3").empty();
+                for (var key in model.currentInfo['recipe']) {
+                   $("#d3").append($('<option value="' + key + '">' + key + '</option>'));
+                }
+				$("#d3").val('Create Your Own!');
+			})
+			
+			var graphPane=$("<div id='graph-pane' class='span9' style='visibility:hidden;'></div><div class='span12'></div></div>");
+			div.append(recipePane, graphPane);
             var switches = $('<div class="switch"><input type="radio" class="mytog" id="PS" name="toggle" checked><label for="PS" class="btn" id ="state">Protein State</label><input type="radio" class="mytog"id="T" name="toggle"><label for="T" class="btn" id ="state">Temperature</label></div>');
             $('.navbar-inner').append(switcheroo);
             switches.change(function () {
@@ -790,7 +851,11 @@ var perfectSteak = function (div) {
 
             // TODO: handle meat type
             $("#thicknessInp").val(model.currentInfo["thickness"]);
-            $("#steakTemp").val(model.currentInfo["meatTemp"]);
+			//MARISSA WORKING HERE
+			if($('.mytog2:checked').attr('id')=='F'){
+			$("#steakTemp").val(toF(model.currentInfo["meatTemp"]));}
+			else
+			{$("#steakTemp").val(model.currentInfo["meatTemp"]);}
 
             $(".recipe-step").remove();
             for (var i = 0; i < model.currentInfo['data'].length; i++) {
@@ -864,7 +929,8 @@ var perfectSteak = function (div) {
                 $("#tempInpDiv").append(tempAlert);
                 OKtoCook = false;
             } else {
-                model.changeMeatTemp(parseFloat($("#steakTemp").val()))
+				if($('.mytog2:checked').attr('id') == 'F'){model.changeMeatTemp(toC(parseFloat($("#steakTemp").val())))}
+                else{model.changeMeatTemp(parseFloat($("#steakTemp").val()))}
             };
 
             if (String(parseInt($("#thicknessInp").val())) == 'NaN') {
@@ -902,6 +968,21 @@ var perfectSteak = function (div) {
 
                 calculate(model.currentInfo["data"], steak, meatType, isFirst, $('.mytog2:checked').attr('id'), animated)
             }
+			    var e1 = document.getElementById("d1");
+                var name1 = e1.options[e1.selectedIndex].text;
+                var e2 = document.getElementById("d2");
+                var name2 = e2.options[e2.selectedIndex].text;
+                d3.selectAll('.finalsteak').remove();
+                if (name1 != "") {
+                    var info = model.currentInfo['recipe'][name1];
+
+                    drawFinished(info[0], info[1], info[2], info[3], 0, info[4], $('.mytog2:checked').attr('id'));
+                }
+                if (name2 != "") {
+                    var inf = model.currentInfo['recipe'][name2];
+                    drawFinished(inf[0], inf[1], inf[2], inf[3], 1, inf[4], $('.mytog2:checked').attr('id'));
+                }
+
         }
 
             function playSound(soundfile) {
