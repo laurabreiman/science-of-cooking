@@ -23,7 +23,6 @@ var perfectSteak = function (div) {
                 'Tuna': 0,
                 'Turkey': 0
             }
-
         };
 
         var timeStep = 240;
