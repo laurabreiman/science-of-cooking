@@ -1017,6 +1017,9 @@ var perfectSteak = function (div) {
             var dropdown2 = $("#d2");
             var dropdown3 = $('#d3');
 
+			//WHAT IS THIS SECTION DOING??
+			
+			//K
             if (saved == 1) { //if there was no duplicate
                 dropdown1.append($('<option>' + name + '</option>'));
                 dropdown2.append($('<option>' + name + '</option>'));
