@@ -199,6 +199,7 @@ var perfectSteak = function (div) {
             currentInfo["meatType"] = meatType;
             var recipe = [meatType, maxTemps, currentInfo["data"], currentInfo["meatTemp"], thickness, $('.mytog2:checked').attr('id')];
             var isDuplicate = false;
+			
             for (var i in currentInfo["recipe"]) {
                 if (currentInfo['recipe'][i][0] == meatType && currentInfo['recipe'][i][4] == thickness && currentInfo['recipe'][i][2].toString() == currentInfo["data"].toString() && currentInfo['recipe'][i][3] == currentInfo["meatTemp"]) {
 
@@ -206,8 +207,9 @@ var perfectSteak = function (div) {
                     isDuplicate = true;
                     break;
                 }
-
+				
             }
+		
             if (isDuplicate) {
                 return 0;
             } else {
@@ -517,7 +519,7 @@ var perfectSteak = function (div) {
             }
 
             dropdownDiv.change(function () {
-
+						
                 var e1 = document.getElementById("d1");
                 var name1 = e1.options[e1.selectedIndex].text;
                 var e2 = document.getElementById("d2");
@@ -528,13 +530,27 @@ var perfectSteak = function (div) {
 
                 if (name1 != "") {
                     var info = model.currentInfo['recipe'][name1];
-
+					temp= []
+					for( i=0;i<info[1].length;i++){
+						temp.push(info[1][i]);
+			
+					}
+			
                     drawFinished(info[0], info[1], info[2], info[3], 0, info[4], $('.mytog2:checked').attr('id'));
+				model.currentInfo['recipe'][name1][1]=temp	
                 }
                 if (name2 != "") {
                     var inf = model.currentInfo['recipe'][name2];
+						temp= []
+					for( i=0;i<inf[1].length;i++){
+						temp.push(inf[1][i]);
+			
+					}
+			
                     drawFinished(inf[0], inf[1], inf[2], inf[3], 1, inf[4], $('.mytog2:checked').attr('id'));
+					model.currentInfo['recipe'][name1][1]=temp	
                 }
+		
             });
 
             //NOW THIS DELETES EVERY ROW AND ADDS THEIR OWN LITTLE ROWS
@@ -598,7 +614,7 @@ var perfectSteak = function (div) {
             div.append("<div class='row'><div class='container optionBar'></div></div>");
 			var recipePane=$("<div id='recipe-pane' class='span3'><h4 class='recipeHead'>Recipe:</h4><span></div>");
 			var newRecipeButton = $("<button class = 'btn btn-small' id='newRecipeButton'>New</button></span>");
-			recipePane.append(newRecipeButton);
+			//recipePane.append(newRecipeButton);
 			
 			newRecipeButton.on("click", function(){
 				model.addRecipe("Create Your Own!", {
@@ -649,13 +665,11 @@ var perfectSteak = function (div) {
         var addRow = function (i) {
             var row = $("<tr class='row recipe-step' id='row" + i + "'></tr>");
 
-            var labels = $("<span id='label" + i + "' > " + (i + 1) + ".</span>");
+            var labels = $("<span class = 'mlabel' id='label" + i + "' > " + (i + 1) + ".</span>");
             if (i < 9) {
                 labels.css("margin-left", "8px");
             }
-            labels.css("margin-right", "3px");
-            labels.css("font-size", '12px');
-            labels.css("text-anchor", 'end');
+     
 
             var rowiside1 = $("<td id='row" + i + "side1'></td>");
             var inp1_i = $("<input id='inp1_" + i + "' type=text></input><span class='deg'>&#176" + $('.mytog2:checked').attr('id') + "</span>");
@@ -672,7 +686,7 @@ var perfectSteak = function (div) {
             var durationi = $("<td id='duration" + i + "'></td>");
 
             var rowitime = $("<input class = 'time' id='row" + i + "time' type=text></input>");
-            rowitime.css("margin-left", "8px")
+            
             durationi.append(rowitime);
 
             var rowibuttoncell = $("<td></td>")
@@ -734,8 +748,8 @@ var perfectSteak = function (div) {
             var addButton = $("<button class='btn btnBar addButton' id='addButton" + model.currentInfo['numRows'] + "'>+</button>");
             addButtonFun(addButton)
 
-            var label = $('<td><span>Total:</span></td>');
-            label.css("text-align", "right");
+            var label = $('<td><span class ="tots">Total:</span></td>');
+          
             updateTime();
             addrow.append(addButton);
             var info = $('<td><span class="tt">' + model.convertTime(model.currentInfo["totalTime"]) + '</span></td>');
@@ -966,16 +980,29 @@ var perfectSteak = function (div) {
                 var e2 = document.getElementById("d2");
                 var name2 = e2.options[e2.selectedIndex].text;
                 d3.selectAll('.finalsteak').remove();
-                if (name1 != "") {
+                               if (name1 != "") {
                     var info = model.currentInfo['recipe'][name1];
-
+					temp= []
+					for( i=0;i<info[1].length;i++){
+						temp.push(info[1][i]);
+			
+					}
+			
                     drawFinished(info[0], info[1], info[2], info[3], 0, info[4], $('.mytog2:checked').attr('id'));
+				model.currentInfo['recipe'][name1][1]=temp	
                 }
                 if (name2 != "") {
                     var inf = model.currentInfo['recipe'][name2];
+						temp= []
+					for( i=0;i<inf[1].length;i++){
+						temp.push(inf[1][i]);
+			
+					}
+			
                     drawFinished(inf[0], inf[1], inf[2], inf[3], 1, inf[4], $('.mytog2:checked').attr('id'));
+					model.currentInfo['recipe'][name1][1]=temp	
                 }
-
+			
         }
 
             function playSound(soundfile) {
@@ -1011,6 +1038,7 @@ var perfectSteak = function (div) {
             var dropdown3 = $('#d3');
 
             if (saved == 1) { //if there was no duplicate
+	
                 dropdown1.append($('<option>' + name + '</option>'));
                 dropdown2.append($('<option>' + name + '</option>'));
                 dropdown3.append($('<option>' + name + '</option>'));
@@ -1019,14 +1047,28 @@ var perfectSteak = function (div) {
                 var e2 = document.getElementById("d2");
                 var name2 = e2.options[e2.selectedIndex].text;
                 d3.selectAll('.finalsteak').remove();
-                if (name1 != "") {
+				
+                       if (name1 != "") {
                     var info = model.currentInfo['recipe'][name1];
-
+					temp= []
+					for( i=0;i<info[1].length;i++){
+						temp.push(info[1][i]);
+			
+					}
+			
                     drawFinished(info[0], info[1], info[2], info[3], 0, info[4], $('.mytog2:checked').attr('id'));
+				model.currentInfo['recipe'][name1][1]=temp	
                 }
                 if (name2 != "") {
                     var inf = model.currentInfo['recipe'][name2];
+						temp= []
+					for( i=0;i<inf[1].length;i++){
+						temp.push(inf[1][i]);
+			
+					}
+			
                     drawFinished(inf[0], inf[1], inf[2], inf[3], 1, inf[4], $('.mytog2:checked').attr('id'));
+					model.currentInfo['recipe'][name1][1]=temp	
                 }
 
             } else {
