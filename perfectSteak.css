@@ -189,7 +189,6 @@ th{
 td{
 	font-size:12px;
 	position:relative;
-	
 	margin:0!important;
 	padding:1px!important;
 	left:0px!important;
@@ -277,7 +276,7 @@ td{
 input[type="text"] {
     border: 1px solid gray;
     font-size: 12px;
-    width: 35px;
+    width: 37px;
 	height: 20px;
 	padding-top:6px;
 	padding-left:3px;

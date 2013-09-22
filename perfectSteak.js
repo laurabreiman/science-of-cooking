@@ -646,13 +646,6 @@ var perfectSteak = function (div) {
 
         }
 
-        var toF = function (C) {
-            return (C * (9 / 5) + 32);
-        }
-        var toC = function (F) {
-            return ((F - 32) * 5 / 9);
-        }
-
         var addRow = function (i) {
             var row = $("<tr class='row recipe-step' id='row" + i + "'></tr>");
 

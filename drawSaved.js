@@ -105,7 +105,7 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,t
 	.data(myMaxs)
         .attr('x', function(d,i){return (0+(1-side)*80)+'%'})
         .attr('y', function(d, i){ return  -125+8+i*10})
-		.style('font-size','6pt')
+		.style('font-size','8pt')
         .text(function(d){ 
 			console.log(d);
 			return (100*d/(myMaxTemps.length)).toFixed(0) +"%"; });	
