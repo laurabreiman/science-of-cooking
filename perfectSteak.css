@@ -5,7 +5,7 @@
 	top: 0px !important;
 	padding: 0px !important;
 	margin: 2px!important;
-	height:260px;
+	height:230px;
 	overflow-y:auto;
     overflow-x:hidden;
 }
@@ -22,7 +22,11 @@
     margin-left: 25;
     margin-top: 10;
 }
-
+.mlabel{
+margin-right:3px;
+ font-size:12px;
+ 
+}
 .btnBar{
     position:relative;
 	left:2px!important;
@@ -49,7 +53,7 @@
 }
 
 .inputTableContainer{
-	height:170px;
+	height:130px;
 	overflow-y:auto;
 	overflow-x:hidden;
 }
@@ -216,7 +220,7 @@ td{
 }
 
 .span12{
-	margin-top:40px
+	margin-top:10px
 }
 
 .steakHist
@@ -285,8 +289,11 @@ input[type="text"] {
 
 .time{
     width:40px !important;
+	margin-left:8px;
 }
-
+.tots{
+	text-align:right;
+}
 #recipeInput{
 	border: 1px solid black;
     font-size: 12px;

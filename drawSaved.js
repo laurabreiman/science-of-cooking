@@ -1,7 +1,7 @@
 
 var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,thickness,mode)
 	{
-
+console.log(myMaxTemps)
 			var getState=function(temp)
 	{
 
@@ -66,7 +66,7 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,t
 	
 			}
 		
-		console.log(j);
+	
 		myMaxs.reverse();
 		
 		var dropdown=$('<select id="steakHist"></select>');
@@ -107,7 +107,7 @@ var drawFinished=function(myMeatType,myMaxTemps,instructions,startingtemp,side,t
         .attr('y', function(d, i){ return  -125+8+i*10})
 		.style('font-size','8pt')
         .text(function(d){ 
-			console.log(d);
+		
 			return (100*d/(myMaxTemps.length)).toFixed(0) +"%"; });	
 
 //Draw the Rectangle
