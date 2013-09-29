@@ -548,7 +548,7 @@ var perfectSteak = function (div) {
 					}
 			
                     drawFinished(inf[0], inf[1], inf[2], inf[3], 1, inf[4], $('.mytog2:checked').attr('id'));
-					model.currentInfo['recipe'][name1][1]=temp	
+					model.currentInfo['recipe'][name2][1]=temp	
                 }
 		
             });
@@ -1000,7 +1000,7 @@ var perfectSteak = function (div) {
 					}
 			
                     drawFinished(inf[0], inf[1], inf[2], inf[3], 1, inf[4], $('.mytog2:checked').attr('id'));
-					model.currentInfo['recipe'][name1][1]=temp	
+					model.currentInfo['recipe'][name2][1]=temp	
                 }
 			
         }
@@ -1071,7 +1071,7 @@ var perfectSteak = function (div) {
 					}
 			
                     drawFinished(inf[0], inf[1], inf[2], inf[3], 1, inf[4], $('.mytog2:checked').attr('id'));
-					model.currentInfo['recipe'][name1][1]=temp	
+					model.currentInfo['recipe'][name2][1]=temp	
                 }
 
             } else {
