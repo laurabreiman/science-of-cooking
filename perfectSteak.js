@@ -1,6 +1,11 @@
 var perfectSteak = function (div) {
 
-
+    var toF = function (C) {
+            return C * (9 / 5) + 32;
+        }
+        var toC = function (F) {
+            return ((5 / 9) * (F - 32));
+        }
     function Model(div) {
 
         var currentInfo = {
@@ -44,12 +49,7 @@ var perfectSteak = function (div) {
         };
 
         var timeStep = 240;
-        var toF = function (C) {
-            return C * (9 / 5) + 32;
-        }
-        var toC = function (F) {
-            return ((5 / 9) * (F - 32));
-        }
+    
 		
 		//this is called whenever the user creates a new recipe
 		//it adds to the default list of recipes that is stuck on the dropdown of recipes ("#d3")
