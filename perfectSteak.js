@@ -1086,12 +1086,11 @@ var perfectSteak = function (div) {
                 var meat = meatdrop.options[meatdrop.selectedIndex].text;
                 model.currentInfo['names'][meat] = model.currentInfo['names'][meat] + 1;
                 var name = "My " + meat + " " + model.currentInfo['names'][meat];
-                var saved = model.saveRecipe(name);
                 // if we're viewing the text view, store it back to model so that the table view becomes consistent too
                 if ($("#recipeInput").closest(".tab-pane").hasClass("active")) {
                     storeTextRecipeIntoModel();
-                    saved = 1;
                 }
+                var saved = model.saveRecipe(name);
                 var dropdown1 = $("#d1");
                 var dropdown2 = $("#d2");
                 var dropdown3 = $('#d3');
