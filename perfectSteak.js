@@ -165,16 +165,7 @@ var perfectSteak = function (div) {
                 var minutes = Math.floor(parseInt(secs) / 60);
                 var seconds = parseInt(secs) % 60;
 
-                if (minutes == 0 && seconds < 10) {
-
-                    return String(0) + ":0" + String(seconds);
-                } else if (seconds == 0) {
-
-                    return String(minutes) + ':' + String(seconds) + '0';
-                } else {
-
-                    return String(minutes) + ':' + String(seconds);
-                }
+                return String(minutes) + ":" + ((seconds < 10) ? "0" : "") + String(seconds);
             }
 
 			//Increment number of rows
