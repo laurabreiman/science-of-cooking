@@ -493,11 +493,15 @@ var perfectSteak = function (div) {
             tabContent.append(tabPaneActive, tabPane);
 
             $("#table-tab", tableTabs).on("click", function () {
-                storeTextRecipeIntoModel();
+                if ($("#text").hasClass("active")) {
+                    storeTextRecipeIntoModel();
+                }
             });
 
             $("#text-tab", tableTabs).on("click", function () {
-                storeTableIntoModel();
+                if ($("#table").hasClass("active")) {
+                    storeTableIntoModel();
+                }
             });
 
             displayDiv.append(tableTabs, tabContent);
@@ -1071,7 +1075,7 @@ var perfectSteak = function (div) {
                 model.currentInfo['names'][meat] = model.currentInfo['names'][meat] + 1;
                 var name = "My " + meat + " " + model.currentInfo['names'][meat];
                 // if we're viewing the text view, store it back to model so that the table view becomes consistent too
-                if ($("#recipeInput").closest(".tab-pane").hasClass("active")) {
+                if ($("#text").hasClass("active")) {
                     storeTextRecipeIntoModel();
                 }
                 var saved = model.saveRecipe(name);
