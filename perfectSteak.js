@@ -204,7 +204,7 @@ var perfectSteak = function (div) {
                 currentInfo["data"].push(item);
             }
 			var removeRow =function (row){
-				currentInfo["data"].splice(row,1);
+				currentInfo["data"].splice(row-1,1);
 				numRowsMinus();
 			}
             //change the data array
