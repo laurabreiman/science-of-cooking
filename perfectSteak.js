@@ -610,15 +610,15 @@ var perfectSteak = function (div) {
 //                    } else {
 //                        model.changeMeatTemp(currentInfo['recipe'][name3][3])
 //                    }
-                    model.changeMeatType(currentInfo['recipe'][name3][0]);
-                    dropdownMeat.options[0].selected = true;
+                    model.changeMeatType(model.currentInfo['recipe'][name3][0]);
+                    //dropdownMeat.options[0].selected = true;
                     model.dataChange(model.currentInfo['recipe'][name3][2]);
                     console.log("I have just changed the dropdown" + model.currentInfo['data']);
 
                     $("#renameInp").remove();
-                    $("#renameInpDeleteButton").remove();
+                    //$("#renameInpDeleteButton").remove();
                     var renameInp = $("<input type='text' id='renameInp' value='" + name3 + "'>");
-                    var renameInpDeleteButton = $("<button class= 'btn btn-small' id='renameInpDeleteButton'>Delete This Recipe</button>")
+                    //var renameInpDeleteButton = $("<button class= 'btn btn-small' id='renameInpDeleteButton'>Delete This Recipe</button>")
                     renameInp.on("focusout", function () {
                         var newName = $('#renameInp').val();
                         var oldName = $("#d3").val();
@@ -630,14 +630,14 @@ var perfectSteak = function (div) {
                         $("#d3 > [value='" + newName + "']").attr("selected", "true");
                     });
 
-                    renameInpDeleteButton.on("click", function () {
-                        console.log("current recipe name " + $("#d3").val());
+                    // renameInpDeleteButton.on("click", function () {
+                        // console.log("current recipe name " + $("#d3").val());
                         //model.removeSaved($("#d3").val());
-                        dropdown3.empty();
-                        for (var key in model.currentInfo['recipe']) {
-                            dropdown3.append($('<option value="' + key + '">' + key + '</option>'));
-                        }
-                    })
+                        // dropdown3.empty();
+                        // for (var key in model.currentInfo['recipe']) {
+                            // dropdown3.append($('<option value="' + key + '">' + key + '</option>'));
+                        // }
+                    // })
 
                     var newNum = model.currentInfo['data'].length;
                     //REMOVING ALL THE ROWS THAT CURRENTLY EXIST
@@ -651,7 +651,7 @@ var perfectSteak = function (div) {
 
                     model.buildData();
                     addAddButton();
-                    $("#graph-pane").prepend(renameInp, renameInpDeleteButton);
+                    $("#graph-pane").prepend(renameInp);
                 })
 
                 dropdownDiv.append(dropdown1, dropdown2);
