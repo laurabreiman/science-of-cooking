@@ -158,7 +158,7 @@ var perfectSteak = function (div) {
             var addRecipe = function (name, recipe) {
                 currentInfo['recipe'][name] = recipe;
             }
-
+                        
             //CHANGES X SECONDS INTO Y:X WHERE Y IS MINUTES X IS SECONDS
             var convertTime = function (secs) {
 
@@ -183,6 +183,11 @@ var perfectSteak = function (div) {
 			//change saved starting temperature of meat
             var changeMeatTemp = function (newVal) {
                 currentInfo["meatTemp"] = newVal;
+            }
+            
+            //change saved starting temperature of meat
+            var changeMeatType = function (newType) {
+                currentInfo["meatType"] = newType
             }
 
             //deletes saved data for current steak
@@ -412,6 +417,7 @@ var perfectSteak = function (div) {
 				removeRow: removeRow,
                 buildData: buildData,
                 changeMeatTemp: changeMeatTemp,
+                changeMeatType: changeMeatType,
                 numRowsPlus: numRowsPlus,
                 numRowsMinus: numRowsMinus,
                 numRowsChange: numRowsChange,
@@ -599,6 +605,13 @@ var perfectSteak = function (div) {
                 dropdown3.change(function () {
                     var e3 = document.getElementById("d3");
                     var name3 = e3.options[e3.selectedIndex].text;
+//                    if ($('.mytog2:checked').attr('id') == 'F') {
+//                        model.changeMeatTemp(toC(currentInfo['recipe'][name3][3]))
+//                    } else {
+//                        model.changeMeatTemp(currentInfo['recipe'][name3][3])
+//                    }
+                    model.changeMeatType(currentInfo['recipe'][name3][0]);
+                    dropdownMeat.options[0].selected = true;
                     model.dataChange(model.currentInfo['recipe'][name3][2]);
                     console.log("I have just changed the dropdown" + model.currentInfo['data']);
 
