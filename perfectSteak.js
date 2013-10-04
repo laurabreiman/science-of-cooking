@@ -203,7 +203,10 @@ var perfectSteak = function (div) {
             var dataAdd = function (item) {
                 currentInfo["data"].push(item);
             }
-
+			var removeRow =function (row){
+				currentInfo["data"].splice(row-1,1);
+				numRowsMinus();
+			}
             //change the data array
             var dataChange = function (array) {
                 currentInfo["data"] = array;
@@ -415,6 +418,7 @@ var perfectSteak = function (div) {
                 dataAdd: dataAdd,
                 dataClear: dataClear,
                 dataChange: dataChange,
+				removeRow: removeRow,
                 buildData: buildData,
                 changeMeatTemp: changeMeatTemp,
                 numRowsPlus: numRowsPlus,
@@ -746,31 +750,11 @@ var perfectSteak = function (div) {
                 var rowibuttoncell = $("<td></td>")
                 var rowibutton = $("<button type='button' id=row" + i + "button' class='close closeRow'>&times;</button>")
                 rowibutton.on("click", function () {
-                    var rowNum = String($(this).attr("id").charAt(3))
-                    //NOW WE'RE REMOVING THE ROW WITH THE X NEXT TO IT
-                    row.remove();
-                    //REDUCING THE NUMBER OF EXPECTED ROWS
-                    model.numRowsMinus();
-
-                    //NOW WE NEED TO CHANGE THE ROW NUMBER OF ALL THE OTHER ROWS
-                    for (var l = i + 1; l < model.currentInfo["numRows"] + 1; l++) {
-
-                        $("#row" + l).attr("id", String("row" + parseInt(l - 1)));
-                        $("#row" + l + "time").attr("id", String("row" + parseInt(l - 1) + "time"))
-                        $("#row" + l + "button").attr("id", String("row" + parseInt(l - 1) + "button"))
-                        $("#duration" + l).attr("id", String("duration" + parseInt(l - 1)));
-                        $("#row" + l + "side1").attr("id", String("row" + parseInt(l - 1) + "side1"));
-                        $("inp1_" + l).attr("id", String("inp1_" + parseInt(l - 1)));
-                        $("#row" + l + "side2").attr("id", String("row" + parseInt(l - 1) + "side2"));
-                        $("#inp2_" + l).attr("id", String("inp2_" + parseInt(l - 1)));
-                        $("#label" + (l)).attr("id", "label" + parseInt(l - 1))
-                        $("#label" + (l - 1)).html(parseInt(l) + ".");
-                    }
-                    model.dataClear();
-                    model.buildData();
-                    updateTime();
-                    $('.tt').html(model.convertTime(model.currentInfo["totalTime"]));
-
+                    var rowNum = parseInt($(this).attr("id").charAt(3))
+					storeTableIntoModel()
+           			model.removeRow(rowNum);
+					loadTableFromModel();
+                   
                 })
                 rowibuttoncell.append(rowibutton);
 
