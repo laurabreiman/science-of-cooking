@@ -120,7 +120,7 @@ var drawFinished = function (myMeatType, myMaxTemps, instructions, startingtemp,
 
     //Draw the Rectangle
     var rectangle = svgContainer.selectAll("rect")
-        .data([0, 0, 0, 0, 0, 0, 0].concat(myMaxTemps.reverse()))
+        .data([0, 0, 0, 0, 0, 0, 0].concat(myMaxTemps))
         .enter().append("rect")
         .attr("x", (20 + (1 - side) * 30) + '%')
         .attr("y", function (d, i) {
