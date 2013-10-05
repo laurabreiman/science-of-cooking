@@ -8,7 +8,7 @@ var perfectSteak = function (div) {
         return ((5 / 9) * (F - 32));
     }
 	
-	//Model saves all the past and current data.
+	//Model saves all the past and current data
     function Model(div) {
 
             var currentInfo = {
@@ -117,6 +117,14 @@ var perfectSteak = function (div) {
                         [3600, 53, 53],
                         [30, -200, -200],
                         [120, 200, 200]
+                    ],
+                    "Temp": 23
+                }, {
+                    "name": "Make Your Own!",
+                    "data": [
+                        [240, 150, 23],
+                        [240, 23, 150],
+                        [300, 23, 23]
                     ],
                     "Temp": 23
                 }]
@@ -1077,7 +1085,7 @@ var perfectSteak = function (div) {
                 var meatdrop = document.getElementById("dMeat");
                 var meat = meatdrop.options[meatdrop.selectedIndex].text;
                 model.currentInfo['names'][meat] = model.currentInfo['names'][meat] + 1;
-                var name = "My " + meat + " " + model.currentInfo['names'][meat];
+                var name = $("#renameInp").val();
                 // if we're viewing the text view, store it back to model so that the table view becomes consistent too
                 if ($("#text").hasClass("active")) {
                     storeTextRecipeIntoModel();
