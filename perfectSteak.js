@@ -74,7 +74,7 @@ var perfectSteak = function (div) {
 					
                     "Temp": 23
                 }, {
-                    "name": "Flip every 15 seconds (Heston Blumenthal)",
+                    "name": "Flip every 15 seconds",
                     "data": [
                         [15, 150, 23],
                         [15, 23, 150],
@@ -103,7 +103,7 @@ var perfectSteak = function (div) {
                     ],
                     "Temp": 23
                 }, {
-                    "name": "Sear then cook low (America's Test Kitchen)",
+                    "name": "Sear then cook low",
                     "data": [
                         [15, 230, 23],
                         [15, 23, 230],
@@ -112,7 +112,7 @@ var perfectSteak = function (div) {
                     ],
                     "Temp": 23
                 }, {
-                    "name": "Sous Vide and Liquid Nitrogen (Nathan Myhrvold)",
+                    "name": "Sous Vide and Liquid Nitrogen",
                     "data": [
                         [3600, 53, 53],
                         [30, -200, -200],
@@ -144,6 +144,7 @@ var perfectSteak = function (div) {
                     var meatType = "Steak";
                     var recipe = [meatType, maxTemps, data, steaktemp, 3, 'C'];
                     addRecipe(name, recipe);
+					//console.log(name + "butts");
                 }
             }
 			
@@ -164,7 +165,9 @@ var perfectSteak = function (div) {
 			
 			//saves new recipe in recipe dictionary
             var addRecipe = function (name, recipe) {
-                currentInfo['recipe'][name] = recipe;
+				if (name != 'undefined'){
+					currentInfo['recipe'][name] = recipe;
+				}
             }
                         
             //CHANGES X SECONDS INTO Y:X WHERE Y IS MINUTES X IS SECONDS
@@ -249,20 +252,22 @@ var perfectSteak = function (div) {
                 var maxTemps = Thedata.maxTemps;
                 var meatdrop = document.getElementById("dMeat");
                 var meatType = meatdrop.options[meatdrop.selectedIndex].text;
-                currentInfo["meatType"] = meatType;
+                //currentInfo["meatType"] = meatType;
                 var recipe = [meatType, maxTemps, currentInfo["data"], currentInfo["meatTemp"], thickness, $('.mytog2:checked').attr('id')];
                 var isDuplicate = false;
 
-                for (var i in currentInfo["recipe"]) {
-                    if (currentInfo['recipe'][i][0] == meatType && currentInfo['recipe'][i][4] == thickness && currentInfo['recipe'][i][2].toString() == currentInfo["data"].toString() && currentInfo['recipe'][i][3] == currentInfo["meatTemp"]) {
-
+                for (var i in currentInfo["recipe"]){
+					if (i == name){
+						console.log("name" + name);
                         isDuplicate = true;
                         break;
                     }
 
                 }
 
-                if (isDuplicate) {
+                if (isDuplicate||name == 'undefined') {
+					console.log("this is a duplicate");
+					//delete currentInfo['recipe'][name];
                     return 0;
                 } else {
                     addRecipe(name, recipe);
@@ -569,7 +574,6 @@ var perfectSteak = function (div) {
                     del.on("click", function () {})
                     dropdown2.append(option2);
 
-
                     dropdown3.append($('<option>' + key + '</option>'));
                 }
 				//when the dropdown div changes, remove the current tow visualizations and redraw them according to
@@ -613,11 +617,6 @@ var perfectSteak = function (div) {
                 dropdown3.change(function () {
                     var e3 = document.getElementById("d3");
                     var name3 = e3.options[e3.selectedIndex].text;
-//                    if ($('.mytog2:checked').attr('id') == 'F') {
-//                        model.changeMeatTemp(toC(currentInfo['recipe'][name3][3]))
-//                    } else {
-//                        model.changeMeatTemp(currentInfo['recipe'][name3][3])
-//                    }
                     model.changeMeatType(model.currentInfo['recipe'][name3][0]);
                     //dropdownMeat.options[0].selected = true;
                     model.dataChange(model.currentInfo['recipe'][name3][2]);
@@ -633,19 +632,12 @@ var perfectSteak = function (div) {
                         model.changeRecipeName(oldName, newName);
                         dropdown3.empty();
                         for (var key in model.currentInfo['recipe']) {
+							if (key != 'undefined'){
                             dropdown3.append($('<option value="' + key + '">' + key + '</option>'));
+							}
                         }
                         $("#d3 > [value='" + newName + "']").attr("selected", "true");
                     });
-
-                    // renameInpDeleteButton.on("click", function () {
-                        // console.log("current recipe name " + $("#d3").val());
-                        //model.removeSaved($("#d3").val());
-                        // dropdown3.empty();
-                        // for (var key in model.currentInfo['recipe']) {
-                            // dropdown3.append($('<option value="' + key + '">' + key + '</option>'));
-                        // }
-                    // })
 
                     var newNum = model.currentInfo['data'].length;
                     //REMOVING ALL THE ROWS THAT CURRENTLY EXIST
@@ -677,39 +669,7 @@ var perfectSteak = function (div) {
                 div.append("<div class='row'><div class='container optionBar'></div></div>");
                 var recipePane = $("<div id='recipe-pane' class='span3'><h4 class='recipeHead'>Recipe:</h4><span></div>");
                 var newRecipeButton = $("<button class = 'btn btn-small' id='newRecipeButton'>New</button></span>");
-                //recipePane.append(newRecipeButton);
-/*
-                newRecipeButton.on("click", function () {
-                    model.addRecipe("Create Your Own!", {
-                        "name": "Create Your Own!",
-                        "data": [
-                            [240, 150, 23],
-                            [240, 23, 150],
-                            [300, 23, 23]
-                        ],
-                        "Temp": 23
-                    })
-                    model.addSaved("Create Your Own!", [
-                        [240, 150, 23],
-                        [240, 23, 150],
-                        [300, 23, 23]
-                    ], 23);
-                    model.dataChange([
-                        [240, 150, 23],
-                        [240, 23, 150],
-                        [300, 23, 23]
-                    ]);
-                    model.saveRecipe("Create Your Own!");
-                    console.log(model.currentInfo['data'] + "I have just changed the data");
-                    $('#renameInp').val("Create Your Own!");
 
-                    $("#d3").empty();
-                    for (var key in model.currentInfo['recipe']) {
-                        $("#d3").append($('<option value="' + key + '">' + key + '</option>'));
-                    }
-                    $("#d3").val('Create Your Own!');
-                })
-*/
                 var graphPane = $("<div id='graph-pane' class='span9' style='visibility:hidden;'></div><div class='span12'></div></div>");
                 div.append(recipePane, graphPane);
                 var switches = $('<div class="switch"><input type="radio" class="mytog" id="PS" name="toggle" checked><label for="PS" class="btn" id ="state">Protein State</label><input type="radio" class="mytog"id="T" name="toggle"><label for="T" class="btn" id ="state">Temperature</label></div>');
@@ -1094,15 +1054,20 @@ var perfectSteak = function (div) {
                 var dropdown1 = $("#d1");
                 var dropdown2 = $("#d2");
                 var dropdown3 = $('#d3');
-
-                //WHAT IS THIS SECTION DOING??
-
-                //K
+				
+				dropdown3.empty();
+				
+				for (i in model.currentInfo['recipe']){
+					if (i != 'undefined'){
+						dropdown3.append($('<option>'+i+'</option>'));
+					}
+				}
+				
                 if (saved == 1) { //if there was no duplicate
 
                     dropdown1.append($('<option>' + name + '</option>'));
                     dropdown2.append($('<option>' + name + '</option>'));
-                    dropdown3.append($('<option>' + name + '</option>'));
+                    //dropdown3.append($('<option>' + name + '</option>'));
                     var e1 = document.getElementById("d1");
                     var name1 = e1.options[e1.selectedIndex].text;
                     var e2 = document.getElementById("d2");
