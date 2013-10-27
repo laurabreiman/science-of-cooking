@@ -1031,7 +1031,7 @@ var perfectSteak = function (div) {
 			//Saves the information in the recipe dictionary
             var cookingFood = function () {
                 clicked = true;
-                playSound('steak.wav');
+                playSound('steak.mp3');
                 checkTableForImpossibleValues();
                 d3.selectAll(".mysteak").remove();
                 d3.selectAll(".containers").remove();
@@ -1065,7 +1065,7 @@ var perfectSteak = function (div) {
 				}
 				
 				dropdown3.val(name)
-                if (saved == 1) { //if there was no duplicate
+                if (true) { //if there was no duplicate
 					
                     dropdown1.append($('<option>' + name + '</option>'));
                     dropdown2.append($('<option>' + name + '</option>'));
