@@ -692,6 +692,9 @@ var perfectSteak = function (div) {
                 addAddButton();
                 CookButtonFun();
 
+                // add the sound
+                div.append("<audio id='sizzle' preload='auto' src='steak.mp3'></audio>")
+
                 // lastly, load up the recipe that's predefined in the model
                 loadTableFromModel();
 
@@ -1024,14 +1027,11 @@ var perfectSteak = function (div) {
 
             }
 
-                function playSound(soundfile) {
-                    document.getElementById("dummy").innerHTML =
-                        "<embed src=\"" + soundfile + "\" hidden=\"true\" autostart=\"true\" loop=\"false\" />";
-                }
 			//Saves the information in the recipe dictionary
             var cookingFood = function () {
                 clicked = true;
-                playSound('steak.mp3');
+                $("#sizzle").get(0).play();
+                //playSound('steak.mp3');
                 checkTableForImpossibleValues();
                 d3.selectAll(".mysteak").remove();
                 d3.selectAll(".containers").remove();
