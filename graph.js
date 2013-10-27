@@ -140,10 +140,12 @@ var graphSteak = function (sampledata, flame, timestep, meatType, maxTemps, mode
                         .orient("left")
 
                 }
+				
+				//KATE: UNCOMMENTED WIDTH ATTR
                 var svg = d3.select(".span9").append("svg")
                     .attr("class", "mysteak")
                     .attr("id", "mysteak")
-                // .attr("width", width + margin.left + margin.right)
+                .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom + 60)
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
