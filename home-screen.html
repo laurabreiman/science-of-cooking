@@ -2,9 +2,9 @@
     <head>
         
         <title>Cook My Meat</title>
-        <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js'></script>
+        <script src='jquery.js'></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
-        <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+        <script src="d3/d3.v3.min.js" charset="utf-8"></script>
 		<script src="data.js"></script>
         <script src="numeric-1.2.6.js"></script>
 		<script src="drawSaved.js"></script>
@@ -16,10 +16,20 @@
         <link href="home-screen.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="graph.css" rel="stylesheet">
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
+        <link href="jquery-smoothness-theme.css" rel="stylesheet">
 
     </head>
     <body>
+        <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44980465-1', 'mit.edu');
+  ga('send', 'pageview');
+
+        </script>
 		<script language="javascript" type="text/javascript">
  
  </script>
@@ -71,6 +81,7 @@ In the first section, you can input the starting values for the meat. The defaul
 			<p>Advised by: <a href='http://people.csail.mit.edu/rcm/' target="_newtab">Rob Miller</a>, <a href='http://people.csail.mit.edu/fredo/' target="_newtab">Fredo Durand</a>, <a href='http://www.seas.harvard.edu/brenner/Home.html' target="_newtab">Michael Brenner</a>, and <a href='http://www.seas.harvard.edu/directory/sorensen' target="_newtab">Pia Sorenson</a><p>
 			<p>Developed for the 2013 edX course <a href='https://www.edx.org/course/harvard-university/spu27x/science-cooking-haute-cuisine/639' target="_newtab">Science and Cooking: From Haute Cuisine to Soft Matter Science</a>. It demonstrates the heat diffusion through meat over time. This heat diffusion is calculated by modeling the meat using the diffusion constant of water. The heat at each point in the meat is calculated at each time step by using a <a href='http://en.wikipedia.org/wiki/Crank–Nicolson_method' target="_newtab">Crank-Nicolson scheme</a> to solve the heat equation.</p>
 			<p>The temperatures for the different stages of protein denaturization come from Harold McGee&#39s <i>On Food and Cooking: The Science and Lore of the Kitchen</i> (pages 152 and 210). It is important to note, however, that these temperatures are estimates and not completely universal. This simulation is not a perfect model for cooking actual meat. Stove temperatures, pan types, and meat consistency are variable from case to case. Please be certain to check that your meat is thoroughly cooked before consumption unless you enjoy getting food posioning.</p>
+            <p>Please send questions and comments to cookmymeat@mit.edu</p>
         </div>
         <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
