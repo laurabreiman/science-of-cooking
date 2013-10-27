@@ -15,12 +15,19 @@
 	width: 100%;
     
 }
+#renameInpl{
+	position:relative;
+	top:15px;
+	left:-10px;
+}
 #renameInp{
     width: 50%;
     margin: 0px;
-    border: none;
-    margin-left: 25;
-    margin-top: 10;
+    border: 1px, black !important;
+	position:relative;
+	top:-5px;
+    margin-left: 5;
+    margin-top: 0;
 }
 .mlabel{
 margin-right:3px;

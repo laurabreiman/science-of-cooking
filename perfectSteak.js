@@ -623,8 +623,9 @@ var perfectSteak = function (div) {
                     console.log("I have just changed the dropdown" + model.currentInfo['data']);
 
                     $("#renameInp").remove();
+					$("#renameInpl").remove();
                     //$("#renameInpDeleteButton").remove();
-                    var renameInp = $("<input type='text' id='renameInp' value='" + name3 + "'>");
+                    var renameInp = $("<span id='renameInpl'>Name: <\span><input type='text' id='renameInp' value='" + name3 + "'>");
                     //var renameInpDeleteButton = $("<button class= 'btn btn-small' id='renameInpDeleteButton'>Delete This Recipe</button>")
                     renameInp.on("focusout", function () {
                         var newName = $('#renameInp').val();
@@ -1063,8 +1064,9 @@ var perfectSteak = function (div) {
 					}
 				}
 				
+				dropdown3.val(name)
                 if (saved == 1) { //if there was no duplicate
-
+					
                     dropdown1.append($('<option>' + name + '</option>'));
                     dropdown2.append($('<option>' + name + '</option>'));
                     //dropdown3.append($('<option>' + name + '</option>'));
