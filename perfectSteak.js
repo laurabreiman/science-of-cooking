@@ -556,7 +556,7 @@ var perfectSteak = function (div) {
                 var dropdown2 = $('<select class="steakHist"id ="d2"><option></option></select>');
                 var dropdownMeat = $('<select class="meatInp selectpicker steakHist" id="dMeat"><option name="Steak">Steak</option><option name="Tuna">Tuna</option><option name="Turkey">Turkey</option></select></ul>')
 
-                var dropdown3 = $('<select class="steakHist dropdown" id="d3" name="dropdown3"></select><br class="dropdown">')
+                var dropdown3 = $('<select class="steakHist dropdown" id="d3" name="dropdown3"></select><br class="dropdown" height="150px" overflow="none">')
                 dropdown3.append('<option></option>');
 
                 for (var key in model.currentInfo['recipe']) {
