@@ -241,9 +241,9 @@ var graphSteak = function (sampledata, flame, timestep, meatType, maxTemps, mode
                         if (meatType != 'False') {
                             var rects = d3.select(this);
                             var loc = null;
-                            for (var i = n - 1; i >= 0; i--) {
-                                if (color[meatType](i) == rects.style("fill")) {
-                                    loc = i;
+                            for (var j = n - 1; j >= 0; j--) {
+                                if (color[meatType](j) == rgb2hex(rects.style("fill"))) {
+                                    loc = j;
                                 }
                             }
 
@@ -299,7 +299,7 @@ var graphSteak = function (sampledata, flame, timestep, meatType, maxTemps, mode
                         var loc = null;
                         for (var i = n - 1; i >= 0; i--) {
 
-                            if (color[meatType](i) == rects.style("fill")) {
+                            if (color[meatType](i) == rgb2hex(rects.style("fill"))) {
                                 loc = i;
                             }
                         }
@@ -401,17 +401,6 @@ var graphSteak = function (sampledata, flame, timestep, meatType, maxTemps, mode
                     .attr("x", -height + margin.bottom / 3)
                     .attr("transform", "rotate(-90)")
                     .text("Side 1");
-
-
-                /*
- svg.append("g")         
-        .attr("class", "grid")
-        .call(make_y_axis()
-            .tickSize(-width, 0, 0)
-            .tickFormat("")
-			
-        )	
-	*/
                 var timeout = setTimeout(function () {
                     d3.select("input[value=\"grouped\"]").property("checked", true).each(change);
                 }, 2000);
@@ -504,3 +493,5 @@ var graphSteak = function (sampledata, flame, timestep, meatType, maxTemps, mode
         });
     });
 }
+
+
